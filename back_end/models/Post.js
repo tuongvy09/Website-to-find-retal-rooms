@@ -2,8 +2,22 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
   address: {
-    type: String,
-    required: true,
+    exactaddress: {
+      type: String, // Số nhà tên 
+      required: true,
+    },
+    province: {
+      type: String, // Tên tỉnh/thành phố
+      required: true,
+    },
+    district: {
+      type: String, // Tên quận/huyện
+      required: true,
+    },
+    ward: {
+      type: String, // Tên xã/phường
+      required: true,
+    },
   },
   category: {
     type: String,
@@ -18,12 +32,9 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   contactInfo: {
-    name: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId, // Tham chiếu đến mô hình User
+      ref: 'User',
       required: true,
     },
   },
