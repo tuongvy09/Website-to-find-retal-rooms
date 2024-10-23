@@ -4,21 +4,23 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    maxlength: 20,
     unique: true,
   },
   password: {
     type: String,
     required: true,
+    minlength: 6,
   },
   email: {
     type: String,
     required: true,
+    maxlength: 50,
     unique: true,
   },
-  role: {
-    type: String,
-    enum: ['admin', 'user'],
-    default: 'user',
+  admin: {
+    type: Boolean,
+    default: false,
   },
   profile: {
     name: {
