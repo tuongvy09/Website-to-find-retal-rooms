@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
+  address: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -9,19 +17,40 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+  contactInfo: {
+    name: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+  },
+  rentalPrice: {
+    type: Number,
     required: true,
   },
-  category: {
+  area: {
+    type: Number,
+    required: true,
+  },
+  rentalTarget: {
     type: String,
     required: true,
   },
-  status: {
-    type: String,
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
+  maxOccupants: {
+    type: Number,
+    required: true,
+  },
+  images: [{
+    type: String, // Đường dẫn tới hình ảnh
+  }],
+  videos: [{  // Mảng chứa đường dẫn tới video
+    type: String, // Đường dẫn tới video
+  }],
+  youtubeLink: {
+    type: String, // Đường dẫn tới video YouTube (nếu có)
   },
 }, { timestamps: true });
 
