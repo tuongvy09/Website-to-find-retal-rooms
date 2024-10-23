@@ -1,0 +1,16 @@
+.footer {
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto; /* Giúp footer đứng ở dưới cùng nếu sử dụng flexbox */
+}
+
+.footer h6 {
+    margin: 0;
+    font-size: 1.5rem; /* Kích thước chữ cho tiêu đề */
+}
+
+.footer p {
+    margin: 5px 0; /* Khoảng cách giữa các dòng */
+    font-size: 1rem; /* Kích thước chữ cho các dòng khác */
+}
