@@ -1,9 +1,23 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.Schema({
+const postsSchema = new mongoose.Schema({
   address: {
-    type: String,
-    required: true,
+    exactaddress: {
+      type: String, // Số nhà tên 
+      required: true,
+    },
+    province: {
+      type: String, // Tên tỉnh/thành phố
+      required: true,
+    },
+    district: {
+      type: String, // Tên quận/huyện
+      required: true,
+    },
+    ward: {
+      type: String, // Tên xã/phường
+      required: true,
+    },
   },
   category: {
     type: String,
@@ -18,21 +32,26 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   contactInfo: {
-    name: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User',
+      required: true,
+    },
+    username: { 
       type: String,
       required: true,
     },
-    phone: {
+    phoneNumber: { 
       type: String,
       required: true,
     },
   },
   rentalPrice: {
-    type: Number,
+    type: String,
     required: true,
   },
   area: {
-    type: Number,
+    type: String,
     required: true,
   },
   rentalTarget: {
@@ -44,16 +63,13 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   images: [{
-    type: String, // Đường dẫn tới hình ảnh
-  }],
-  videos: [{  // Mảng chứa đường dẫn tới video
-    type: String, // Đường dẫn tới video
+    type: String, 
   }],
   youtubeLink: {
     type: String, // Đường dẫn tới video YouTube (nếu có)
   },
 }, { timestamps: true });
 
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.model('Post', postsSchema);
 
 module.exports = Post;
