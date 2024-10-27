@@ -10,26 +10,25 @@ import MenuItem from '@mui/material/MenuItem';
 import { useDispatch, useSelector } from 'react-redux'; 
 import './Header.css';
 import { logout } from '../../redux/apiRequest';
+import { createAxios } from '../../../createInstance';
+import axios from 'axios';
+import { logoutSuccess } from '../../redux/authSlice';
 
 const Header = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const currentUser = useSelector((state) => state.auth.login.currentUser); 
     const dispatch = useDispatch();
-    const username = currentUser?.username; // Thay thế bằng username hiện tại
-    const password = currentUser?.password;
-    // const accessToken = currentUser?.accessToken;
-    // const id = currentUser?._id;
-
-  // const handleLogout = () => {
-  //   logout(dispatch, id, accessToken);
-  // };
+    const accessToken = currentUser?.accessToken;
+    const id = currentUser?._id;
+    let axiosJWT = axios.create({
+      baseURL: "http://localhost:8000",
+  });
+    axiosJWT = createAxios(currentUser, dispatch, logoutSuccess);
 
   const handleLogout = () => {
-    logout(dispatch,username, password, navigate); // Gọi hàm logout
-    handleClose();
-};
-
+    logout(dispatch, id, navigate, accessToken, axiosJWT);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
