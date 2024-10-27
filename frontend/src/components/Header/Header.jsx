@@ -9,29 +9,28 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/apiRequest';
+
+import { createAxios } from '../../../createInstance';
+import axios from 'axios';
+import { logoutSuccess } from '../../redux/authSlice';
 import './Header.css';
 
 const Header = () => {
-  const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const currentUser = useSelector((state) => state.auth.login.currentUser);
-  const dispatch = useDispatch();
-  const username = currentUser?.username; // Thay thế bằng username hiện tại
-  const password = currentUser?.password;
-  const [propertyType, setPropertyType] = useState('');
-
-  // const accessToken = currentUser?.accessToken;
-  // const id = currentUser?._id;
-
-  // const handleLogout = () => {
-  //   logout(dispatch, id, accessToken);
-  // };
+    const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const currentUser = useSelector((state) => state.auth.login.currentUser); 
+    const dispatch = useDispatch();
+    const accessToken = currentUser?.accessToken;
+    const id = currentUser?._id;
+    const [propertyType, setPropertyType] = useState('');
+    let axiosJWT = axios.create({
+      baseURL: "http://localhost:8000",
+  });
+    axiosJWT = createAxios(currentUser, dispatch, logoutSuccess);
 
   const handleLogout = () => {
-    logout(dispatch, username, password, navigate); // Gọi hàm logout
-    handleClose();
+    logout(dispatch, id, navigate, accessToken, axiosJWT);
   };
-
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
