@@ -7,7 +7,7 @@ export const loginUser = async(user, dispatch, navigate) =>{
     dispatch(loginStart());
     try{
         const res = await axios.post("/v1/auth/login", user);
-        const userData = res.data; // Lưu dữ liệu user từ phản hồi API
+        const userData = res.data; 
 
         dispatch(loginSuccess(userData));
 
@@ -92,26 +92,34 @@ export const deleteUser = async (userId, accessToken, dispatch) => {
         }
         dispatch(deleteUserFailed()); 
     }
-};
+};    
+
 
 export const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
-    axios.defaults.baseURL = 'http://localhost:8000';
+    axiosJWT.defaults.baseURL = 'http://localhost:8000';
     dispatch(logoutStart());
     try {
-        const res = await axiosJWT.post("/v1/auth/logout", id, {
+        const res = await axiosJWT.post("/v1/auth/logout", { id }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
-        }); 
+        });
         dispatch(logoutSuccess(res.data)); 
         navigate("/"); 
     } catch (err) {
         if (err.response) {
-            console.error("Logout error:", err.response.data);
-            const errorMessage = err.response.data.message || "Logout failed"; 
-            console.error("Error message:", errorMessage);
+            console.error("Logout error:", {
+                message: err.response.data.message || "Logout failed",
+                statusCode: err.response.status,
+                statusText: err.response.statusText,
+                headers: err.response.headers,
+                data: err.response.data,
+            });
         } else {
-            console.error("Logout error:", err.message);
+            console.error("Logout error:", {
+                message: err.message,
+                stack: err.stack,
+            });
         }
         dispatch(logoutFailed()); 
     }

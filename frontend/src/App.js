@@ -9,6 +9,7 @@ import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers'; 
 import AddPost from './components/Post/AddPost';
 import './App.css';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         } />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="AddPost" element={<AddPost/>}/>
+        <Route path="/AddPost" element={<AddPost />} />
         <Route path="/manage-users" element={
           <>
             <AdminHeader />
