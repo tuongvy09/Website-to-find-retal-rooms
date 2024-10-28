@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { deleteUserFailed, deleteUserStart, deleteUserSuccess } from '../../../redux/userSlice';
 import { loginSuccess } from '../../../redux/authSlice';
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from 'jwt-decode';
 import { createAxios } from '../../../createInstance';
 
 const ManageUsers = () => {
