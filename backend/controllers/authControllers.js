@@ -46,7 +46,7 @@ const authController = {
                 admin: user.admin,
             },
             process.env.JWT_REFRESH_KEY,
-            { expiresIn: "60s" }
+            { expiresIn: "365d" }
         );
     },
 
@@ -116,11 +116,11 @@ const authController = {
         });
     },
 
-    // userLogout: async(req, res) => {
-    //     res.clearCookie("refreshToken");
-    //     refreshTokens = refreshTokens.filter(token  => token !== req.cookies.refreshToken);
-    //     res.status(200).json("Logged out successfully!")
-    // }
+    userLogout: async(req, res) => {
+        res.clearCookie("refreshToken");
+        refreshTokens = refreshTokens.filter(token  => token !== req.cookies.refreshToken);
+        res.status(200).json("Logged out successfully!")
+    }
 };
 
 //store token:
