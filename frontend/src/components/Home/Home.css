@@ -1,12 +1,12 @@
-.home-container{
+.home-container { 
     display: flex;
     background-color: rgb(255, 255, 255);
-    height:600px;
-    width:60%;
-    text-align: center;
-    align-items: center;
-    flex-direction: column;
+    flex-direction: column; /* Thay đổi để nội dung có thể sắp xếp theo chiều dọc */
+    flex-grow: 1; /* Đảm bảo container này sẽ chiếm toàn bộ không gian còn lại */
+    width: 66.33%;
     margin-top: 3rem;
+    padding: 2rem; /* Thêm padding để tạo không gian */
+    overflow: auto; /* Thêm thuộc tính này nếu nội dung vượt quá chiều cao */
 }
 .home-title{
     margin-top: 1rem;

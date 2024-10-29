@@ -8,6 +8,7 @@ import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import AddPost from './components/Post/AddPost';
+import PostDetail from './components/Post/PostDetail';
 import Register from './components/Register/Register';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="AddPost" element={<AddPost/>}/>
+          <Route path="/post/:id" element={<PostDetail />} />
       </Routes>
     </Router>
   );
