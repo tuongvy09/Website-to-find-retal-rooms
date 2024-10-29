@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import RoomPost from '../Post/RoomPost';
 import './Home.css';
 
 const Home = () => {
@@ -11,6 +12,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <h2>Welcome to Home</h2>
+      <RoomPost/>
       {user ? (
         <>
           <p>Hello, {user}</p>
