@@ -68,6 +68,11 @@ const postsSchema = new mongoose.Schema({
   youtubeLink: {
     type: String, // Đường dẫn tới video YouTube (nếu có)
   },
+  status: {  // Trạng thái của bài viết
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending", // Mặc định là "pending"
+  },
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', postsSchema);

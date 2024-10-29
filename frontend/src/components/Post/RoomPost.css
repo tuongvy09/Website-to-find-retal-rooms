@@ -1,0 +1,82 @@
+.room-post-card {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.room-post-images {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 0.5vw;
+}
+
+.room-post-image {
+    width: 100%;
+    height: auto;
+}
+
+.room-post-content {
+    flex: 1;
+    padding: 16px;
+}
+
+.room-post-title {
+    color: #46a046;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer; /* Hiển thị con trỏ chuột khi di chuột qua tiêu đề */
+    text-decoration: underline; /* Gạch chân tiêu đề */
+}
+
+.room-post-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.room-post-price {
+    color: #FF0000	;
+    font-weight: bold;
+}
+
+.room-post-location {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 8px;
+}
+
+.room-post-description {
+    color: #666;
+    margin-top: 8px;
+}
+
+.room-post-contact {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.room-post-avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+}
+
+.room-post-username {
+    font-weight: bold;
+    flex: 1;
+}
+
+.room-post-button {
+    margin-right: 8px;
+}
+
+.room-post-favorite-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
