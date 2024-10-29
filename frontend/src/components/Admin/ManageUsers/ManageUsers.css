@@ -1,0 +1,35 @@
+/* ManageUsers.css */
+
+.manage-users {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  .MuiTableCell-root {
+    font-weight: 500;
+  }
+  
+  .MuiButton-root {
+    margin-right: 8px;
+  }
+  
+  .MuiPaper-root {
+    margin-top: 20px;
+    padding: 20px;
+  }
+  
+  .admin-header-title, .footer {
+    color: #ffffff;
+  }
+  
+  .footer {
+    padding: 15px;
+    text-align: center;
+    background-color: #333;
+  }  
