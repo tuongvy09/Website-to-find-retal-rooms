@@ -1,12 +1,12 @@
-import React from 'react';
-import { Button, AppBar, Toolbar, Typography, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import './AdminHeader.css'; 
-import { createAxios } from '../../../createInstance';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import axios from 'axios';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { createAxios } from '../../../createInstance';
 import { logout } from '../../../redux/apiRequest';
 import { logoutSuccess } from '../../../redux/authSlice';
+import './AdminHeader.css';
 
 const AdminHeader = () => {
   const navigate = useNavigate();
