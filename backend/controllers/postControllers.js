@@ -1,5 +1,16 @@
 const Post = require('../models/Post'); // Đảm bảo đường dẫn đúng
 
+// Tạo bài đăng mới
+exports.createPost = async (req, res) => {
+    try {
+        const post = new Post(req.body);
+        const savedPost = await post.save();
+        res.status(201).json(savedPost);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 // Lấy tất cả bài đăng
 exports.getAllPosts = async (req, res) => {
     try {
@@ -23,16 +34,6 @@ exports.getPostById = async (req, res) => {
     }
 };
 
-// Tạo bài đăng mới
-exports.createPost = async (req, res) => {
-    try {
-        const post = new Post(req.body);
-        const savedPost = await post.save();
-        res.status(201).json(savedPost);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-};
 
 // Cập nhật bài đăng
 exports.updatePost = async (req, res) => {
@@ -62,5 +63,21 @@ exports.deletePost = async (req, res) => {
         res.status(204).send(); // Trả về mã trạng thái 204 No Content khi xóa thành công
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+// Hàm để lấy bài viết theo trạng thái
+exports.getPostsByStatus = async (req, res) => {
+    try {
+        const { status } = req.query; // Lấy trạng thái từ query parameter
+        if (!status) {
+            return res.status(400).json({ message: "Status is required" });
+        }
+
+        const posts = await Post.find({ status });
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error("Error fetching posts by status:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
