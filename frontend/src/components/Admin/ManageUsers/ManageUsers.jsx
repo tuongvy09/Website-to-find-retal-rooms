@@ -45,7 +45,7 @@ const ManageUsers = () => {
       getAllUsers(user?.accessToken, dispatch, axiosJWT);
     }
     console.log("User List:", userList); 
-  }, [user, dispatch, navigate, axiosJWT, userList])
+  }, [])
 
   return (
     <Box className="manage-users">
