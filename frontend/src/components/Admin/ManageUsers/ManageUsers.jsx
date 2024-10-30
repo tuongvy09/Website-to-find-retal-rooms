@@ -1,14 +1,13 @@
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import axios from 'axios';
 import React, { useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
-import './ManageUsers.css';
-import { getAllUsers } from '../../../redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { deleteUserFailed, deleteUserStart, deleteUserSuccess } from '../../../redux/userSlice';
-import { loginSuccess } from '../../../redux/authSlice';
-import { jwtDecode } from 'jwt-decode';
 import { createAxios } from '../../../createInstance';
+import { getAllUsers } from '../../../redux/apiRequest';
+import { loginSuccess } from '../../../redux/authSlice';
+import { deleteUserFailed, deleteUserStart, deleteUserSuccess } from '../../../redux/userSlice';
+import './ManageUsers.css';
 
 const ManageUsers = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -46,7 +45,7 @@ const ManageUsers = () => {
       getAllUsers(user?.accessToken, dispatch, axiosJWT);
     }
     console.log("User List:", userList); 
-  }, [])
+  }, [user, dispatch, navigate, axiosJWT, userList])
 
   return (
     <Box className="manage-users">
