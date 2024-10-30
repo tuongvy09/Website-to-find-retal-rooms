@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const postRoute = require('./routes/post');
+const newsRoutes = require("./routes/news");
 
 dotenv.config();
 const app = express();
@@ -21,9 +22,9 @@ mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTop
   app.use("/v1/auth", authRoute);
   app.use("/v1/user", userRoute);
   app.use('/v1/posts', postRoute);
+  app.use('/v1/news', newsRoutes);
+
   
   app.listen(8000, () => {
     console.log("Server is running")
   });
-
-   
