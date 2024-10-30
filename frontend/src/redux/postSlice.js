@@ -42,7 +42,7 @@ const postSlice = createSlice({
       .addCase(addPost.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Lưu thông báo lỗi
-      });
+      })
   },
 });
 
