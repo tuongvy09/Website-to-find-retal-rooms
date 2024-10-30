@@ -20,6 +20,15 @@ export const createPost = async (postData, token) => {
     }
 }
 
+export const getAllPosts = async () => {
+  try {
+      const response = await axios.get(`${API_URL}posts`);
+      return response.data; // Return the data from the response
+  } catch (error) {
+      throw new Error(error.message); // Throw an error if the request fails
+  }
+};
+
 export const getApprovedPosts = async () => {
   try {
     const response = await axios.get(`${API_URL}posts-by-status?status=approved`);
@@ -31,7 +40,7 @@ export const getApprovedPosts = async () => {
 
 export const getPostDetail = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/posts/${id}`); // Gọi API để lấy chi tiết bài đăng
+    const response = await axios.get(`${API_URL}/posts`); // Gọi API để lấy chi tiết bài đăng
     return response; // Trả về response để có thể truy cập dữ liệu
   } catch (error) {
     console.error('Lỗi khi gọi API lấy chi tiết bài đăng:', error);
