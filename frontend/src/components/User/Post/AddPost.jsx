@@ -6,8 +6,8 @@ import { Box, Button, FormControl, FormHelperText, IconButton, InputLabel, List,
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPost } from '../../redux/postAPI';
-import { addPost } from '../../redux/postSlice';
+import { createPost } from '../../../redux/postAPI';
+import { addPost } from '../../../redux/postSlice';
 import './AddPost.css';
 import CustomizedBreadcrumbs from './CustomizedBreadcrumbs';
 

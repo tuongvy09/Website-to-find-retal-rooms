@@ -1,0 +1,66 @@
+/* NewsForm.css */
+
+.news-form {
+  max-width: 800px; /* Tăng chiều rộng tối đa của form */
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #a2d5e9; /* Màu viền xanh pastel */
+  border-radius: 10px;
+  background-color: #e0f7fa; /* Màu nền xanh pastel */
+  font-family: 'Cursive', sans-serif;
+}
+
+.news-form h2 {
+  color: #00796b; /* Màu chữ tiêu đề */
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.news-form label {
+  display: block;
+  color: #00796b; /* Màu chữ nhãn */
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.news-form input[type="text"],
+.news-form textarea {
+  width: 100%; /* Giữ nguyên chiều rộng 100% */
+  max-width: 100%; /* Đảm bảo chiều rộng không vượt quá 100% */
+  padding: 10px;
+  border: 1px solid #a2d5e9; /* Màu viền cho input và textarea */
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  background-color: #b2ebf2; /* Màu nền cho input và textarea */
+}
+
+.news-form textarea {
+  resize: vertical;
+  height: 120px; /* Tăng chiều cao của textarea */
+}
+
+.news-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4db6ac; /* Màu nền nút */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.news-form button:hover {
+  background-color: #00796b; /* Màu nền nút khi hover */
+}
+
+.news-form .quill {
+  margin-top: 10px;
+  height: 300px;
+  background-color: #b2ebf2; /* Màu nền cho Quill editor */
+  border: 1px solid #a2d5e9; /* Màu viền cho Quill editor */
+  border-radius: 5px;
+}
