@@ -1,16 +1,16 @@
 import React from 'react';
-import Register from './components/Register/Register';
-import Login from './components/Login/Login';
-import Home from './components/Home/Home';
-import Header from './components/Header/Header'; 
-import Footer from './components/Footer/Footer'; 
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import './App.css';
 import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers'; 
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
+import Home from './components/Home/Home';
+import Login from './components/Login/Login';
 import AddPost from './components/Post/AddPost';
 import PostDetail from './components/Post/PostDetail';
-import './App.css';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Register from './components/Register/Register';
 
 function App() {
   return (
