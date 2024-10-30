@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, CardContent, CardMedia, Typography } from '@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
-import { getPostDetail } from '../../redux/postAPI'; // Thay thế bằng đường dẫn thực tế
+import { getPostDetail } from '../../../redux/postAPI'; // Thay thế bằng đường dẫn thực tế
 
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
