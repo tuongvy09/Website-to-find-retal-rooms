@@ -3,7 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
-import ManageUsers from './components/Admin/ManageUsers/ManageUsers'; 
+import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
@@ -31,8 +31,8 @@ function App() {
           </>
         } />
         <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/post/:id" element={<PostDetail />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/AddPost" element={<AddPost />} />
         <Route path="/manage-users" element={
