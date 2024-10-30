@@ -1,4 +1,3 @@
-// src/api/postAPI.js
 
 import axios from 'axios';
 

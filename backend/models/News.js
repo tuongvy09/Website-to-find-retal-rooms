@@ -5,16 +5,24 @@ const newsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
   content: {
     type: String,
     required: true,
   },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String, 
     required: true,
   },
-}, { timestamps: true });
+  createdAt: { type: Date, default: Date.now },
+  imageUrl: {
+    type: String,
+    required: false, 
+  },
+});
 
 const News = mongoose.model('News', newsSchema);
 

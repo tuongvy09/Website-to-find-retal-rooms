@@ -5,6 +5,10 @@ import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
 import Footer from './components/Footer/Footer';
+import NewsDetail from './components/Admin/News/NewsDetail/NewsDetail';
+import NewsForm from './components/Admin/News/NewsForm/NewsForm';
+import NewsList from './components/Admin/News/NewsList/NewsList';
+import NewsManagement from './components/Admin/News/NewsManagement/NewsManagement';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
@@ -43,6 +47,64 @@ function App() {
           </>
         } />
       </Routes>
+
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Header />
+              <Home />
+              <Footer />
+            </>
+          } />
+          <Route path="/admin-dashboard" element={
+            <>
+              <AdminHeader />
+              <AdminDashboard />
+              <Footer />
+            </>
+          } />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/AddPost" element={<AddPost />} />
+          <Route path="/post/:id" element={<PostDetail />} />
+          <Route path="/manage-users" element={
+            <>
+              <AdminHeader />
+              <ManageUsers />
+              <Footer />
+            </>
+          } />
+          <Route path="/manage-news" element={
+            <>
+              <AdminHeader />
+              <NewsManagement />
+              <Footer />
+            </>
+          } />
+          <Route path="/manage-users/news/" element={
+            <>
+              <AdminHeader />
+              <NewsList />
+              <Footer />
+            </>
+          } />
+          <Route path="/manage-users/news/form" element={
+            <>
+              <AdminHeader />
+              <NewsForm />
+              <Footer />
+            </>
+          } />
+          <Route path="/manage-users/news/:id" element={
+            <>
+              <AdminHeader />
+              <NewsDetail />
+              <Footer />
+            </>
+          } />
+        </Routes>
+      </div>
     </Router>
   );
 }

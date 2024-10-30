@@ -8,10 +8,10 @@ import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../redux/apiRequest';
-import { createAxios } from '../../createInstance';
+import { logout } from '../../../redux/apiRequest';
+import { createAxios } from '../../../createInstance';
 import axios from 'axios';
-import { logoutSuccess } from '../../redux/authSlice';
+import { logoutSuccess } from '../../../redux/authSlice';
 import './Header.css';
 
 const Header = () => {
