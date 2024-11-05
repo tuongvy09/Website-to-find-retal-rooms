@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllNews } from '../../../../redux/newsAPI';
+import { getAllNews} from '../../../../redux/newsAPI';
 import axios from 'axios';
 import NewsDetail from '../NewsDetail/NewsDetail';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
+import { deleteNewsStart, deleteNewsSuccess, deleteNewsFailed } from '../../../../redux/newsSlice';
 import './NewsList.css';
 
 const NewsList = () => {
     const dispatch = useDispatch();
     const { newsList, isFetching, error } = useSelector((state) => state.news);
     const [selectedNews, setSelectedNews] = useState(null);
+    const user = useSelector((state) => state.auth.login?.currentUser);
     const [currentPage, setCurrentPage] = useState(1);
     const newsPerPage = 5; 
 
@@ -28,6 +32,23 @@ const NewsList = () => {
         setSelectedNews(news);
     };
 
+    const handleDelete = async (newsId) => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa tin tức này không?")) {
+            dispatch(deleteNewsStart());
+            try {
+                await axiosJWT.delete(`/v1/news/${newsId}`);
+                dispatch(deleteNewsSuccess(newsId));
+                toast.success("Xóa tin tức thành công!"); 
+                setSelectedNews(null); // Đặt lại selectedNews để quay lại danh sách
+                // Tùy chọn, gọi lại để lấy danh sách tin tức đã cập nhật
+                getAllNews(accessToken, dispatch, axiosJWT);
+            } catch (err) {
+                console.error("Lỗi khi xóa tin tức:", err);
+                dispatch(deleteNewsFailed());
+                toast.error("Xóa tin tức không thành công!"); 
+            }
+        }
+    };
 
     // Tính toán phân trang
     const indexOfLastNews = currentPage * newsPerPage;
@@ -67,8 +88,13 @@ const NewsList = () => {
 
     return (
         <div className="news-list-container">
+            <ToastContainer /> 
             {selectedNews ? (
-                <NewsDetail news={selectedNews} onBack={() => setSelectedNews(null)} />
+                <NewsDetail news={selectedNews} 
+                onBack={() => setSelectedNews(null)} 
+                onEdit={() => console.log("Chức năng sửa chưa được cài đặt")} 
+                onDelete={() => handleDelete(selectedNews?._id)} 
+                />
             ) : (
                 <div>
                     <h2>Danh sách tin tức</h2>
