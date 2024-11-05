@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createNews } from '../../../../redux/newsAPI';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import './NewsForm.css';
+import axios from 'axios';
+import { createAxios } from '../../../../createInstance';
 
 const NewsForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [content, setContent] = useState('');
+    const [author, setAuthor] = useState(''); 
+    const [imageUrl, setImageUrl] = useState('');
     const dispatch = useDispatch();
+    const currentUser = useSelector((state) => state.auth.login.currentUser); 
+    const accessToken = currentUser?.accessToken;
+    let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+    withCredentials: true
+    });
+    axiosJWT = createAxios(currentUser, dispatch);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newsData = { title, description, content };
-        createNews(newsData, dispatch);
+        const newsData = { title, description, content, author, imageUrl };
+        // createNews(newsData, dispatch); 
+        dispatch(createNews(newsData, accessToken, axiosJWT));
     };
 
     const quillRef = React.useRef(null);
@@ -34,13 +46,14 @@ const NewsForm = () => {
         });
 
         quill.on('text-change', () => {
-            setContent(quill.root.innerHTML); // Cập nhật nội dung khi có thay đổi
+            setContent(quill.root.innerHTML);
         });
     }, []);
 
     return (
         <form onSubmit={handleSubmit} className="news-form">
             <h2>Thêm Tin Tức Mới</h2>
+            
             <label>
                 Tiêu đề:
                 <input
@@ -59,6 +72,27 @@ const NewsForm = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
+                />
+            </label>
+
+            <label>
+                Tác giả:
+                <input
+                    type="text"
+                    placeholder="Tác giả"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    required
+                />
+            </label>
+
+            <label>
+                URL Hình ảnh (tuỳ chọn):
+                <input
+                    type="text"
+                    placeholder="URL Hình ảnh"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
                 />
             </label>
 
