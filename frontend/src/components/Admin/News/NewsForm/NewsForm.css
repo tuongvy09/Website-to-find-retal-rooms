@@ -1,66 +1,150 @@
-/* NewsForm.css */
-
-.news-form {
-  max-width: 800px; /* Tăng chiều rộng tối đa của form */
-  margin: 0 auto;
+/* Tổng thể */
+.news-form-container {
+  display: flex;
+  justify-content: space-between;
   padding: 20px;
-  border: 1px solid #a2d5e9; /* Màu viền xanh pastel */
-  border-radius: 10px;
-  background-color: #e0f7fa; /* Màu nền xanh pastel */
-  font-family: 'Cursive', sans-serif;
+  background-color: #FFF6F9;
+  font-family: 'Roboto', sans-serif;
+  color: #d36c7b;
 }
 
-.news-form h2 {
-  color: #00796b; /* Màu chữ tiêu đề */
-  text-align: center;
-  font-weight: bold;
+h1 {
   font-size: 24px;
+  color: #d36c7b;
+  text-align: center;
+  margin-bottom: 20px;
+  width: 0%;
 }
 
-.news-form label {
-  display: block;
-  color: #00796b; /* Màu chữ nhãn */
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-.news-form input[type="text"],
-.news-form textarea {
-  width: 100%; /* Giữ nguyên chiều rộng 100% */
-  max-width: 100%; /* Đảm bảo chiều rộng không vượt quá 100% */
-  padding: 10px;
-  border: 1px solid #a2d5e9; /* Màu viền cho input và textarea */
-  border-radius: 5px;
-  margin-bottom: 15px;
-  font-size: 16px;
-  background-color: #b2ebf2; /* Màu nền cho input và textarea */
-}
-
-.news-form textarea {
-  resize: vertical;
-  height: 120px; /* Tăng chiều cao của textarea */
-}
-
-.news-form button {
+.form-content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
   width: 100%;
-  padding: 10px;
-  background-color: #4db6ac; /* Màu nền nút */
-  color: white;
+}
+
+/* Khung bên trái - Thêm trang bìa */
+.cover-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #F1F1F1;
+  border-radius: 10px;
+  width: 250px;
+  height: 100%;
+  text-align: center;
+}
+
+.cover-title {
+  font-size: 18px;
+  color: #d36c7b;
+  margin-bottom: 10px;
+}
+
+.cover-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 10%;
+  border: 2px dashed #d36c7b;
+  border-radius: 10px;
+  color: #d36c7b;
   font-size: 16px;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.news-form button:hover {
-  background-color: #00796b; /* Màu nền nút khi hover */
+.cover-placeholder:hover {
+  background-color: #f7e4ea;
 }
 
-.news-form .quill {
-  margin-top: 10px;
-  height: 300px;
-  background-color: #b2ebf2; /* Màu nền cho Quill editor */
-  border: 1px solid #a2d5e9; /* Màu viền cho Quill editor */
-  border-radius: 5px;
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Khung bên phải - Form chi tiết tin tức */
+.news-details-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffe7e7;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.news-details-form h2 {
+  font-size: 20px;
+  color: #d36c7b;
+  text-align: center;
+}
+
+label {
+  font-size: 16px;
+  color: #d36c7b;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    max-width: 6000px; 
+    padding: 10px;
+    min-height: 400px; /* Increase the minimum height */
+    height: auto;
+    border: 1px solid #f4b5c1;
+    border-radius: 8px;
+    background-color: #FFF6F9;
+    color: #d36c7b;
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.error-message {
+  color: #ff4f5e;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+/* Nội dung */
+.quill {
+  border: 1px solid #f4b5c1; /* Màu viền hồng nhẹ */
+  border-radius: 8px; /* Bo tròn các góc của phần tử */
+  background-color: #FFF6F9; /* Màu nền hồng nhạt */
+  color: #d36c7b; /* Màu chữ hồng đậm */
+  padding: 15px; /* Thêm khoảng cách bên trong phần tử */
+  font-size: 16px; /* Đảm bảo font size hợp lý */
+  min-height: 200px; /* Đảm bảo phần tử có chiều cao tối thiểu */
+  box-sizing: border-box; /* Đảm bảo padding không làm phần tử bị lệch */
+}
+
+.quill {
+  overflow-y: auto; /* Thêm thanh cuộn dọc nếu nội dung vượt quá chiều cao */
+}
+
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: #d36c7b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #c95f73;
 }
