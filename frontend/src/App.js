@@ -39,6 +39,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/AddPost" element={<AddPost />} />
           <Route path="/post/:id" element={<PostDetail />} />
+          <Route path="/manage-news/:id" element={
+           <>
+           <AdminHeader />
+           <NewsDetail />
+           <Footer />
+         </>
+            } />
           <Route path="/manage-users" element={
             <>
               <AdminHeader />
@@ -46,34 +53,19 @@ function App() {
               <Footer />
             </>
           } />
-          <Route path="/manage-news" element={
+          <Route path="/manage-news/*" element={
             <>
               <AdminHeader />
               <NewsManagement />
               <Footer />
             </>
-          } />
-          <Route path="/manage-users/news/" element={
-            <>
-              <AdminHeader />
-              <NewsList />
-              <Footer />
-            </>
-          } />
-          <Route path="/manage-users/news/form" element={
-            <>
-              <AdminHeader />
-              <NewsForm />
-              <Footer />
-            </>
-          } />
-          <Route path="/manage-users/news/:id" element={
-            <>
-              <AdminHeader />
-              <NewsDetail />
-              <Footer />
-            </>
-          } />
+          }>
+            {/* Các Route con của /manage-news */}
+            <Route path="list" element={<NewsList />} />
+            <Route path="add" element={<NewsForm />} />
+            <Route path=":id" element={<NewsDetail />} />
+
+          </Route>
         </Routes>
       </div>
     </Router>
