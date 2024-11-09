@@ -6,6 +6,7 @@ import NewsDetail from '../NewsDetail/NewsDetail';
 import { ToastContainer, toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import { deleteNewsStart, deleteNewsSuccess, deleteNewsFailed } from '../../../../redux/newsSlice';
+import { Link, useNavigate } from 'react-router-dom';
 import './NewsList.css';
 
 const NewsList = () => {
@@ -28,7 +29,15 @@ const NewsList = () => {
         getAllNews(accessToken, dispatch, axiosJWT);
     }, [accessToken, dispatch]);
 
+    useEffect(() => {
+        console.log('selectedNews updated:', selectedNews);
+    }, [selectedNews]); // Khi selectedNews thay đổi
+    
+    const navigate = useNavigate();
+
     const handleNewsClick = (news) => {
+        console.log('News clicked:', news); 
+        navigate(`/manage-news/${news._id}`);
         setSelectedNews(news);
     };
 
@@ -90,7 +99,7 @@ const NewsList = () => {
         <div className="news-list-container">
             <ToastContainer /> 
             {selectedNews ? (
-                <NewsDetail news={selectedNews} 
+                <NewsDetail newSelect={selectedNews} 
                 onBack={() => setSelectedNews(null)} 
                 onEdit={() => console.log("Chức năng sửa chưa được cài đặt")} 
                 onDelete={() => handleDelete(selectedNews?._id)} 
@@ -101,11 +110,14 @@ const NewsList = () => {
                     <ul className="news-list">
                         {currentNews.map((news) => (
                             <li key={news.id} className="news-item" onClick={() => handleNewsClick(news)}>
-                                <img src={news.imageUrl || 'placeholder.jpg'} alt={news.title} className="news-image" />
+                            <Link to={`/manage-news/${news._id}`}>
+                            <img src={news.imageUrl || 'placeholder.jpg'} alt={news.title} className="news-image" />
                                 <div className="news-info">
                                     <h3>{news.title}</h3>
                                     <p>{news.description}</p>
                                 </div>
+                            </Link>  
+                                
                             </li>
                         ))}
                     </ul>
