@@ -16,11 +16,17 @@ app.use(cors({
   origin: "http://localhost:3000",
   credentials: true                 
 }));
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
+// Cấu hình Express để phục vụ tệp từ thư mục 'uploads'
+app.use('/uploads', express.static('uploads'));  
 
 app.use(cookieParser());
 
 mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB...'))
+  .then(() => 
+    console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB...', err));
 
   //ROUTE

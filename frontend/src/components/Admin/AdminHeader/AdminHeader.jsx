@@ -33,7 +33,7 @@ const AdminHeader = () => {
           <Button color="inherit" onClick={() => navigate('/admin-dashboard')}>Dashboard</Button>
           <Button color="inherit" onClick={() => navigate('/manage-users')}>Quản Lý Người Dùng</Button>
           <Button color="inherit" onClick={() => navigate('/manage-posts')}>Quản Lý Bài Đăng</Button>
-          <Button color="inherit" onClick={() => navigate('/manage-news')}>Quản Lý Tin Tức</Button> {/* New button for managing news */}
+          <Button color="inherit" onClick={() => navigate('/manage-news')}>Quản Lý Tin Tức</Button> 
           <Button color="inherit" onClick={() => navigate('/admin-settings')}>Cài Đặt</Button>
           <Button color="inherit" onClick={handleLogout}>Đăng Xuất</Button>
         </Box>
