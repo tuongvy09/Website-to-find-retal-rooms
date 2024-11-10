@@ -1,181 +1,182 @@
 .news-detail {
-    padding: 20px;
     max-width: 800px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
     border-radius: 8px;
-}
-
-.button-group {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button-group {
     display: flex;
-    justify-content: space-between;
-    align-items: center; /* Aligns buttons vertically centered */
-    margin-bottom: 20px; /* Space below button group */
-}
-
-.back-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .action-buttons button {
+    padding: 10px 20px;
+    margin-left: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.back-button:hover {
-    background-color: #0056b3;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 15px; /* Space between edit and delete buttons */
-}
-
-.edit-button, .delete-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.edit-button {
-    background-color: #28a745; /* Green color */
-    color: white;
-}
-
-.edit-button:hover {
-    background-color: #218838; /* Darker green */
-}
-
-.delete-button {
-    background-color: #dc3545; /* Red color */
-    color: white;
-}
-
-.delete-button:hover {
-    background-color: #c82333; /* Darker red */
-}
-
-.news-content {
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+  }
+  
+  .edit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: #ffffff;
+  }
+  
+  .delete-button:hover {
+    background-color: #e53935;
+  }
+  
+  .news-content {
     text-align: center;
-}
-
-.news-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.news-detail-image {
+  }
+  
+  .news-title {
+    font-size: 2em;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  .news-detail-image {
     width: 100%;
-    height: auto;
     max-height: 400px;
     object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.news-content-text {
-    font-size: 18px;
-    color: #555;
+  }
+  
+  .news-content-text {
+    font-size: 1.2em;
+    color: #555555;
     line-height: 1.6;
-    text-align: justify;
-}
-
-.news-detail {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.button-group {
+    text-align: left;
+  }
+  
+  .button-group {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Aligns buttons vertically centered */
-    margin-bottom: 20px; /* Space below button group */
-}
-
-.back-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    padding: 10px 20px;
+    background-color: #607d8b;
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #546e7a;
+  }
+  
+  .action-buttons button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+  }
+  
+  .edit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: #ffffff;
+  }
+  
+  .delete-button:hover {
+    background-color: #e53935;
+  }
 
-.back-button:hover {
-    background-color: #0056b3;
-}
-
-.action-buttons {
+  
+  /* sidebar */
+  .news-detail-page {
     display: flex;
-    gap: 15px; /* Space between edit and delete buttons */
-}
-
-.edit-button, .delete-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
+  }
+  
+  .sidebar {
+    width: 200px;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+    padding: 10px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.edit-button {
-    background-color: #28a745; /* Green color */
+  }
+  
+  .sidebar ul li.active {
+    background-color: #007bff;
     color: white;
-}
-
-.edit-button:hover {
-    background-color: #218838; /* Darker green */
-}
-
-.delete-button {
-    background-color: #dc3545; /* Red color */
-    color: white;
-}
-
-.delete-button:hover {
-    background-color: #c82333; /* Darker red */
-}
-
-.news-content {
-    text-align: center;
-}
-
-.news-title {
+    font-weight: bold;
+  }
+  
+  .news-detail-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .action-buttons button,
+  .back-button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .news-content {
+    text-align: left;
+  }
+  
+  .news-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.news-detail-image {
-    width: 100%;
+  }
+  
+  .news-detail-image {
+    max-width: 100%;
     height: auto;
-    max-height: 400px;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.news-content-text {
-    font-size: 18px;
-    color: #555;
-    line-height: 1.6;
-    text-align: justify;
-}
+    margin: 20px 0;
+  }
+  
+  .news-content-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
