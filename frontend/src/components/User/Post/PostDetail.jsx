@@ -1,8 +1,17 @@
-import { Avatar, Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
+import EmailIcon from '@mui/icons-material/Email';
+import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
+import { Avatar, Box, Button, Card, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getPostDetail } from '../../../redux/postAPI';
+import Header from '../Header/Header';
+import './PostDetail.css';
 import Slider from 'react-slick';
-import { getPostDetail } from '../../../redux/postAPI'; // Thay thế bằng đường dẫn thực tế
 
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -10,15 +19,15 @@ import './PostDetail.css'; // Tạo file CSS riêng nếu cần
 
 const PostDetail = () => {
   const { id } = useParams();
-  console.log("isposts:", id);
   const [post, setPost] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
-        const response = await getPostDetail(id); // Gọi API để lấy chi tiết bài đăng
+        const response = await getPostDetail(id);
         console.log("Response Data:", response);
-        setPost(response.data); // Giả sử response.data là bài đăng
+        setPost(response.data);
       } catch (error) {
         console.error('Lỗi khi lấy chi tiết bài đăng:', error);
       }
@@ -27,64 +36,84 @@ const PostDetail = () => {
     fetchPostDetail();
   }, [id]);
 
-  if (!post) return <div>Loading...</div>; // Hiển thị loading nếu chưa có dữ liệu
+  if (!post) return <div>Loading...</div>;
 
-  // Cấu hình cho slider
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % post.images.length);
   };
+
+  const prevImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + post.images.length) % post.images.length);
+  };
+
 
   return (
     <div className="post-detail-container">
-      {/* Slider hình ảnh */}
-      <Slider {...sliderSettings}>
-        {post.images.map((image, index) => (
-          <div key={index}>
-            <CardMedia
-              component="img"
-              image={`http://localhost:3000/${image}`} // Đường dẫn hình ảnh
-              alt={`Post image ${index + 1}`}
-              className="post-detail-image"
-            />
-          </div>
-        ))}
-      </Slider>
+      <Header />
+      {post.images && post.images.length > 0 && (
+        <div className="image-gallery">
+          <img
+            src={post.images[currentIndex]}
+            alt={`Post image ${currentIndex + 1}`}
+            className="post-detail-image"
+          />
+          <button className="prev-btn" onClick={prevImage}>←</button>
+          <button className="next-btn" onClick={nextImage}>→</button>
+        </div>
+      )}
 
-      {/* Thông tin chi tiết bài đăng */}
-      <Card className="post-detail-card">
-        <CardContent>
-          <Typography variant="h4" className="post-detail-title">{post.title}</Typography>
-          <Typography variant="body2" className="post-detail-address">
-            {post.address.exactaddress}, {post.address.district}, {post.address.province}
-          </Typography>
-          <Typography variant="body1" className="post-detail-rental-price">{post.rentalPrice} VND</Typography>
-          <Typography variant="body2" className="post-detail-area">{post.area} m²</Typography>
-          <Typography variant="body2" className="post-detail-description">{post.content}</Typography>
-
-          {/* Thông tin bổ sung */}
-          <Typography variant="body2" className="post-detail-category">Loại bất động sản: {post.category}</Typography>
-          <Typography variant="body2" className="post-detail-rental-target">Mục tiêu cho thuê: {post.rentalTarget}</Typography>
-          <Typography variant="body2" className="post-detail-max-occupants">Số người tối đa: {post.maxOccupants}</Typography>
-          {post.youtubeLink && (
-            <Typography variant="body2" className="post-detail-youtube-link">
-              Video: <a href={post.youtubeLink} target="_blank" rel="noopener noreferrer">{post.youtubeLink}</a>
-            </Typography>
-          )}
-
-          {/* Thông tin liên hệ */}
-          <Box className="post-detail-contact">
-            <Avatar>{post.contactInfo.username.charAt(0)}</Avatar>
-            <Typography variant="body2">{post.contactInfo.username}</Typography>
-            <Button variant="outlined" color="primary">
-              Gọi {post.contactInfo.phoneNumber}
-            </Button>
+      <Box className="container-content-detail">
+        <Box className="container-left">
+          <Box className="container-cost">
+            <Typography className='post-title'>{post.title}</Typography>
+            <Button className="room-post-price">{post.rentalPrice}</Button>
           </Box>
-        </CardContent>
-      </Card>
+          <Button
+            startIcon={<RoomOutlinedIcon />}
+            className='address-detail'
+          >
+            {post.address.exactaddress} {post.address.ward} {post.address.district} {post.address.province}
+          </Button>
+          <Typography className='post-content'>{post.content}</Typography>
+          <TableContainer component={Paper} className='container-table'>
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell className='title-cell'> <HouseOutlinedIcon className='style-icon' /> Loại hình cho thuê</TableCell>
+                  <TableCell>{post.category}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='title-cell'> <Diversity3OutlinedIcon className='style-icon' /> Số người tối đa</TableCell>
+                  <TableCell>{post.maxOccupants}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='title-cell'> <PeopleOutlineOutlinedIcon className='style-icon' />Đối tượng cho thuê</TableCell>
+                  <TableCell>{post.rentalTarget}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className='title-cell'> <MapOutlinedIcon className='style-icon' /> Diện tích</TableCell>
+                  <TableCell>{post.area}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+        <Box className="container-right">
+          <Card className='card-info'>
+            <Box className='container-contactinfo'>
+              <Avatar className="room-post-avatar">{post.contactInfo.username.charAt(0)}</Avatar>
+              <Typography className="room-post-username">{post.contactInfo.username}</Typography>
+            </Box>
+            <Divider></Divider>
+            <Button variant="outlined" className="room-post-button">
+              <LocalPhoneIcon className='style-icon'/> {post.contactInfo.phoneNumber}
+            </Button>
+            <Button variant="outlined" className="room-post-button">
+              <EmailIcon className='style-icon'/> Gửi tin nhắn
+            </Button>
+          </Card>
+        </Box>
+      </Box>
     </div>
   );
 };

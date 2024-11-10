@@ -5,24 +5,23 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../redux/apiRequest';
 import { createAxios } from '../../../createInstance';
-import axios from 'axios';
+import { logout } from '../../../redux/apiRequest';
 import { logoutSuccess } from '../../../redux/authSlice';
 import './Header.css';
 
 const Header = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
-    const currentUser = useSelector((state) => state.auth.login.currentUser); 
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
     const dispatch = useDispatch();
     const accessToken = currentUser?.accessToken;
     const id = currentUser?._id;
     const [propertyType, setPropertyType] = useState('');
-    const axiosJWT = createAxios(currentUser, dispatch, logoutSuccess); 
+    const axiosJWT = createAxios(currentUser, dispatch, logoutSuccess);
     const handleLogout = () => {
         logout(dispatch, id, navigate, accessToken, axiosJWT);
     };
@@ -59,7 +58,7 @@ const Header = () => {
 
     return (
         <AppBar position="static" className="header">
-            <Toolbar>
+            <Toolbar className='toolbar'>
                 <Typography variant="h6" className="header-title">
                     PhongTroXinh.com
                 </Typography>
@@ -98,11 +97,12 @@ const Header = () => {
                 {!currentUser ? (
                     <>
                         <MenuItem className="menu-item" onClick={() => { navigate('/login'); handleClose(); }}>Đăng Nhập</MenuItem>
-                        <MenuItem className="menu-item" onClick={() => { navigate('/register'); handleClose(); }}>Đăng Ký</MenuItem>
-                        <MenuItem className="menu-item" onClick={() => { navigate('/managerAc'); handleClose(); }}>Quản lý tài khoản</MenuItem>
-                    </>
+                        <MenuItem className="menu-item" onClick={() => { navigate('/register'); handleClose(); }}>Đăng Ký</MenuItem>                    </>
                 ) : (
-                    <MenuItem className="menu-item" onClick={handleLogout}>Đăng Xuất</MenuItem>
+                    <>
+                        <MenuItem className="menu-item" onClick={() => { navigate('/managerAc'); handleClose(); }}>Quản lý tài khoản</MenuItem>
+                        <MenuItem className="menu-item" onClick={handleLogout}>Đăng Xuất</MenuItem>
+                    </>
                 )}
             </Menu>
         </AppBar>
