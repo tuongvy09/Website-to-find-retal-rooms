@@ -1,19 +1,19 @@
 const postController = require("../controllers/postControllers");
-
+const uploadCloud = require('../congfig/cloudinaryConfig'); 
 const middlewareControllers = require("../controllers/middlewareControllers");
-
 const router = require("express").Router();
 
 // Lấy tất cả bài đăng
-router.get("/posts", postController.getAllPosts);
+router.get("/posts",middlewareControllers.verifyTokenAndAdminAuth, postController.getAllPosts);
 // Lấy bài đăng theo ID
 router.get("/posts/:id", postController.getPostById);
 // Tạo bài đăng mới (cần xác thực)
-router.post("/", middlewareControllers.verifyToken,postController.createPost);
+router.post("/", middlewareControllers.verifyToken, uploadCloud.array('images', 5), postController.createPost);
 
 router.put("/posts/:id", middlewareControllers.verifyToken, postController.updatePost);
 // Xóa bài đăng (cần xác thực)
 router.delete("/posts/:id", middlewareControllers.verifyTokenAndAdminAuth, postController.deletePost);
 //Lấy bài đăng theo status
 router.get('/posts-by-status', postController.getPostsByStatus);
+router.get('/list-post-pending',middlewareControllers.verifyToken, postController.getUserPostsByStateAndVisibility);
 module.exports = router;
