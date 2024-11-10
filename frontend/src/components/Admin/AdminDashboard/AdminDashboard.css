@@ -1,15 +1,18 @@
-.admin-dashboard-content {
-    padding: 20px;
-    background-color: #ffffff ;
-    min-height: 80vh; 
-  }
-  
-  .admin-dashboard-content h1 {
-    font-size: 2rem;
-    color: #333;
-  }
-  
-  .admin-dashboard-content p {
-    font-size: 1rem;
-    color: #666;
-  }  
+.container-home-admin {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.container-body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f4f4f4;
+  height: 100%;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}

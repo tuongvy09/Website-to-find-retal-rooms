@@ -3,19 +3,19 @@ const mongoose = require('mongoose');
 const postsSchema = new mongoose.Schema({
   address: {
     exactaddress: {
-      type: String, // Số nhà tên 
+      type: String,
       required: true,
     },
     province: {
-      type: String, // Tên tỉnh/thành phố
+      type: String,
       required: true,
     },
     district: {
-      type: String, // Tên quận/huyện
+      type: String,
       required: true,
     },
     ward: {
-      type: String, // Tên xã/phường
+      type: String,
       required: true,
     },
   },
@@ -33,15 +33,15 @@ const postsSchema = new mongoose.Schema({
   },
   contactInfo: {
     user: {
-      type: mongoose.Schema.Types.ObjectId, 
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    username: { 
+    username: {
       type: String,
       required: true,
     },
-    phoneNumber: { 
+    phoneNumber: {
       type: String,
       required: true,
     },
@@ -62,16 +62,19 @@ const postsSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  images: [{
-    type: String, 
-  }],
+  images:[String],
   youtubeLink: {
-    type: String, // Đường dẫn tới video YouTube (nếu có)
+    type: String,
   },
-  status: {  // Trạng thái của bài viết
+  status: {
     type: String,
     enum: ["pending", "approved", "rejected"],
-    default: "pending", // Mặc định là "pending"
+    default: "pending",
+  },
+  visibility:{
+    type: String,
+    enum: ["visible","hiden"],
+    default: "hiden",
   },
 }, { timestamps: true });
 
