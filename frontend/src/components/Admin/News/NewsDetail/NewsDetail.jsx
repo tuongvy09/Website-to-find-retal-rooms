@@ -31,8 +31,7 @@ const NewsDetail = () => {
       }
     };
     if (id) fetchNewsDetail();
-  }, [id]); // Chỉ gọi lại khi `id` thay đổi
-  
+  }, [id]);
 
   if (loading) return <p>Đang tải...</p>;
   if (error) return <p>{error}</p>;
@@ -51,19 +50,26 @@ const NewsDetail = () => {
     }
   };
 
+  // Format createdAt to show the date in a readable format
+  const formattedDate = new Date(news.createdAt).toLocaleDateString('vi-VN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <div className="news-detail-page">
       {/* Sidebar */}
       <div className="sidebar">
         <ul>
-          <li 
-            className={window.location.pathname === '/manage-news/list' ? 'active' : ''} 
+          <li
+            className={window.location.pathname === '/manage-news/list' ? 'active' : ''}
             onClick={() => navigate('/manage-news/list')}
           >
             Danh sách tin tức
           </li>
-          <li 
-            className={window.location.pathname === '/manage-news/add' ? 'active' : ''} 
+          <li
+            className={window.location.pathname === '/manage-news/add' ? 'active' : ''}
             onClick={() => navigate('/manage-news/add')}
           >
             Thêm tin tức
@@ -82,8 +88,11 @@ const NewsDetail = () => {
         </div>
         <div className="news-content">
           <h2 className="news-title">{news.title}</h2>
-          <img src={news.imageUrl || 'placeholder.jpg'} alt={news.title} className="news-detail-image" />
-          <p className="news-content-text">{news.content}</p>
+          <div className="news-meta">
+            <span className="news-author">{news.author}</span>
+            <span className="news-date">, {formattedDate}</span>
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: news.content }} />
         </div>
       </div>
     </div>
