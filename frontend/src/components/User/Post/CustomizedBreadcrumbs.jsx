@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
           />
           <Chip
             component={Link}
-            to="/quan-ly"
+            to="/managerAc"
             label="Quản lý"
             className="styled-breadcrumb"
           />

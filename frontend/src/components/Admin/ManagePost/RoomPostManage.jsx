@@ -1,9 +1,9 @@
 // Component RoomPost (Không chứa fetch dữ liệu)
 import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React from 'react';
-import './RoomPost.css';
+import './RoomPostManage.css';
 
-const RoomPost = ({ post, onTitleClick }) => {
+const RoomPostManage = ({ post, onTitleClick }) => {
   return (
     <Card className="room-post-card">
       <Box className="room-post-images">
@@ -35,4 +35,4 @@ const RoomPost = ({ post, onTitleClick }) => {
   );
 };
 
-export default RoomPost;
+export default RoomPostManage;

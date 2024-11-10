@@ -11,10 +11,10 @@
   }
   
   .form-container {
-    width: 100%; /* Hoặc bất kỳ giá trị nào bạn muốn */
-    max-width: 900px; /* Đặt chiều rộng tối đa */
+    width: 100%;
+    max-width: 900px; 
 }
 
 .custom-textfield {
-  background-color: #CCCCCC; /* Màu nền */
+  background-color: #CCCCCC;
 }

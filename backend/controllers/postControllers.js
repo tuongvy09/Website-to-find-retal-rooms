@@ -1,13 +1,41 @@
-const Post = require('../models/Post'); // Đảm bảo đường dẫn đúng
+const Post = require('../models/Post');
+const cloudinary = require('cloudinary').v2;
+const mongoose = require('mongoose');
 
-// Tạo bài đăng mới
 exports.createPost = async (req, res) => {
     try {
-        const post = new Post(req.body);
-        const savedPost = await post.save();
-        res.status(201).json(savedPost);
+        const { title, content, address, category, rentalPrice, area, rentalTarget, maxOccupants, youtubeLink, contactInfo } = req.body;
+
+        // Nếu có ảnh được upload lên, lấy đường dẫn của ảnh
+        const imageUrls = [];
+        if (req.files && req.files.length > 0) {
+            // Lấy đường dẫn ảnh từ Cloudinary
+            req.files.forEach(file => {
+                imageUrls.push(file.path); // Lưu đường dẫn ảnh
+            });
+        }
+
+        // Tạo post mới
+        const newPost = new Post({
+            title,
+            content,
+            address: JSON.parse(address),  // Giả sử bạn gửi dữ liệu dưới dạng string JSON từ frontend
+            category,
+            rentalPrice,
+            area,
+            rentalTarget,
+            maxOccupants,
+            youtubeLink,
+            contactInfo: JSON.parse(contactInfo),
+            images: imageUrls,  // Lưu đường dẫn ảnh từ Cloudinary
+        });
+
+        // Lưu bài viết vào MongoDB
+        const savedPost = await newPost.save();
+        res.status(201).json(savedPost);  // Trả về bài viết vừa tạo
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Error creating post:", error);  // Log chi tiết lỗi
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
@@ -24,16 +52,22 @@ exports.getAllPosts = async (req, res) => {
 // Lấy bài đăng theo ID
 exports.getPostById = async (req, res) => {
     try {
+        console.log("Request ID:", req.params.id); // Kiểm tra ID trong request
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'ID không hợp lệ' });
+        }
+
         const post = await Post.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Bài đăng không tồn tại.' });
         }
-        res.status(200).json(post); // Trả về mã trạng thái 200 khi thành công
+
+        res.status(200).json(post);
     } catch (error) {
+        console.error('Lỗi khi lấy chi tiết bài đăng:', error);
         res.status(500).json({ message: error.message });
     }
 };
-
 
 // Cập nhật bài đăng
 exports.updatePost = async (req, res) => {
@@ -81,3 +115,25 @@ exports.getPostsByStatus = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+exports.getUserPostsByStateAndVisibility = async (req, res) => {
+    try {
+        const { status, visibility } = req.query; 
+
+        if (!status || !visibility) {
+            return res.status(400).json({ message: "State and visibility are required" });
+        }
+
+        const posts = await Post.find({
+            "contactInfo.user": req.user.id,
+            status,
+            visibility
+        });
+
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error("Error fetching user posts by state and visibility:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
