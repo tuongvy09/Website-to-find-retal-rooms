@@ -38,7 +38,7 @@ export const getAllNews = async (accessToken, dispatch, axiosJWT) => {
     }
 };
 
-export const createNews = async (newsData, accessToken, dispatch, axiosJWT) => {
+export const createNews = (newsData, accessToken, axiosJWT) => async (dispatch) => {
     dispatch(createNewsStart());
     try {
         const res = await axiosJWT.post("/v1/news", newsData, {

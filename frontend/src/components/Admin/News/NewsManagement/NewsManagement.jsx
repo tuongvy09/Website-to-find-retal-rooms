@@ -1,28 +1,55 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 import NewsBreadcrumbs from '../NewsBreadcrumbs/NewsBreadcrumbs';
 import NewsList from '../NewsList/NewsList';
 import NewsForm from '../NewsForm/NewsForm';
 import './NewsManagement.css';
 
 const NewsManagement = () => {
-    const [view, setView] = useState('getAllNews');
-    console.log(view)
+    const navigate = useNavigate();
+
     return (
         <div className="news-management">
             <div className="sidebar">
                 <ul>
-                    <li className={view === 'getAllNews' ? 'active' : ''} onClick={() => setView('getAllNews')}>
+                    <li 
+                        className={window.location.pathname === '/manage-news/list' ? 'active' : ''} 
+                        onClick={() => navigate('/manage-news/list')}
+                    >
                         Danh sách tin tức
                     </li>
-                    <li className={view === 'addNews' ? 'active' : ''} onClick={() => setView('addNews')}>
+                    <li 
+                        className={window.location.pathname === '/manage-news/add' ? 'active' : ''} 
+                        onClick={() => navigate('/manage-news/add')}
+                    >
                         Thêm tin tức
                     </li>
                 </ul>
             </div>
 
             <div className="content">
-                <NewsBreadcrumbs current={view === 'getAllNews' ? 'Danh sách tin tức' : 'Thêm tin tức'} />
-                {view === 'getAllNews' ? <NewsList /> : <NewsForm />}
+                <Routes>
+                    {/* Điều hướng mặc định tới danh sách tin tức */}
+                    <Route path="/" element={<Navigate to="list" replace />} />
+                    <Route 
+                        path="list" 
+                        element={
+                            <>
+                                <NewsBreadcrumbs current="Danh sách tin tức" />
+                                <NewsList />
+                            </>
+                        } 
+                    />
+                    <Route 
+                        path="add" 
+                        element={
+                            <>
+                                <NewsBreadcrumbs current="Thêm tin tức" />
+                                <NewsForm />
+                            </>
+                        } 
+                    />
+                </Routes>
             </div>
         </div>
     );

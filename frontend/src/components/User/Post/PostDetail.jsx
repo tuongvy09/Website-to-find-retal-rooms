@@ -11,6 +11,11 @@ import { useParams } from 'react-router-dom';
 import { getPostDetail } from '../../../redux/postAPI';
 import Header from '../Header/Header';
 import './PostDetail.css';
+import Slider from 'react-slick';
+
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+import './PostDetail.css'; // Tạo file CSS riêng nếu cần
 
 const PostDetail = () => {
   const { id } = useParams();

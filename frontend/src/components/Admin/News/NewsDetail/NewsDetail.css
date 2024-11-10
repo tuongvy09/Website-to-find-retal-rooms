@@ -1,24 +1,182 @@
 .news-detail {
-    padding: 20px;
     max-width: 800px;
-    margin: auto;
-    border: 1px solid #ccc;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
     border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.news-detail h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.news-date {
-    font-size: 0.9rem;
-    color: #666;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
     margin-bottom: 20px;
-}
-
-.news-content {
-    font-size: 1rem;
+  }
+  
+  .action-buttons button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+  }
+  
+  .edit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: #ffffff;
+  }
+  
+  .delete-button:hover {
+    background-color: #e53935;
+  }
+  
+  .news-content {
+    text-align: center;
+  }
+  
+  .news-title {
+    font-size: 2em;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  .news-detail-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .news-content-text {
+    font-size: 1.2em;
+    color: #555555;
     line-height: 1.6;
-}
+    text-align: left;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    padding: 10px 20px;
+    background-color: #607d8b;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #546e7a;
+  }
+  
+  .action-buttons button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+  }
+  
+  .edit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: #ffffff;
+  }
+  
+  .delete-button:hover {
+    background-color: #e53935;
+  }
+
+  
+  /* sidebar */
+  .news-detail-page {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebar ul li.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .news-detail-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .action-buttons button,
+  .back-button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .news-content {
+    text-align: left;
+  }
+  
+  .news-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .news-detail-image {
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+  
+  .news-content-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  

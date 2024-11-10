@@ -24,9 +24,11 @@ exports.getNewsById = async (req, res) => {
 
 // Tạo bài viết mới
 exports.createNews = async (req, res) => {
-  const { title, description, content, author, imageUrl } = req.body; // Thêm trường description và imageUrl
+  const { title, description, content, author } = req.body; 
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; // Sử dụng URL ảnh từ Multer
+
   try {
-    const newNews = new News({ title, description, content, author, imageUrl }); // Bao gồm description và imageUrl
+    const newNews = new News({ title, description, content, author, imageUrl }); 
     await newNews.save();
     res.status(201).json(newNews);
   } catch (error) {
@@ -36,11 +38,13 @@ exports.createNews = async (req, res) => {
 
 // Cập nhật bài viết
 exports.updateNews = async (req, res) => {
-  const { title, description, content, author, imageUrl } = req.body; // Thêm trường description và imageUrl
+  const { title, description, content, author} = req.body; 
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl; // Cập nhật URL nếu có tệp mới
+
   try {
     const news = await News.findByIdAndUpdate(
       req.params.id,
-      { title, description, content, author, imageUrl }, // Bao gồm description và imageUrl
+      { title, description, content, author, imageUrl },
       { new: true }
     );
     if (!news) return res.status(404).json({ message: 'Không tìm thấy bài viết' });
