@@ -4,7 +4,7 @@ import Footer from '../../Footer/Footer';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import ManagePosts from '../ManagePost/ManagePosts';
 import './AdminDashboard.css';
-import Sidebar from './Sidebar';
+import Sidebar from '../Sidebar/Sidebar';
 
 const AdminDashboard = () => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);

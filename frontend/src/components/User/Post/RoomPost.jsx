@@ -2,7 +2,6 @@
 import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Avatar, Box, Button, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApprovedPosts } from '../../../redux/postAPI';
 import './RoomPost.css';
