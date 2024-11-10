@@ -74,6 +74,13 @@ const NewsForm = () => {
                     ['bold', 'italic', 'underline'],
                     ['image', 'video'],
                     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'font': [] }, { 'size': ['small', 'medium', 'large', 'huge'] }],
+                    [{ 'align': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link', 'blockquote', 'code-block'],
                     ['clean']
                 ]
             },
@@ -96,7 +103,6 @@ const NewsForm = () => {
 
     return (
         <div className="news-form-container">
-          <h1>Thêm thông tin tin tức</h1>
           <div className="form-content">
             <div className="cover-upload">
               <h2 className="cover-title">Thêm trang bìa</h2>
@@ -148,7 +154,7 @@ const NewsForm = () => {
                 />
               </label>
               <label>Nội dung:</label>
-              <div ref={quillRef} style={{ height: '300px' }} />
+              <div className="quill-content" ref={quillRef} style={{ height: '300px' }} />
               <button type="submit" className="submit-button">Thêm tin</button>
             </form>
           </div>
