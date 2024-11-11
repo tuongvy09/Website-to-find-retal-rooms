@@ -1,0 +1,25 @@
+/* NewsDetail.css */
+.news-detail-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .news-detail-title {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .news-detail-date {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+  
+  .news-detail-content p {
+    font-size: 18px;
+    color: #333;
+    line-height: 1.6;
+  }  

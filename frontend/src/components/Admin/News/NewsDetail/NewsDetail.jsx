@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './NewsDetail.css'; // Import file CSS
 
 const NewsDetail = () => {
@@ -11,7 +13,7 @@ const NewsDetail = () => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    navigate(`/edit-news/${id}`);
+    navigate(`/manage-news/edit/${id}`);
   };
 
   const handleBack = () => {
@@ -41,16 +43,15 @@ const NewsDetail = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa tin tức này không?")) {
       try {
         await axios.delete(`http://localhost:8000/v1/news/${newsId}`);
-        alert("Xóa tin tức thành công!");
+        toast.success("Xóa tin tức thành công!");
         navigate("/manage-news");
       } catch (err) {
         console.error("Lỗi khi xóa tin tức:", err);
-        alert("Không thể xóa tin tức.");
+        toast.error("Không thể xóa tin tức.");
       }
     }
   };
 
-  // Format createdAt to show the date in a readable format
   const formattedDate = new Date(news.createdAt).toLocaleDateString('vi-VN', {
     year: 'numeric',
     month: 'long',
@@ -59,6 +60,8 @@ const NewsDetail = () => {
 
   return (
     <div className="news-detail-page">
+      <ToastContainer position="top-right" autoClose={5000} /> {/* Only one ToastContainer */}
+
       {/* Sidebar */}
       <div className="sidebar">
         <ul>
