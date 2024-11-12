@@ -3,7 +3,6 @@ const { OAuth2Client } = require ('google-auth-library');
 const client_id = '';
 
 const client = new OAuth2Client(client_id);
-
 const middlewareControllers = {
     verifyToken: (req, res, next) => {
         const authHeader = req.headers.authorization;

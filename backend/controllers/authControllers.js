@@ -8,6 +8,7 @@ let refreshTokens = [];
 const client_id = '';
 
 const client = new OAuth2Client(client_id);
+
 const authController = {
     //REGISTER
     registerUser: async(req, res) => {
@@ -158,6 +159,7 @@ const authController = {
             res.status(500).json({ error: "Google authentication failed", error});
         }
     },
+
 };
 
 //store token:

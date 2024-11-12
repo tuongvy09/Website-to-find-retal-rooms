@@ -69,7 +69,7 @@ const authSlice = createSlice({
         },
         googleLoginFailed: (state) => {
             state.isFetching = false;
-            state.error = true;
+
         }
     }
 });
@@ -86,7 +86,8 @@ export const {
     logoutFailed,
     googleLoginStart,
     googleLoginSuccess,
-    googleLoginFailed
+    googleLoginFailed,
+    logoutFailed
 } = authSlice.actions;
 
 export default authSlice.reducer;
