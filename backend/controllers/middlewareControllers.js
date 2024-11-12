@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require ('google-auth-library');
-const client_id = '542714924408-kun6tfccnlcit4k9ono82oue7vqhth70.apps.googleusercontent.com';
+const client_id = '';
 
 const client = new OAuth2Client(client_id);
 
