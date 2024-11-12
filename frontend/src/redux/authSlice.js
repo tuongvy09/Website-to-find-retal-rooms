@@ -57,6 +57,19 @@ const authSlice = createSlice({
         logoutFailed: (state) => {
             state.login.isFetching = false;
             state.login.error = true;
+        },
+
+        googleLoginStart: (state) => {
+            state.isFetching = true;
+        },
+        googleLoginSuccess: (state, action) => {
+            state.isFetching = false;
+            state.user = action.payload;
+            state.error = false;
+        },
+        googleLoginFailed: (state) => {
+            state.isFetching = false;
+
         }
     }
 });
@@ -70,6 +83,10 @@ export const {
     registerFailed,
     logoutStart,
     logoutSuccess,
+    logoutFailed,
+    googleLoginStart,
+    googleLoginSuccess,
+    googleLoginFailed,
     logoutFailed
 } = authSlice.actions;
 

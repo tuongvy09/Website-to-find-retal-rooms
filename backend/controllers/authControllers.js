@@ -2,8 +2,13 @@ const bcrypt = require("bcrypt"); //hash pass
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { use } = require("../routes/user");
+const { OAuth2Client } = require ('google-auth-library');
 
 let refreshTokens = [];
+const client_id = '';
+
+const client = new OAuth2Client(client_id);
+
 const authController = {
     //REGISTER
     registerUser: async(req, res) => {
@@ -120,7 +125,41 @@ const authController = {
         res.clearCookie("refreshToken");
         refreshTokens = refreshTokens.filter(token  => token !== req.cookies.refreshToken);
         res.status(200).json("Logged out successfully!")
-    }
+    },
+
+    //gg login
+    googleLogin: async (req, res) => {
+        const { tokenId } = req.body;  // Nhận token từ client
+        console.log(tokenId)
+        try {
+            // Xác minh token với Google
+            const ticket = await client.verifyIdToken({
+                idToken: tokenId,
+                audience: client_id,
+            });
+            const payload = ticket.getPayload();
+            // Dùng email hoặc Google ID từ payload để tìm hoặc tạo tài khoản người dùng
+            const user = await User.findOne({ email: payload.email });
+            if (!user) {
+                // Nếu người dùng chưa có trong database, tạo tài khoản mới
+                const newUser = new User({
+                    username: payload.name,
+                    email: payload.email,
+                    googleId: payload.sub,  // Lưu Google ID của người dùng
+                });
+                await newUser.save();
+            }
+
+            // Tạo Access Token để trả về cho client
+            const accessToken = authController.generateAccessToken(user);
+            res.status(200).json({ accessToken });
+
+        } catch (error) {
+            console.error("Google authentication error: ", error);
+            res.status(500).json({ error: "Google authentication failed", error});
+        }
+    },
+
 };
 
 //store token:
