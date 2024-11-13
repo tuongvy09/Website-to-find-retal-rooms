@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from 'jwt-decode';
 
 const authSlice = createSlice({
     name: "auth",
@@ -61,15 +62,59 @@ const authSlice = createSlice({
 
         googleLoginStart: (state) => {
             state.isFetching = true;
-        },
-        googleLoginSuccess: (state, action) => {
-            state.isFetching = false;
-            state.user = action.payload;
             state.error = false;
         },
+        // googleLoginSuccess: (state, action) => {
+        //     state.login.isFetching = false;
+        //     state.login.currentUser = action.payload; 
+        //     state.login.error = false;
+        // },
+        googleLoginSuccess: (state, action) => {
+            state.login.isFetching = false;
+        
+            const { credential, accessToken } = action.payload; // Lấy credential và accessToken từ action payload
+        
+            // Kiểm tra nếu credential không phải là chuỗi hợp lệ
+            if (!credential || typeof credential !== 'string') {
+                console.error("Credential không hợp lệ:", credential);
+                state.login.error = true;
+                return;
+            }
+        
+            try {
+                // Giải mã token (ví dụ: JWT)
+                console.log("Credential từ Google:", credential);
+                const decodedToken = jwtDecode(credential);
+        
+                // Kiểm tra token có hợp lệ không
+                if (!decodedToken || !decodedToken.sub || !decodedToken.email) {
+                    console.error("Token không chứa thông tin người dùng hợp lệ");
+                    state.login.error = true;
+                    return;
+                }
+        
+                // Lưu thông tin người dùng vào Redux
+                state.login.currentUser = {
+                    _id: decodedToken.sub,  // ID của người dùng từ Google
+                    username: decodedToken.name || decodedToken.given_name || "Google User",  // Tên người dùng
+                    email: decodedToken.email,  // Email người dùng
+                    profile: { picture: decodedToken.picture },  // Lưu ảnh đại diện
+                    admin: false,  // Mặc định không phải admin
+                    accessToken,  // Lưu accessToken từ backend
+                    googleCredential: credential, // Lưu credential của Google
+                    createdAt: new Date(decodedToken.iat * 1000).toISOString(), // Thời gian tạo người dùng
+                    updatedAt: new Date().toISOString(),  // Cập nhật thời gian hiện tại
+                    __v: 0  // Mặc định là 0
+                };
+                state.login.error = false;
+            } catch (error) {
+                console.error("Lỗi khi giải mã token:", error);
+                state.login.error = true;
+            }
+        },               
         googleLoginFailed: (state) => {
             state.isFetching = false;
-
+            state.error = true;
         }
     }
 });
@@ -87,7 +132,6 @@ export const {
     googleLoginStart,
     googleLoginSuccess,
     googleLoginFailed,
-    logoutFailed
 } = authSlice.actions;
 
 export default authSlice.reducer;

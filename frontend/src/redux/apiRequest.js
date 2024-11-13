@@ -127,6 +127,7 @@ export const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
     }
 };
 
+
 export const googleLogin = async (tokenId, dispatch, navigate) => {
     axios.defaults.baseURL = 'http://localhost:8000';
     dispatch(googleLoginStart());
@@ -135,13 +136,16 @@ export const googleLogin = async (tokenId, dispatch, navigate) => {
         const res = await axios.post("/v1/auth/google", { tokenId });
         const userData = res.data;
 
-        dispatch(googleLoginSuccess(userData));
-
-        // Kiểm tra username để điều hướng
-        if (userData.admin === true) {
-            navigate("/admin-dashboard");
+        // Kiểm tra xem backend trả về thông tin người dùng hợp lệ và accessToken
+        if (userData && userData.accessToken) {
+            // Lưu thông tin người dùng và accessToken vào Redux (payload là credential)
+            dispatch(googleLoginSuccess({
+                credential: tokenId,  // Lưu credential (tokenId của Google) vào Redux
+                accessToken: userData.accessToken, 
+            }));
+            navigate("/"); // Chuyển hướng người dùng về trang chủ
         } else {
-            navigate("/");
+            throw new Error("Không có accessToken trong phản hồi từ backend");
         }
     } catch (err) {
         if (err.response) {
@@ -151,6 +155,6 @@ export const googleLogin = async (tokenId, dispatch, navigate) => {
         } else {
             console.error("Google login error:", err.message);
         }
-        dispatch(googleLoginFailed());
+        dispatch(googleLoginFailed()); // Gọi action thất bại nếu có lỗi
     }
 };
