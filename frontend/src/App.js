@@ -1,11 +1,4 @@
-import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
-import Header from './components/User/Header/Header';
-import Footer from './components/Footer/Footer';
-import Home from './components/User/Home/Home';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
 import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
