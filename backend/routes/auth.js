@@ -15,4 +15,7 @@ router.post("/refresh", authController.requestRefreshToken);
 //logout
 router.post("/logout", middlewareControllers.verifyToken , authController.userLogout);
 
+//login with gg
+router.post("/google", authController.googleLogin);
+
 module.exports = router;

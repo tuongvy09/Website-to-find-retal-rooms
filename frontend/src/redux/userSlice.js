@@ -1,17 +1,22 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
     name: "user",
-    initialState:{
+    initialState: {
         users: {
-            allUsers:null,
+            allUsers: null,
             isFetching: false,
             error: false
         },
-        msg:"",
+        currentUser: null,
+        accessToken: null,
+        msg: "",
     },
-
     reducers: {
+        setUser: (state, action) => {
+            state.currentUser = action.payload.user;
+            state.accessToken = action.payload.accessToken;
+        },
         getUserStart: (state) => {
             state.users.isFetching = true;
         },
@@ -40,6 +45,7 @@ const userSlice = createSlice({
 })
 
 export const {
+    setUser, 
     getUserStart,
     getUsersSuccess,
     getUsersFailed,

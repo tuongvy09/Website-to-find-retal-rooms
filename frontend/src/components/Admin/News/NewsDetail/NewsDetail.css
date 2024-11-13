@@ -48,6 +48,7 @@
     font-size: 2em;
     color: #333333;
     margin-bottom: 20px;
+    text-align: center;
   }
   
   .news-detail-image {
@@ -122,7 +123,7 @@
   .sidebar {
     width: 200px;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #EDBCD1;
   }
   
   .sidebar ul {
@@ -165,7 +166,7 @@
   }
   
   .news-title {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
   }
   
@@ -180,3 +181,18 @@
     line-height: 1.5;
   }
   
+  .news-meta {
+    display: flex;
+    justify-content: end;
+    font-size: 14px;
+    color: #777;
+    margin-top: 10px;
+  }
+  
+  .news-author {
+    font-weight: bold;
+  }
+  
+  .news-date {
+    font-style: italic;
+  }  

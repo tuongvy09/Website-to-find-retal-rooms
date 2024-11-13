@@ -1,6 +1,8 @@
 import axios from "axios";
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, registerFailed, registerStart, registerSuccess } from "./authSlice";
 import { deleteUserFailed, deleteUserStart, deleteUserSuccess, getUsersFailed, getUsersSuccess, getUserStart } from "./userSlice";
+import { googleLoginStart, googleLoginSuccess, googleLoginFailed } from "./authSlice"; // Nếu bạn muốn tạo slice cho Google Login
+
 
 export const loginUser = async(user, dispatch, navigate) =>{
     axios.defaults.baseURL = 'http://localhost:8000';
@@ -122,5 +124,37 @@ export const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
             });
         }
         dispatch(logoutFailed()); 
+    }
+};
+
+
+export const googleLogin = async (tokenId, dispatch, navigate) => {
+    axios.defaults.baseURL = 'http://localhost:8000';
+    dispatch(googleLoginStart());
+    try {
+        // Gửi tokenId của Google đến backend để xác minh
+        const res = await axios.post("/v1/auth/google", { tokenId });
+        const userData = res.data;
+
+        // Kiểm tra xem backend trả về thông tin người dùng hợp lệ và accessToken
+        if (userData && userData.accessToken) {
+            // Lưu thông tin người dùng và accessToken vào Redux (payload là credential)
+            dispatch(googleLoginSuccess({
+                credential: tokenId,  // Lưu credential (tokenId của Google) vào Redux
+                accessToken: userData.accessToken, 
+            }));
+            navigate("/"); // Chuyển hướng người dùng về trang chủ
+        } else {
+            throw new Error("Không có accessToken trong phản hồi từ backend");
+        }
+    } catch (err) {
+        if (err.response) {
+            console.error("Google login error:", err.response.data);
+            const errorMessage = err.response.data.message || "Google login failed";
+            console.error("Error message:", errorMessage);
+        } else {
+            console.error("Google login error:", err.message);
+        }
+        dispatch(googleLoginFailed()); // Gọi action thất bại nếu có lỗi
     }
 };

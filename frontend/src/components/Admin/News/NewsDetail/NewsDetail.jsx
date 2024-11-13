@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './NewsDetail.css'; // Import file CSS
 
 const NewsDetail = () => {
@@ -11,7 +13,7 @@ const NewsDetail = () => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    navigate(`/edit-news/${id}`);
+    navigate(`/manage-news/edit/${id}`);
   };
 
   const handleBack = () => {
@@ -31,8 +33,7 @@ const NewsDetail = () => {
       }
     };
     if (id) fetchNewsDetail();
-  }, [id]); // Chỉ gọi lại khi `id` thay đổi
-  
+  }, [id]);
 
   if (loading) return <p>Đang tải...</p>;
   if (error) return <p>{error}</p>;
@@ -42,28 +43,36 @@ const NewsDetail = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa tin tức này không?")) {
       try {
         await axios.delete(`http://localhost:8000/v1/news/${newsId}`);
-        alert("Xóa tin tức thành công!");
+        toast.success("Xóa tin tức thành công!");
         navigate("/manage-news");
       } catch (err) {
         console.error("Lỗi khi xóa tin tức:", err);
-        alert("Không thể xóa tin tức.");
+        toast.error("Không thể xóa tin tức.");
       }
     }
   };
 
+  const formattedDate = new Date(news.createdAt).toLocaleDateString('vi-VN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <div className="news-detail-page">
+      <ToastContainer position="top-right" autoClose={5000} /> {/* Only one ToastContainer */}
+
       {/* Sidebar */}
       <div className="sidebar">
         <ul>
-          <li 
-            className={window.location.pathname === '/manage-news/list' ? 'active' : ''} 
+          <li
+            className={window.location.pathname === '/manage-news/list' ? 'active' : ''}
             onClick={() => navigate('/manage-news/list')}
           >
             Danh sách tin tức
           </li>
-          <li 
-            className={window.location.pathname === '/manage-news/add' ? 'active' : ''} 
+          <li
+            className={window.location.pathname === '/manage-news/add' ? 'active' : ''}
             onClick={() => navigate('/manage-news/add')}
           >
             Thêm tin tức
@@ -82,8 +91,11 @@ const NewsDetail = () => {
         </div>
         <div className="news-content">
           <h2 className="news-title">{news.title}</h2>
-          <img src={news.imageUrl || 'placeholder.jpg'} alt={news.title} className="news-detail-image" />
-          <p className="news-content-text">{news.content}</p>
+          <div className="news-meta">
+            <span className="news-author">{news.author}</span>
+            <span className="news-date">, {formattedDate}</span>
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: news.content }} />
         </div>
       </div>
     </div>

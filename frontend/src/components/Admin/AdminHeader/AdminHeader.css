@@ -1,12 +1,12 @@
 .admin-header {
-    background-color: #000000 !important; /* Màu nền cho header admin */
+    background-color: #a50000 !important; /* Màu nền cho header admin */
     margin: 0 !important;
     padding: 0 !important;
   }
   
   .admin-header-title {
     flex-grow: 1;
-    color: #fff !important; /* Màu chữ cho admin */
+    color: #EDBCD1 !important; /* Màu chữ cho admin */
   }
   
   .admin-header-buttons button {

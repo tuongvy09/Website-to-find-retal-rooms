@@ -1,0 +1,124 @@
+/* EditNewsForm.css */
+.edit-news-form {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;  /* Đảm bảo sidebar và form nằm ngang */
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #3a6039;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 10px 0;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar li:hover {
+    background-color: #34495e;
+  }
+  
+  .sidebar li.active {
+    background-color: #1abc9c;
+  }
+  
+  .edit-news-form h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-top: 0;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
+    margin-left: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Đảm bảo form chiếm toàn bộ không gian còn lại */
+  }
+  
+  form label {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  form input,
+  form textarea {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  form button {
+    background-color: #1abc9c;
+    color: #fff;
+    padding: 12px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #16a085;
+  }
+  
+  @media (max-width: 768px) {
+    .edit-news-form {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      height: auto;
+    }
+  
+    form {
+      margin-left: 0;
+      max-width: 100%;
+      padding: 15px;  /* Giảm padding trên màn hình nhỏ */
+    }
+  }
+  
+  .quill-editor-container {
+    margin-top: 10px;
+  }
+  
+  .quill-editor-container .ql-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .quill-editor-container .ql-editor {
+    padding: 10px; /* Thêm padding cho editor */
+    min-height: 200px; /* Đảm bảo editor có chiều cao tối thiểu */
+  }
+  
+  
