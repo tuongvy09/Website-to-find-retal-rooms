@@ -1,4 +1,3 @@
-
 import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Avatar, Box, Button, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
