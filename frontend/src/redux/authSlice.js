@@ -106,6 +106,7 @@ const authSlice = createSlice({
                     updatedAt: new Date().toISOString(),  // Cập nhật thời gian hiện tại
                     __v: 0  // Mặc định là 0
                 };
+                console.log("Current User in Redux:", state.login.currentUser);
                 state.login.error = false;
             } catch (error) {
                 console.error("Lỗi khi giải mã token:", error);
