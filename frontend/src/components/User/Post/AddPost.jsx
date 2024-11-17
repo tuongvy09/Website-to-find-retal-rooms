@@ -3,7 +3,9 @@ import { Box, Button, FormControl, FormHelperText, IconButton, InputLabel, MenuI
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../../redux/postAPI';
+import { setPosts } from '../../../redux/postSlice';
 import './AddPost.css';
 import CustomizedBreadcrumbs from './CustomizedBreadcrumbs';
 
@@ -67,7 +69,7 @@ const AddPost = () => {
     const [currency, setCurrency] = useState('dong_thang');
     const [area, setArea] = useState('');
     const formattedArea = `${area}m²`;
-    const [areaError, setAreaError] = useState(''); // Thêm state cho lỗi diện tích
+    const [areaError, setAreaError] = useState(''); 
     const [rentalTarget, setRentalTarget] = useState('');
     const [maxOccupants, setMaxOccupants] = useState('');
     const [maxOccupantsError, setMaxOccupantsError] = useState('');
@@ -76,11 +78,12 @@ const AddPost = () => {
     const fullAddress = `${address} ${selectedWard ? selectedWard.name : ''} ${selectedDistrict ? selectedDistrict.name : ''} ${selectedProvince ? selectedProvince.name : ''}`;
     const [propertyType, setpropertyType] = useState('');
     const dispatch = useDispatch();
-    const [error, setError] = useState(''); // Trạng thái cho thông báo lỗi
+    const [error, setError] = useState(''); 
+    const navigate = useNavigate();
 
     const handleMaxOccupantsChange = (e) => {
         const value = e.target.value;
-        const regex = /^[0-9]*$/; // Regex cho số nguyên không âm
+        const regex = /^[0-9]*$/;
 
         if (value === '' || regex.test(value)) {
             setMaxOccupants(value);
@@ -91,7 +94,7 @@ const AddPost = () => {
     };
     const handleRentalPriceChange = (e) => {
         const value = e.target.value;
-        const regex = /^[0-9]*\.?[0-9]*$/; // Regex cho số thực không âm
+        const regex = /^[0-9]*\.?[0-9]*$/; 
 
         if (value === '' || regex.test(value)) {
             setRentalPrice(value);
@@ -101,10 +104,9 @@ const AddPost = () => {
         }
     };
 
-    // Hàm xử lý thay đổi cho diện tích
     const handleAreaChange = (e) => {
         const value = e.target.value;
-        const regex = /^[0-9]*\.?[0-9]*$/; // Regex cho số thực không âm
+        const regex = /^[0-9]*\.?[0-9]*$/;
 
         if (value === '' || regex.test(value)) {
             setArea(value);
@@ -123,7 +125,6 @@ const AddPost = () => {
 
         // Kiểm tra số lượng ảnh
         if (selectedImages.length + files.length <= 8) {
-            // Dùng Promise.all để đợi tất cả các file được đọc xong
             Promise.all(
                 files.map(file => {
                     return new Promise((resolve, reject) => {
@@ -223,8 +224,12 @@ const AddPost = () => {
             }
 
             const response = await createPost(formData, accessToken);
-            console.log('Post added successfully:', response);
-        } catch (err) {
+            if (response.success) {
+                dispatch(setPosts((prevPosts) => [...prevPosts, response.data]));
+                navigate('/');
+            } else {
+                console.error('Lỗi khi tạo bài đăng:', response.message);
+            }        } catch (err) {
             if (err.response) {
                 console.error('Server error:', err.response.data);
             } else {
@@ -441,7 +446,7 @@ const AddPost = () => {
                             style={{ display: 'none' }}
                             id="upload-button"
                             type="file"
-                            name="images"  // Đặt tên trường là 'files[]' để Multer nhận diện đúng
+                            name="images"  
                             multiple
                             onChange={handleImageChange}
                         />
@@ -456,7 +461,7 @@ const AddPost = () => {
                                     key={index}
                                     src={image.preview}
                                     alt={`uploaded-${index}`}
-                                    style={{ width: '100px', margin: '5px' }}
+                                    style={{ width: '100px', margin: '5px', top: '300px' }}
                                 />
                             ))}
                         </div>
