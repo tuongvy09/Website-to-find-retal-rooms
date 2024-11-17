@@ -1,23 +1,31 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedMenu } from '../../../redux/menuSlice';
 import Footer from "../../Footer/Footer";
 import Header from "../Header/Header";
 import AddPost from "../Post/AddPost";
+import ListUserPost from "./listUserPost";
 import './ManageAcount.css';
 import Sidebar from "./Sidebar";
-import ListUserPost from "./listUserPost";
+import UpdatePost from "./UpdatePost";
 
 const ManageAcount = () => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);
-  console.log("info-user", currentUser);
-  const [selectedMenu, setSelectedMenu] = useState('manageAccount');
+  const dispatch = useDispatch();
+  const selectedMenu = useSelector((state) => state.menu.selectedMenu); 
+  const setSelectedPost = useSelector((state) => state.posts.selectedPost); 
 
   const renderContent = () => {
     switch (selectedMenu) {
       case 'newPost':
-        return <AddPost/>;
+        return <AddPost />;
       case 'postList':
-        return <ListUserPost/>;
+        return <ListUserPost 
+        setSelectedMenu={setSelectedMenu} 
+        setSelectedPost={setSelectedPost} 
+      />;
+      case 'updatePost':
+        return <UpdatePost postId={setSelectedPost} />;
       case 'manageAccount':
         return <div>Quản lý tài khoản</div>;
       default:
@@ -25,11 +33,15 @@ const ManageAcount = () => {
     }
   };
 
+  const handleChangeMenu = (menu) => {
+    dispatch(setSelectedMenu(menu)); 
+  };
+
   return (
     <div className="manageAcount-container">
       <Header />
       <div className="container-body">
-        <Sidebar user={currentUser} setSelectedMenu={setSelectedMenu} />
+        <Sidebar user={currentUser} setSelectedMenu={handleChangeMenu} />
         <div className="content">
           {renderContent()}
         </div>

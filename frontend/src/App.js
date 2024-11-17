@@ -1,19 +1,25 @@
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
+import EditNewsForm from './components/Admin/News/EditNewsForm/EditNewsForm';
 import NewsDetail from './components/Admin/News/NewsDetail/NewsDetail';
 import NewsForm from './components/Admin/News/NewsForm/NewsForm';
 import NewsList from './components/Admin/News/NewsList/NewsList';
 import NewsManagement from './components/Admin/News/NewsManagement/NewsManagement';
+import Footer from './components/Footer/Footer';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import Header from './components/User/Header/Header';
+import Home from './components/User/Home/Home';
 import ManageAcount from './components/User/ManageAcount/ManageAcount';
+import UpdatePost from './components/User/ManageAcount/UpdatePost';
+import NewsDetailUser from './components/User/News/NewsDetail/NewsDetailUser';
+import NewsListUser from './components/User/News/NewsList/NewsListUser';
 import AddPost from './components/User/Post/AddPost';
 import PostDetail from './components/User/Post/PostDetail';
-import NewsListUser from './components/User/News/NewsList/NewsListUser'
-import NewsDetailUser from './components/User/News/NewsDetail/NewsDetailUser';
-import EditNewsForm from './components/Admin/News/EditNewsForm/EditNewsForm';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/css/froala_style.min.css';
 
 function App() {
   return (
@@ -32,9 +38,10 @@ function App() {
           } />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/AddPost" element={<AddPost />} />
+          <Route path="/AddPost" element={<AddPost />} />1
           <Route path="/posts/:id" element={<PostDetail />} />
           <Route path="/managerAc" element={<ManageAcount/>}/>
+          <Route path="/update-post/:id" element={<UpdatePost/>}/> 
           <Route path="/manage-news/edit/:id" element={
             <>
             <AdminHeader />

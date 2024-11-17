@@ -6,20 +6,17 @@ exports.createPost = async (req, res) => {
     try {
         const { title, content, address, category, rentalPrice, area, rentalTarget, maxOccupants, youtubeLink, contactInfo } = req.body;
 
-        // Nếu có ảnh được upload lên, lấy đường dẫn của ảnh
         const imageUrls = [];
         if (req.files && req.files.length > 0) {
-            // Lấy đường dẫn ảnh từ Cloudinary
             req.files.forEach(file => {
-                imageUrls.push(file.path); // Lưu đường dẫn ảnh
+                imageUrls.push(file.path); 
             });
         }
 
-        // Tạo post mới
         const newPost = new Post({
             title,
             content,
-            address: JSON.parse(address),  // Giả sử bạn gửi dữ liệu dưới dạng string JSON từ frontend
+            address: JSON.parse(address),  
             category,
             rentalPrice,
             area,
@@ -27,32 +24,29 @@ exports.createPost = async (req, res) => {
             maxOccupants,
             youtubeLink,
             contactInfo: JSON.parse(contactInfo),
-            images: imageUrls,  // Lưu đường dẫn ảnh từ Cloudinary
+            images: imageUrls,  
         });
 
-        // Lưu bài viết vào MongoDB
         const savedPost = await newPost.save();
-        res.status(201).json(savedPost);  // Trả về bài viết vừa tạo
+        res.status(201).json(savedPost); 
     } catch (error) {
-        console.error("Error creating post:", error);  // Log chi tiết lỗi
+        console.error("Error creating post:", error);  
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-// Lấy tất cả bài đăng
 exports.getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find();
-        res.status(200).json(posts); // Trả về mã trạng thái 200
+        res.status(200).json(posts); 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-// Lấy bài đăng theo ID
 exports.getPostById = async (req, res) => {
     try {
-        console.log("Request ID:", req.params.id); // Kiểm tra ID trong request
+        console.log("Request ID:", req.params.id);
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'ID không hợp lệ' });
         }
@@ -77,33 +71,31 @@ exports.updatePost = async (req, res) => {
             return res.status(404).json({ message: 'Bài đăng không tồn tại.' });
         }
 
-        Object.assign(post, req.body); // Cập nhật các trường bài đăng
+        Object.assign(post, req.body); 
         const updatedPost = await post.save();
-        res.status(200).json(updatedPost); // Trả về mã trạng thái 200 khi cập nhật thành công
+        res.status(200).json(updatedPost);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
 
-// Xóa bài đăng
 exports.deletePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Bài đăng không tồn tại.' });
         }
-
-        await post.remove();
-        res.status(204).send(); // Trả về mã trạng thái 204 No Content khi xóa thành công
+        await Post.findByIdAndDelete(req.params.id);
+        res.status(204).send(); 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-// Hàm để lấy bài viết theo trạng thái
+
 exports.getPostsByStatus = async (req, res) => {
     try {
-        const { status } = req.query; // Lấy trạng thái từ query parameter
+        const { status } = req.query;
         if (!status) {
             return res.status(400).json({ message: "Status is required" });
         }
@@ -116,6 +108,7 @@ exports.getPostsByStatus = async (req, res) => {
     }
 };
 
+//Lấy bài đăng(new)
 exports.getUserPostsByStateAndVisibility = async (req, res) => {
     try {
         const { status, visibility } = req.query; 
@@ -137,3 +130,39 @@ exports.getUserPostsByStateAndVisibility = async (req, res) => {
     }
 };
 
+//Cập nhật bài đăng
+exports.updatePost = async (req, res) => { 
+    const { postId } = req.params;
+    let updateData = req.body;
+    
+    updateData.status = "update";
+    updateData.visibility = "hidden";
+  
+    try {
+      const updatedPost = await Post.findByIdAndUpdate(postId, updateData, { new: true });
+      if (!updatedPost) {
+        return res.status(404).json({ message: 'Bài đăng không tồn tại' });
+      }
+      res.json(updatedPost);
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server', error: error.message });
+    }
+  };  
+
+exports.toggleVisibility = async (req, res) => {
+    const { postId } = req.params;
+  
+    try {
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Bài đăng không tồn tại' });
+      }
+      post.visibility = post.visibility === 'visible' ? 'hiden' : 'visible';
+      await post.save();
+  
+      res.json({ message: 'Trạng thái hiển thị đã được cập nhật', visibility: post.visibility });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server', error: error.message });
+    }
+  };
+  

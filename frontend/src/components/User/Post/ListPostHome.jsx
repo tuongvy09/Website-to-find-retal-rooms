@@ -12,7 +12,7 @@ const ListPostHome = () => {
   const handleTitleClick = (id) => {
     console.log("Navigating to post with ID:", id);
     if (id) {
-      navigate(`/posts/${id}`);  // Điều hướng đến bài viết với ID tương ứng
+      navigate(`/posts/${id}`);
     } else {
       console.error('ID bài đăng không hợp lệ');
     }
