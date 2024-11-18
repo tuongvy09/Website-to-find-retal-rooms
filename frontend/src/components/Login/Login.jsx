@@ -50,6 +50,7 @@ const Login = () => {
 
     return ( 
         <section className="login-container">
+            <div className="form-wrapper">
             <div className="login-title"> Đăng nhập</div>
             <form onSubmit={handleLogin}>
                 <div className="form-group">
@@ -80,6 +81,7 @@ const Login = () => {
             </form>
             <div className="login-register"> Don't have an account yet? </div>
             <Link className="login-register-link" to="/register">Register one for free </Link>
+            </div>
         </section>
     );
 };
