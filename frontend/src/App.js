@@ -19,6 +19,8 @@ import PostDetail from './components/User/Post/PostDetail';
 import NewsListUser from './components/User/News/NewsList/NewsListUser'
 import NewsDetailUser from './components/User/News/NewsDetail/NewsDetailUser';
 import EditNewsForm from './components/Admin/News/EditNewsForm/EditNewsForm';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword ';
+import ResetPassword from './components/ResetPassword/ResetPassword ';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 
@@ -39,6 +41,8 @@ function App() {
           } />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/AddPost" element={<AddPost />} />
           <Route path="/posts/:id" element={<PostDetail />} />
           <Route path="/managerAc" element={<ManageAcount/>}/>
