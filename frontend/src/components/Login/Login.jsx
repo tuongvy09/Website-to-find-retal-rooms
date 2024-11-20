@@ -29,35 +29,10 @@ const Login = () => {
   }, [currentUser, navigate]);
 
   const handleLogin = async (e) => {
-    e.preventDefault();  // Ngừng gửi form
+    e.preventDefault(); 
     const userData = { username, password };
     await loginUser(userData, dispatch, navigate, setErrorMessage);
   };
-
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   const newUser = { username, password };
-  //   try {
-  //     await loginUser(newUser, dispatch, navigate);
-  //     setErrorMessage(""); 
-  //   } catch (error) {
-  //     if (error.response) {
-  //       if (error.response.status === 404) {
-  //           setErrorMessage("Tên đăng nhập không đúng!");
-  //       } else if (error.response.status === 401) {
-  //         console.log("Lỗi đăng nhậpzz1122:", error.response);
-  //           setErrorMessage("Mật khẩu không đúng!");
-  //       } else if (error.response.status === 403) {
-  //           toast.error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.");
-  //       } else {
-  //           setErrorMessage("Đã xảy ra lỗi. Vui lòng thử lại sau.");
-  //       }
-  //   } 
-  //   else {
-  //       setErrorMessage("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.");
-  //   }    
-  //   }
-  // };  
 
   const handleGoogleLogin = (response) => {
     if (response.error) {
