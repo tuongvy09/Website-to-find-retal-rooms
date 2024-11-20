@@ -12,8 +12,13 @@ router.post("/", middlewareControllers.verifyToken, uploadCloud.array('images', 
 
 router.put("/posts/:id", middlewareControllers.verifyToken, postController.updatePost);
 // Xóa bài đăng (cần xác thực)
-router.delete("/posts/:id", middlewareControllers.verifyTokenAndAdminAuth, postController.deletePost);
+router.delete("/posts/:id", middlewareControllers.verifyToken, postController.deletePost);
 //Lấy bài đăng theo status
 router.get('/posts-by-status', postController.getPostsByStatus);
 router.get('/list-post-pending',middlewareControllers.verifyToken, postController.getUserPostsByStateAndVisibility);
+// Route cập nhật bài đăng
+router.put('/update/:postId',middlewareControllers.verifyToken, postController.updatePost);
+// Route ẩn/hiện bài đăng
+router.put('/toggle-visibility/:postId',middlewareControllers.verifyToken, postController.toggleVisibility);
+
 module.exports = router;

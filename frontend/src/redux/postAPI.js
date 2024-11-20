@@ -65,3 +65,48 @@ export const getUserPostsByStateAndVisibility = async (status, visibility, token
     throw error;
   }
 };
+
+export const togglePostVisibility = async (postId, token) => {
+  try {
+    const response = await axios.put(`${API_URL}toggle-visibility/${postId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; 
+  } catch (error) {
+    console.error('Lỗi khi gọi API thay đổi trạng thái hiển thị bài viết:', error);
+    throw error;
+  }
+};
+
+export const deletePost = async (postId, token) => {
+  try {
+      const response = await axios.delete(`${API_URL}posts/${postId}`, {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      });
+      return response.data; 
+  } catch (error) {
+      throw error;
+  }
+};
+
+export const updatePost = async (postId, postData, token) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}update/${postId}`,
+      postData, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi cập nhật bài đăng:', error);
+    throw error;
+  }
+};

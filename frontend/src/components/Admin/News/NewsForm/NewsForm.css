@@ -158,6 +158,7 @@
 
 .submit-button:hover {
   background-color: #0056b3;
+
 }
 
 /* Quill Editor Container */
@@ -195,5 +196,6 @@
   border-radius: 4px;
   background-color: #f4f4f9; /* Light background for the toolbar */
   padding: 5px;
+
 }
 

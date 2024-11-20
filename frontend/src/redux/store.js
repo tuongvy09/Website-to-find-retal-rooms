@@ -1,19 +1,20 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
-import userReducer from "./userSlice";
-import postReducer from "./postSlice";
-import newsReducer from "./newsSlice";
 import storage from 'redux-persist/lib/storage';
+import authReducer from "./authSlice";
+import menuReducer from "./menuSlice";
+import newsReducer from "./newsSlice";
+import postReducer from "./postSlice";
+import userReducer from "./userSlice";
 
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
 
 const persistConfig = {
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   users: userReducer,
   posts: postReducer,
   news: newsReducer,
+  menu: menuReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

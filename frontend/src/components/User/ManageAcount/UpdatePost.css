@@ -1,0 +1,9 @@
+
+.container-updatepost{
+    display: flex;
+    flex-direction: column;
+    width: 800px !important;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
