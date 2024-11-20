@@ -1,35 +1,51 @@
 import axios from "axios";
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, registerFailed, registerStart, registerSuccess } from "./authSlice";
 import { deleteUserFailed, deleteUserStart, deleteUserSuccess, getUsersFailed, getUsersSuccess, getUserStart } from "./userSlice";
-import { googleLoginStart, googleLoginSuccess, googleLoginFailed } from "./authSlice"; // Nếu bạn muốn tạo slice cho Google Login
+import { googleLoginStart, googleLoginSuccess, googleLoginFailed, forgotPasswordSuccess, forgotPasswordFailed } from "./authSlice"; // Nếu bạn muốn tạo slice cho Google Login
+import { toast } from "react-toastify";
 
-
-export const loginUser = async(user, dispatch, navigate) =>{
+export const loginUser = async (user, dispatch, navigate) => {
     axios.defaults.baseURL = 'http://localhost:8000';
     dispatch(loginStart());
-    try{
-        const res = await axios.post("/v1/auth/login", user);
-        const userData = res.data; 
-
-        dispatch(loginSuccess(userData));
-
-        // Kiểm tra username để điều hướng
-        if (userData.admin === true) {
-            navigate("/admin-dashboard");
+  
+    try {
+      const res = await axios.post("/v1/auth/login", user);
+      const userData = res.data; 
+  
+      dispatch(loginSuccess(userData));
+  
+      // Kiểm tra username để điều hướng
+      if (userData.admin === true) {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      if (err.response) {
+        console.error("Login error:", err.response.data);
+        const errorMessage = err.response.data.message || "Login failed";
+  
+        // Check for specific error responses and show corresponding messages
+        if (err.response.status === 403) {
+          // Tài khoản bị khóa
+          toast.error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.");
+        } else if (err.response.status === 401) {
+          // Sai tên đăng nhập hoặc mật khẩu
+          toast.error("Tên đăng nhập hoặc mật khẩu không đúng.");
         } else {
-            navigate("/");
+          // For other errors, show the general message from the response
+          toast.error(errorMessage);
         }
-    }catch(err){
-        if (err.response) {
-            console.error("Login error:", err.response.data);
-            const errorMessage = err.response.data.message || "Login failed"; 
-            console.error("Error message:", errorMessage);
-        } else {
-            console.error("Login error:", err.message);
-        }
-        dispatch(loginFailed());
+      } else {
+        console.error("Login error:", err.message);
+  
+        // Handle network errors or any other issues
+        toast.error("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.");
+      }
+  
+      dispatch(loginFailed());
     }
-};
+  };
 
 export const registerUser = async(user, dispatch, navigate) =>{
     axios.defaults.baseURL = 'http://localhost:8000';
@@ -156,5 +172,31 @@ export const googleLogin = async (tokenId, dispatch, navigate) => {
             console.error("Google login error:", err.message);
         }
         dispatch(googleLoginFailed()); // Gọi action thất bại nếu có lỗi
+    }
+};
+
+export const resetPasswordRequest = async (userEmail, dispatch, setMessage, navigate) => {
+    axios.defaults.baseURL = 'http://localhost:8000'; // Địa chỉ API backend
+    try {
+        const res = await axios.post("/v1/auth/forgot-password", userEmail);
+        dispatch(forgotPasswordSuccess());
+        setMessage('Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn.');
+        navigate("/login");  // Chuyển về màn hình login sau khi yêu cầu thành công
+    } catch (err) {
+        console.error("Forgot password error:", err.response || err.message);
+        setMessage("Đã xảy ra lỗi, vui lòng thử lại.");
+        dispatch(forgotPasswordFailed());
+    }
+};
+
+export const resetPassword = async (passwordData, dispatch, setMessage, navigate) => {
+    axios.defaults.baseURL = 'http://localhost:8000';
+    try {
+        const res = await axios.post("/v1/auth/reset-password", passwordData);
+        setMessage('Mật khẩu đã được thay đổi thành công.');
+        navigate("/login");  // Sau khi đặt lại mật khẩu thành công, chuyển hướng về login
+    } catch (err) {
+        console.error("Reset password error:", err.response || err.message);
+        setMessage("Đã xảy ra lỗi, vui lòng thử lại.");
     }
 };

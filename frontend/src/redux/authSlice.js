@@ -116,7 +116,20 @@ const authSlice = createSlice({
         googleLoginFailed: (state) => {
             state.isFetching = false;
             state.error = true;
-        }
+        },
+
+        forgotPasswordStart: (state) => {
+            state.forgotPassword.isFetching = true;
+        },
+        forgotPasswordSuccess: (state) => {
+            state.forgotPassword.isFetching = false;
+            state.forgotPassword.success = true;
+            state.forgotPassword.error = false;
+        },
+        forgotPasswordFailed: (state) => {
+            state.forgotPassword.isFetching = false;
+            state.forgotPassword.error = true;
+        },
     }
 });
 
@@ -133,6 +146,9 @@ export const {
     googleLoginStart,
     googleLoginSuccess,
     googleLoginFailed,
+    forgotPasswordStart,
+    forgotPasswordSuccess,
+    forgotPasswordFailed
 } = authSlice.actions;
 
 export default authSlice.reducer;
