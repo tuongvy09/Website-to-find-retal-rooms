@@ -7,11 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../../redux/postAPI';
 import { setPosts } from '../../../redux/postSlice';
 import './AddPost.css';
-import CustomizedBreadcrumbs from './CustomizedBreadcrumbs';
 
 const SelectWithLabel = ({ label, options, value, onChange }) => {
     return (
-        <FormControl fullWidth variant="outlined">
+        <FormControl fullWidth variant="outlined" >
             <InputLabel>{label}</InputLabel>
             <Select
                 value={value || ''}
@@ -123,7 +122,6 @@ const AddPost = () => {
     const handleImageChange = (event) => {
         const files = Array.from(event.target.files);
 
-        // Kiểm tra số lượng ảnh
         if (selectedImages.length + files.length <= 8) {
             Promise.all(
                 files.map(file => {
@@ -132,16 +130,15 @@ const AddPost = () => {
                         reader.onloadend = () => {
                             resolve({ file, preview: reader.result });
                         };
-                        reader.onerror = reject; // Bắt lỗi nếu có vấn đề khi đọc file
-                        reader.readAsDataURL(file); // Đọc file dưới dạng URL để hiển thị ảnh
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
                     });
                 })
             )
                 .then(newImages => {
-                    // Cập nhật state với các hình ảnh đã chọn
                     setSelectedImages(prevImages => [
                         ...prevImages,
-                        ...newImages // Thêm hình ảnh mới vào danh sách hiện tại
+                        ...newImages 
                     ]);
                 })
                 .catch(error => {
@@ -241,13 +238,11 @@ const AddPost = () => {
 
     return (
         <div>
-            <Box sx={{ display: 'flex', height: '100vh' }}>
+            <Box sx={{ display: 'flex', height: '100vh' }} className="addpost-container">
                 <Box sx={{ flex: 4, bgcolor: '#ffffff', padding: 2, justifyContent: 'center'}}>
-                    <CustomizedBreadcrumbs />
-                    <h1>Đăng tin mới</h1>
-                    <hr className="horizontal-line" />
                     <form className="form-container " onSubmit={handleSubmit}>
-                        <h2>Địa chỉ cho thuê</h2>
+                        <Typography className='title'>Đăng tin mới</Typography>
+                        <Typography className='title2'>Địa chỉ cho thuê</Typography>
                         <div style={{ display: 'flex', gap: '16px', flexGrow: 1 }}>
                             <div style={{ flex: 1 }}>
                                 <SelectWithLabel
@@ -282,21 +277,22 @@ const AddPost = () => {
                             </div>
                         </div>
                         <Box sx={{ marginTop: 2 }}>
-                            <h2>Địa chỉ chính xác</h2>
+                            <Typography className='title2'>Địa chỉ chính xác</Typography>
                             <TextField
+                                size='small'
                                 variant="outlined"
                                 value={fullAddress}
-                                size='small'
                                 InputProps={{
                                     readOnly: true,
-                                    sx: { bgcolor: '#f0f0f0' },
+                                    sx: { bgcolor: '#f0f0f0', marginBottom:'0.5rem' },
                                 }}
                                 fullWidth
                                 sx={{ marginTop: 1 }}
                             />
                         </Box>
-                        <h2>Thông tin mô tả</h2>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Chọn loại hình cho thuê</Typography>
+                        <Typography className='title2'>Thông tin mô tả</Typography>
+                        <Box className='container-info-detail'>
+                        <Typography className='title3'>Chọn loại hình cho thuê</Typography>
                         <FormControl sx={{ m: 1, minWidth: 300 }} size="small">
                             <Select
                                 sx={{ fontSize: "" }}
@@ -313,7 +309,7 @@ const AddPost = () => {
                                 <option value="Cho thuê mặt bằng, văn phòng">Cho thuê mặt bằng, văn phòng</option>
                             </Select>
                         </FormControl>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }} >Tiêu đề</Typography>
+                        <Typography className='title3' >Tiêu đề</Typography>
                         <TextField
                             size="small"
                             variant="outlined"
@@ -321,7 +317,7 @@ const AddPost = () => {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         />
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Nội dung miêu tả</Typography>
+                        <Typography className='title3'>Nội dung miêu tả</Typography>
                         <TextField
                             size="small"
                             variant="outlined"
@@ -329,7 +325,7 @@ const AddPost = () => {
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                         />
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Thông tin liên hệ</Typography>
+                        <Typography className='title3'>Thông tin liên hệ</Typography>
                         <TextField
                             variant="outlined"
                             size='small'
@@ -339,7 +335,7 @@ const AddPost = () => {
                                 sx: { bgcolor: '#f0f0f0', width: '30vw' },
                             }}
                         />
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Điện thoại</Typography>
+                        <Typography className='title3'>Điện thoại</Typography>
                         <TextField
                             sx={{ width: '30vw' }}
                             variant="outlined"
@@ -347,7 +343,7 @@ const AddPost = () => {
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                         />
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Giá cho thuê</Typography>
+                        <Typography className='title3'>Giá cho thuê</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', width: '40vw', marginBottom: 2 }}>
                             <TextField
                                 id="outlined-amount"
@@ -379,7 +375,7 @@ const AddPost = () => {
                             {error && <FormHelperText error sx={{ marginLeft: 1 }}>{error}</FormHelperText>} {/* Hiển thị thông báo lỗi */}
                         </Box>
 
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Diện tích</Typography>
+                        <Typography className='title3'>Diện tích</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', width: '40vw' }}>
                             <TextField
                                 id="amount-field"
@@ -405,7 +401,7 @@ const AddPost = () => {
                             />
                         </Box>
                         {areaError && <FormHelperText error sx={{ marginLeft: 1 }}>{areaError}</FormHelperText>}
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Đối tượng cho thuê</Typography>
+                        <Typography className='title3'>Đối tượng cho thuê</Typography>
                         <Select
 
                             size='small'
@@ -417,7 +413,7 @@ const AddPost = () => {
                             <MenuItem value="Nam">Nam</MenuItem>
                             <MenuItem value="Nữ">Nữ</MenuItem>
                         </Select>
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Số lượng tối đa</Typography>
+                        <Typography className='title3'>Số lượng tối đa</Typography>
                         <TextField
                             variant="outlined"
                             size='small'
@@ -427,7 +423,7 @@ const AddPost = () => {
                         />
                         {maxOccupantsError && <FormHelperText error sx={{ marginLeft: 1 }}>{maxOccupantsError}</FormHelperText>} {/* Hiển thị thông báo lỗi */}
 
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Link Youtube</Typography>
+                        <Typography className='title3'>Link Youtube</Typography>
                         <TextField
                             variant="outlined"
                             size='small'
@@ -439,7 +435,7 @@ const AddPost = () => {
                             }}
                             error={!!maxOccupantsError}
                         />
-                        <Typography sx={{ fontWeight: 'bold', fontSize: '18px' }}>Hình ảnh</Typography>
+                        <Typography className='title3'>Hình ảnh</Typography>
                         <p className='custom-fontp'>Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn</p>
                         <input
                             accept="image/*"
@@ -465,6 +461,7 @@ const AddPost = () => {
                                 />
                             ))}
                         </div>
+                        </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw', marginTop: 2 }}>
                             <Button
                                 type="submit"

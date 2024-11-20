@@ -103,7 +103,7 @@ const authSlice = createSlice({
                     accessToken,  // Lưu accessToken từ backend
                     googleCredential: credential, // Lưu credential của Google
                     createdAt: new Date(decodedToken.iat * 1000).toISOString(), // Thời gian tạo người dùng
-                    updatedAt: new Date().toISOString(),  // Cập nhật thời gian hiện tại
+                    updatedAt: new Date().toISOString(), 
                     __v: 0  // Mặc định là 0
                 };
                 console.log("Current User in Redux:", state.login.currentUser);

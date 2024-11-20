@@ -23,28 +23,41 @@ const userController = {
         }
     },
 
-    //khóa/mở khóa tài khoản
-    toggleBlockUser: async (req, res) => {
-      try {
-        const userId = req.params.id;
-        const user = await User.findById(userId);
+    updateUserProfile: async (req, res) => {
+        try {
+            const userId = req.params.id; 
+            const { name, phone, address, avatar, bio} = req.body;
     
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
+            let updatedFields = {
+                username: name,
+                "profile.phone": phone,
+                "profile.address": address,
+                "profile.bio": bio,
+                "profile.avatar": avatar,  
+            };
+    
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { $set: updatedFields },
+                { new: true, runValidators: true }
+            );
+    
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+    
+            res.status(200).json({
+                message: "User profile updated successfully",
+                user: updatedUser,
+            });
+        } catch (error) {
+            console.error("Error updating user profile:", error);
+            res.status(500).json({
+                message: "Server error",
+                error: error.message,
+            });
         }
-    
-        user.profile.isBlocked = !user.profile.isBlocked; // Đảo trạng thái khóa/mở khóa
-        await user.save();
-    
-        res.status(200).json({
-          message: `User ${user.profile.isBlocked ? "blocked" : "unblocked"} successfully`,
-          user,
-        });
-      } catch (error) {
-        res.status(500).json({ message: "Internal Server Error", error });
-      }
     }
 }
 
-  
 module.exports = userController;
