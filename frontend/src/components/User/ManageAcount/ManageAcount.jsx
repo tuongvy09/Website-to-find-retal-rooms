@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMenu } from '../../../redux/menuSlice';
 import Footer from "../../Footer/Footer";
 import Header from "../Header/Header";
-import AddPost from "../Post/AddPost";
+import EditProfile from "./EditProfile";
 import ListUserPost from "./listUserPost";
 import './ManageAcount.css';
 import Sidebar from "./Sidebar";
@@ -17,8 +17,6 @@ const ManageAcount = () => {
 
   const renderContent = () => {
     switch (selectedMenu) {
-      case 'newPost':
-        return <AddPost />;
       case 'postList':
         return <ListUserPost 
         setSelectedMenu={setSelectedMenu} 
@@ -27,7 +25,7 @@ const ManageAcount = () => {
       case 'updatePost':
         return <UpdatePost postId={setSelectedPost} />;
       case 'manageAccount':
-        return <div>Quản lý tài khoản</div>;
+        return <EditProfile user={currentUser}/>;
       default:
         return <div>Quản lý tài khoản</div>;
     }
