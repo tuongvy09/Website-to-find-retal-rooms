@@ -61,7 +61,7 @@ const authController = {
         try {
             const user = await User.findOne({ username: req.body.username });
             if (!user) {
-                return res.status(404).json("Wrong username!");
+                return res.status(404).json("Tên đăng nhập không đúng!");
             }
             
             if (user.profile && user.profile.isBlocked) {
@@ -70,7 +70,7 @@ const authController = {
 
             const validPassword = await bcrypt.compare(req.body.password, user.password);
             if (!validPassword) {
-                return res.status(404).json("Wrong password!");
+                return res.status(401).json("Mật khẩu không đúng!");
             }
 
             // Nếu người dùng hợp lệ
@@ -91,7 +91,7 @@ const authController = {
 
         } catch (err) {
             console.error("Error details: ", err);
-            res.status(500).json({ error: "An error occurred", details: err.message });
+            res.status(500).json({ error: "Có lỗi xảy ra. Vui lòng thử lại sau.", details: err.message });
         }
     },
 
