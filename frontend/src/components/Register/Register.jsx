@@ -15,8 +15,18 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
   const handleRegister = (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setErrorMessage("Địa chỉ email không hợp lệ!");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setErrorMessage("Mật khẩu và xác nhận mật khẩu không khớp!");
