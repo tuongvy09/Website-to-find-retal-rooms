@@ -13,24 +13,35 @@ const client = new OAuth2Client(client_id);
 const authController = {
     //REGISTER
     registerUser: async(req, res) => {
-        try{
-            const salt = await bcrypt.genSalt(10);
-            const hashed = await bcrypt.hash(req.body.password, salt);
+    try {
+        const existingUserByEmail = await User.findOne({ email: req.body.email });
+        const existingUserByUsername = await User.findOne({ username: req.body.username });
 
-            const newUser = await new User({
-                username: req.body.username,
-                email: req.body.email,
-                password: hashed,
-            });
-
-            const user = await newUser.save();
-            res.status(200).json(user);
-        }catch(err){
-            // res.status(200).json(err);
-            console.error("Error details: ", err); 
-            res.status(500).json({ error: "An error occurred", details: err.message });
+        if (existingUserByEmail) {
+            return res.status(400).json({ message: "Email đã tồn tại!" });
         }
-    },
+
+        if (existingUserByUsername) {
+            return res.status(400).json({ message: "Tên người dùng đã tồn tại!" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashed = await bcrypt.hash(req.body.password, salt);
+
+        const newUser = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashed,
+        });
+
+        const user = await newUser.save();
+        res.status(200).json(user);
+
+    } catch (err) {
+        console.error("Error details: ", err);
+        res.status(500).json({ error: "An error occurred", details: err.message });
+    }
+},
 
     //generate access token
     generateAccessToken: (user) =>{
@@ -70,7 +81,7 @@ const authController = {
 
             const validPassword = await bcrypt.compare(req.body.password, user.password);
             if (!validPassword) {
-                return res.status(401).json("Mật khẩu không đúng!");
+                return res.status(40).json("Mật khẩu không đúng!");
             }
 
             // Nếu người dùng hợp lệ

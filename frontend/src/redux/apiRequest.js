@@ -48,25 +48,36 @@ export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
     }
   };  
 
-export const registerUser = async(user, dispatch, navigate) =>{
+  export const registerUser = async (user, dispatch, navigate, setErrorMessage) => {
     axios.defaults.baseURL = 'http://localhost:8000';
     dispatch(registerStart());
-    try{
-        const res = await axios.post("/v1/auth/register", user);
-        dispatch(registerSuccess((await res).data));
-        navigate("/login");
-    }catch(err){
-        if (err.response) {
+    
+    try {
+      const res = await axios.post("/v1/auth/register", user);
+      dispatch(registerSuccess(res.data));
+      navigate("/login");
+    } catch (err) {
+      if (err.response) {
         console.error("Register error:", err.response.data);
-        // Optionally, you can access a specific error message if it exists
-        const errorMessage = err.response.data.message || "Register failed"; 
-        console.error("Error message:", errorMessage);
-    } else {
+        
+        // Kiểm tra lỗi trả về từ server và hiển thị thông báo tương ứng
+        const errorMessage = err.response.data.message || "Đăng ký thất bại!";
+        
+        // Nếu lỗi là trùng email hoặc trùng tên, hiển thị thông báo cụ thể
+        if (err.response.data.message.includes("Email đã tồn tại")) {
+          setErrorMessage("Email đã tồn tại. Vui lòng chọn email khác.");
+        } else if (err.response.data.message.includes("Tên người dùng đã tồn tại")) {
+          setErrorMessage("Tên người dùng đã tồn tại. Vui lòng chọn tên khác.");
+        } else {
+          setErrorMessage(errorMessage);
+        }
+      } else {
         console.error("Register error:", err.message);
+        setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại.");
+      }
+      dispatch(registerFailed());
     }
-    dispatch(registerFailed());
-    }
-};
+  };  
 
 export const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
     console.log("Access Token:", accessToken);
