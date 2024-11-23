@@ -8,10 +8,10 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");  
-  const [errorMessage, setErrorMessage] = useState(""); 
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const Register = () => {
       password: password,
     };
 
-    registerUser(newUser, dispatch, navigate, setErrorMessage);  
+    registerUser(newUser, dispatch, navigate, setErrorMessage);
   };
 
   return (
@@ -73,13 +73,13 @@ const Register = () => {
                 <label>Mật khẩu</label>
                 <div className="input-container">
                   <input
-                    type={showPassword ? "text" : "password"} 
+                    type={showPassword ? "text" : "password"}
                     placeholder="Nhập mật khẩu"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <span
                     className="toggle-password"
-                    onClick={() => setShowPassword(!showPassword)} 
+                    onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? "🙈" : "👁️"}
                   </span>
@@ -89,20 +89,22 @@ const Register = () => {
                 <label>Xác nhận mật khẩu</label>
                 <div className="input-container">
                   <input
-                    type={showConfirmPassword ? "text" : "password"} 
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="Xác nhận mật khẩu"
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   <span
                     className="toggle-password"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? "🙈" : "👁️"}
                   </span>
                 </div>
               </div>
 
-              {errorMessage && <div className="error-message">{errorMessage}</div>}
+              {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+              )}
 
               <div className="form-group">
                 <div className="form-center">
@@ -123,7 +125,6 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <div className="form-bg"></div>
       </div>
     </section>
   );

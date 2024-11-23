@@ -10,6 +10,7 @@ router.get("/", middlewareControllers.verifyToken, userController.getAllUsers);
 
 //delete user
 router.delete("/:id", middlewareControllers.verifyTokenAndAdminAuth, userController.deleteUser);
+
 //update user profile
 router.put("/update-profile/:id", middlewareControllers.verifyToken, uploadCloud.array('profile.avatar', 1), userController.updateUserProfile);
 

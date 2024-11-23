@@ -11,8 +11,8 @@ const Login = () => {
   document.title = "Đăng nhập";
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); 
-  const [errorMessage, setErrorMessage] = useState("");  
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const Login = () => {
   }, [currentUser, navigate]);
 
   const handleLogin = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const userData = { username, password };
     await loginUser(userData, dispatch, navigate, setErrorMessage);
   };
@@ -69,26 +69,36 @@ const Login = () => {
                 <label>Mật khẩu:</label>
                 <div className="input-container">
                   <input
+                    className="password"
                     type={showPassword ? "text" : "password"} // Thay đổi type dựa trên showPassword
                     placeholder="Nhập mật khẩu"
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <span
+                  <p
                     className="toggle-password"
                     onClick={() => setShowPassword(!showPassword)} // Thay đổi trạng thái showPassword
                   >
-                    {showPassword ? "🙈" : "👁️"} 
-                  </span>
+                    <span> {showPassword ? "🙈" : "👁️"}</span>
+                  </p>
                 </div>
               </div>
               <div className="form-group">
+                <div className="error-message">
+                  <p>{errorMessage}</p>
+                </div>
                 <div className="button-container">
                   <button type="submit"> Đăng nhập </button>
                 </div>
               </div>
-              <div className="error-message">
-                  <p>{errorMessage}</p>
+              <div className="form-group">
+                <div className="form-center">
+                  <div className="login-register">
+                    <Link className="login-register-link" to="/forgot-password">
+                      Quên mật khẩu?
+                    </Link>
+                  </div>
                 </div>
+              </div>
               <div className="form-group">
                 <div className="form-line">
                   <p>Hoặc</p>
@@ -99,9 +109,6 @@ const Login = () => {
                     onError={() => console.log("Lỗi đăng nhập Google")}
                   />
                 </div>
-              </div>
-              <div className="forgot-password-link">
-                <Link to="/forgot-password">Quên mật khẩu?</Link>
               </div>
               <div className="form-group">
                 <div className="form-center">
@@ -116,7 +123,6 @@ const Login = () => {
             </form>
           </div>
         </div>
-        <div className="form-bg"></div>
       </div>
       <ToastContainer position="top-right" autoClose={5000} />
     </section>

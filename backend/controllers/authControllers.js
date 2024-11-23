@@ -195,7 +195,7 @@ const authController = {
                 service: "Gmail",
                 auth: {
                     user: process.env.EMAIL_USER, // email bạn sẽ dùng để gửi mã
-                    pass: 'gene aqfo xdno jtpz', // mật khẩu hoặc mã ứng dụng của email
+                    pass: process.env.EMAIL_PASS, // mật khẩu hoặc mã ứng dụng của email
                 },
             });
     
