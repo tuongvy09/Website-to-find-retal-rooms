@@ -69,6 +69,7 @@ const authController = {
 
     //LOGIN
     loginUser: async (req, res) => {
+        const client_id = '542714924408-kun6tfccnlcit4k9ono82oue7vqhth70.apps.googleusercontent.com';
         try {
             const user = await User.findOne({ username: req.body.username });
             if (!user) {
