@@ -22,6 +22,8 @@ import NewsDetailUser from './components/User/News/NewsDetail/NewsDetailUser';
 import NewsListUser from './components/User/News/NewsList/NewsListUser';
 import AddPost from './components/User/Post/AddPost';
 import PostDetail from './components/User/Post/PostDetail';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
 
 function App() {
   return (

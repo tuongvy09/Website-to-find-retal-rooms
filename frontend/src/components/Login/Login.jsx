@@ -11,36 +11,27 @@ const Login = () => {
   document.title = "Đăng nhập";
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Lấy trạng thái người dùng hiện tại từ Redux store
   const currentUser = useSelector((state) => state.auth.login.currentUser);
 
   useEffect(() => {
     if (currentUser) {
       if (currentUser.admin === true) {
-        navigate("/admin-dashboard"); 
+        navigate("/admin-dashboard");
       } else {
-        navigate("/"); 
+        navigate("/");
       }
     }
   }, [currentUser, navigate]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const newUser = {
-      username: username,
-      password: password,
-    };
-    loginUser(newUser, dispatch, navigate)
-      .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          // Hiển thị thông báo khi tài khoản bị khóa
-          toast.error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.");
-          console.error('Lỗi khi cập nhật tin tức:', error);
-        }
-      });
+    const userData = { username, password };
+    await loginUser(userData, dispatch, navigate, setErrorMessage);
   };
 
   const handleGoogleLogin = (response) => {
@@ -48,11 +39,8 @@ const Login = () => {
       console.log("Lỗi đăng nhập Google:", response.error);
     } else {
       const { credential } = response;
-      console.log("Credential từ Google:", credential);
-
-      // Gọi googleLogin từ apiRequest để xác thực với backend
       googleLogin(credential, dispatch, navigate)
-        .then(() => toast.success("Đăng nhập Google thành công")) // Show success toast
+        .then(() => toast.success("Đăng nhập Google thành công"))
         .catch((err) => {
           toast.error("Lỗi khi đăng nhập Google.");
           console.error("Lỗi khi đăng nhập Google:", err);
@@ -81,15 +69,34 @@ const Login = () => {
                 <label>Mật khẩu:</label>
                 <div className="input-container">
                   <input
-                    type="password"
+                    className="password"
+                    type={showPassword ? "text" : "password"} // Thay đổi type dựa trên showPassword
                     placeholder="Nhập mật khẩu"
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <p
+                    className="toggle-password"
+                    onClick={() => setShowPassword(!showPassword)} // Thay đổi trạng thái showPassword
+                  >
+                    <span> {showPassword ? "🙈" : "👁️"}</span>
+                  </p>
                 </div>
               </div>
               <div className="form-group">
+                <div className="error-message">
+                  <p>{errorMessage}</p>
+                </div>
                 <div className="button-container">
                   <button type="submit"> Đăng nhập </button>
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="form-center">
+                  <div className="login-register">
+                    <Link className="login-register-link" to="/forgot-password">
+                      Quên mật khẩu?
+                    </Link>
+                  </div>
                 </div>
               </div>
               <div className="form-group">
@@ -102,9 +109,6 @@ const Login = () => {
                     onError={() => console.log("Lỗi đăng nhập Google")}
                   />
                 </div>
-              </div>
-              <div className="forgot-password-link">
-                <Link to="/forgot-password">Quên mật khẩu?</Link>
               </div>
               <div className="form-group">
                 <div className="form-center">
@@ -119,7 +123,6 @@ const Login = () => {
             </form>
           </div>
         </div>
-        <div className="form-bg"></div>
       </div>
       <ToastContainer position="top-right" autoClose={5000} />
     </section>

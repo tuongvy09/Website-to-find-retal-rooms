@@ -13,24 +13,35 @@ const client = new OAuth2Client(client_id);
 const authController = {
     //REGISTER
     registerUser: async(req, res) => {
-        try{
-            const salt = await bcrypt.genSalt(10);
-            const hashed = await bcrypt.hash(req.body.password, salt);
+    try {
+        const existingUserByEmail = await User.findOne({ email: req.body.email });
+        const existingUserByUsername = await User.findOne({ username: req.body.username });
 
-            const newUser = await new User({
-                username: req.body.username,
-                email: req.body.email,
-                password: hashed,
-            });
-
-            const user = await newUser.save();
-            res.status(200).json(user);
-        }catch(err){
-            // res.status(200).json(err);
-            console.error("Error details: ", err); 
-            res.status(500).json({ error: "An error occurred", details: err.message });
+        if (existingUserByEmail) {
+            return res.status(400).json({ message: "Email đã tồn tại!" });
         }
-    },
+
+        if (existingUserByUsername) {
+            return res.status(400).json({ message: "Tên người dùng đã tồn tại!" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashed = await bcrypt.hash(req.body.password, salt);
+
+        const newUser = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashed,
+        });
+
+        const user = await newUser.save();
+        res.status(200).json(user);
+
+    } catch (err) {
+        console.error("Error details: ", err);
+        res.status(500).json({ error: "An error occurred", details: err.message });
+    }
+},
 
     //generate access token
     generateAccessToken: (user) =>{
@@ -58,10 +69,11 @@ const authController = {
 
     //LOGIN
     loginUser: async (req, res) => {
+        const client_id = '542714924408-kun6tfccnlcit4k9ono82oue7vqhth70.apps.googleusercontent.com';
         try {
             const user = await User.findOne({ username: req.body.username });
             if (!user) {
-                return res.status(404).json("Wrong username!");
+                return res.status(404).json("Tên đăng nhập không đúng!");
             }
             
             if (user.profile && user.profile.isBlocked) {
@@ -70,7 +82,7 @@ const authController = {
 
             const validPassword = await bcrypt.compare(req.body.password, user.password);
             if (!validPassword) {
-                return res.status(404).json("Wrong password!");
+                return res.status(40).json("Mật khẩu không đúng!");
             }
 
             // Nếu người dùng hợp lệ
@@ -91,7 +103,7 @@ const authController = {
 
         } catch (err) {
             console.error("Error details: ", err);
-            res.status(500).json({ error: "An error occurred", details: err.message });
+            res.status(500).json({ error: "Có lỗi xảy ra. Vui lòng thử lại sau.", details: err.message });
         }
     },
 
@@ -183,7 +195,7 @@ const authController = {
                 service: "Gmail",
                 auth: {
                     user: process.env.EMAIL_USER, // email bạn sẽ dùng để gửi mã
-                    pass: 'gene aqfo xdno jtpz', // mật khẩu hoặc mã ứng dụng của email
+                    pass: process.env.EMAIL_PASS, // mật khẩu hoặc mã ứng dụng của email
                 },
             });
     

@@ -4,68 +4,80 @@ import { deleteUserFailed, deleteUserStart, deleteUserSuccess, getUsersFailed, g
 import { googleLoginStart, googleLoginSuccess, googleLoginFailed, forgotPasswordSuccess, forgotPasswordFailed } from "./authSlice"; // Nếu bạn muốn tạo slice cho Google Login
 import { toast } from "react-toastify";
 
-export const loginUser = async (user, dispatch, navigate) => {
+export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
     axios.defaults.baseURL = 'http://localhost:8000';
     dispatch(loginStart());
   
     try {
       const res = await axios.post("/v1/auth/login", user);
-      const userData = res.data; 
+      const userData = res.data;
   
       dispatch(loginSuccess(userData));
   
-      // Kiểm tra username để điều hướng
+      // Redirect user based on their role
       if (userData.admin === true) {
         navigate("/admin-dashboard");
       } else {
         navigate("/");
       }
     } catch (err) {
+      // Check if the error has a response from the server
       if (err.response) {
-        console.error("Login error:", err.response.data);
-        const errorMessage = err.response.data.message || "Login failed";
+        console.error("Login Error:", err.response.data);
   
-        // Check for specific error responses and show corresponding messages
-        if (err.response.status === 403) {
-          // Tài khoản bị khóa
-          toast.error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.");
+        // Handle specific error codes from the server
+        if (err.response.status === 404) {
+          setErrorMessage("Tên đăng nhập không đúng!");
         } else if (err.response.status === 401) {
-          // Sai tên đăng nhập hoặc mật khẩu
-          toast.error("Tên đăng nhập hoặc mật khẩu không đúng.");
+          setErrorMessage("Mật khẩu không đúng!");
+        } else if (err.response.status === 403) {
+          toast.error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.");
         } else {
-          // For other errors, show the general message from the response
-          toast.error(errorMessage);
+          setErrorMessage(err.response.data.message || "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.");
         }
+      } else if (err.request) {
+        console.error("Network error or no response from the server:", err.message);
+        setErrorMessage("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.");
       } else {
-        console.error("Login error:", err.message);
-  
-        // Handle network errors or any other issues
-        toast.error("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.");
+        // Handle other unexpected errors
+        console.error("Other error:", err.message);
+        setErrorMessage("Đã xảy ra lỗi không xác định. Vui lòng thử lại.");
       }
   
       dispatch(loginFailed());
     }
-  };
+  };  
 
-export const registerUser = async(user, dispatch, navigate) =>{
+  export const registerUser = async (user, dispatch, navigate, setErrorMessage) => {
     axios.defaults.baseURL = 'http://localhost:8000';
     dispatch(registerStart());
-    try{
-        const res = await axios.post("/v1/auth/register", user);
-        dispatch(registerSuccess((await res).data));
-        navigate("/login");
-    }catch(err){
-        if (err.response) {
+    
+    try {
+      const res = await axios.post("/v1/auth/register", user);
+      dispatch(registerSuccess(res.data));
+      navigate("/login");
+    } catch (err) {
+      if (err.response) {
         console.error("Register error:", err.response.data);
-        // Optionally, you can access a specific error message if it exists
-        const errorMessage = err.response.data.message || "Register failed"; 
-        console.error("Error message:", errorMessage);
-    } else {
+        
+        // Kiểm tra lỗi trả về từ server và hiển thị thông báo tương ứng
+        const errorMessage = err.response.data.message || "Đăng ký thất bại!";
+        
+        // Nếu lỗi là trùng email hoặc trùng tên, hiển thị thông báo cụ thể
+        if (err.response.data.message.includes("Email đã tồn tại")) {
+          setErrorMessage("Email đã tồn tại. Vui lòng chọn email khác.");
+        } else if (err.response.data.message.includes("Tên người dùng đã tồn tại")) {
+          setErrorMessage("Tên người dùng đã tồn tại. Vui lòng chọn tên khác.");
+        } else {
+          setErrorMessage(errorMessage);
+        }
+      } else {
         console.error("Register error:", err.message);
+        setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại.");
+      }
+      dispatch(registerFailed());
     }
-    dispatch(registerFailed());
-    }
-};
+  };  
 
 export const getAllUsers = async (accessToken, dispatch, axiosJWT) => {
     console.log("Access Token:", accessToken);

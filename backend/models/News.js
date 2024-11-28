@@ -8,16 +8,21 @@ const newsSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
+    minlength: [10, 'Description must be at least 10 characters long'],
   },
   content: {
     type: String,
     required: true,
+    minlength: [200, 'Content must be at least 10 characters long'],
   },
   author: {
     type: String, 
     required: true,
   },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  },
   imageUrl: {
     type: String,
     required: false, 
