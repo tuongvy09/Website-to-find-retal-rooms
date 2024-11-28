@@ -19,16 +19,17 @@ export const createPost = async (postData, token) => {
   }
 }
 
-export const getAllPosts = async (token) => { 
+export const getAllPosts = async (token, page = 1, limit = 10) => { 
   try {
     const response = await axios.get(`${API_URL}posts`, {
+      params: { page, limit },
       headers: {
-        Authorization: `Bearer ${token}` // Thêm token vào header
+        Authorization: `Bearer ${token}`
       }
     });
-    return response.data; // Return the data from the response
+    return response.data;
   } catch (error) {
-    throw new Error(error.message); // Throw an error if the request fails
+    throw new Error(error.message); 
   }
 };
 
