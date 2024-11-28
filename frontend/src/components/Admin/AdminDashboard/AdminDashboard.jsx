@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import Footer from '../../Footer/Footer';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import ManagePosts from '../ManagePost/ManagePosts';
-import './AdminDashboard.css';
 import Sidebar from '../Sidebar/Sidebar';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);
@@ -22,7 +22,7 @@ const AdminDashboard = () => {
       case 'updateList':
         return <div>Quản lý tài khoản</div>;
       default:
-        return <div>Quản lý tài khoản</div>;
+        return <ManagePosts/>;
     }
   };
 

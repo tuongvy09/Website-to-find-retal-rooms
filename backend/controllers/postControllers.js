@@ -37,8 +37,19 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.find();
-        res.status(200).json(posts); 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10; 
+        const startIndex = (page - 1) * limit;
+        const total = await Post.countDocuments();
+        const posts = await Post.find()
+            .skip(startIndex)
+            .limit(limit);
+        res.status(200).json({
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalItems: total,
+            posts,
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -86,7 +97,7 @@ exports.deletePost = async (req, res) => {
             return res.status(404).json({ message: 'Bài đăng không tồn tại.' });
         }
         await Post.findByIdAndDelete(req.params.id);
-        res.status(204).send(); 
+        res.status(200).json({ message: 'Delete post successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -166,3 +177,38 @@ exports.toggleVisibility = async (req, res) => {
     }
   };
   
+//Lấy post của admin theo trạng thái có phân trang
+exports.getUserPostAd = async (req, res) => {
+    try {
+        const { status, visibility, page = 1, limit = 10 } = req.query;
+
+        if (!status || !visibility) {
+            return res.status(400).json({ message: "State and visibility are required" });
+        }
+        const startIndex = (page - 1) * limit; 
+        const total = await Post.countDocuments({
+            "contactInfo.user": req.user.id,
+            status,
+            visibility,
+        });
+
+        const posts = await Post.find({
+            "contactInfo.user": req.user.id,
+            status,
+            visibility,
+        })
+        .skip(startIndex)
+        .limit(parseInt(limit))
+        .exec();
+
+        res.status(200).json({
+            currentPage: parseInt(page),
+            totalPages: Math.ceil(total / limit),
+            totalItems: total,
+            posts,
+        });
+    } catch (error) {
+        console.error("Error fetching user posts by state and visibility:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
