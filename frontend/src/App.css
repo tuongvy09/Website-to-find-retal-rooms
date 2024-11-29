@@ -37,23 +37,18 @@
   }
 }
 
-/* App.css */
-
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
 .app-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
 }
 
-.content-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.content-wrapper {
+  flex: 1 !important; 
+}
+
+footer {  
+  background-color: #27415b !important;
+  padding: 1rem !important;
+  text-align: center !important;
 }

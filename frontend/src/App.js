@@ -15,13 +15,16 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import ResetPassword from './components/ResetPassword/ResetPassword ';
 import Header from './components/User/Header/Header';
-import Home from './components/User/Home/Home';
+// import Home from './components/User/Home/Home';
 import ManageAcount from './components/User/ManageAcount/ManageAcount';
 import UpdatePost from './components/User/ManageAcount/UpdatePost';
 import NewsDetailUser from './components/User/News/NewsDetail/NewsDetailUser';
 import NewsListUser from './components/User/News/NewsList/NewsListUser';
 import AddPost from './components/User/Post/AddPost';
 import PostDetail from './components/User/Post/PostDetail';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword ';
+import ResetPassword from './components/ResetPassword/ResetPassword ';
+import SearchPosts from './components/User/Search/searchPosts';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 
@@ -29,12 +32,12 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <Routes>
+      <div className="content-wrapper">
+      <Routes>
           <Route path="/" element={
             <>
               <Header />
-              <Home />
-              <Footer />
+              <SearchPosts /> 
             </>
           } />
           <Route path="/admin-dashboard" element={
@@ -60,42 +63,36 @@ function App() {
             <>
             <AdminHeader />
             <EditNewsForm />
-            <Footer />
             </>
             } />
           <Route path="/TinTuc" element={
             <>
             <Header />
             <NewsListUser />
-            <Footer />
             </>
             } />
           <Route path="/news/:id" element={
             <>
             <Header />
             <NewsDetailUser />
-            <Footer />
             </>
             } />
           <Route path="/manage-news/:id" element={
            <>
            <AdminHeader />
            <NewsDetail />
-           <Footer />
          </>
             } />
           <Route path="/manage-users" element={
             <>
               <AdminHeader />
               <ManageUsers />
-              <Footer />
             </>
           } />
           <Route path="/manage-news/*" element={
             <>
               <AdminHeader />
               <NewsManagement />
-              <Footer />
             </>
           }>
             {/* Các Route con của /manage-news */}
@@ -105,6 +102,8 @@ function App() {
 
           </Route>
         </Routes>
+        </div>
+        <Footer />
       </div>
     </Router>
   );

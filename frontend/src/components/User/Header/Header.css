@@ -2,6 +2,12 @@
     background-color: #000000 !important;
     padding: 0;
     margin: 0;
+    position: fixed; /* Đặt header cố định ở trên cùng */
+    top: 0; /* Đảm bảo nó ở trên cùng */
+    left: 0;
+    width: 100%; /* Chiều rộng của header là 100% */
+    z-index: 1000; /* Đảm bảo header luôn ở trên cùng so với các phần tử khác */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Thêm bóng cho header để dễ phân biệt với nội dung */
 }
 
 .header-title {
