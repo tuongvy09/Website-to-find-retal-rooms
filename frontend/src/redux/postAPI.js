@@ -110,3 +110,17 @@ export const updatePost = async (postId, postData, token) => {
     throw error;
   }
 };
+
+export const searchPosts = async (params, token) => {
+  try {
+    const response = await axios.get(`${API_URL}search`, {
+      params,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // Trả về danh sách bài đăng tìm kiếm
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

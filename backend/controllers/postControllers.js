@@ -165,4 +165,61 @@ exports.toggleVisibility = async (req, res) => {
       res.status(500).json({ message: 'Lỗi server', error: error.message });
     }
   };
+
+  const convertPrice = (price) => {
+    const value = parseFloat(price.replace(/[^\d.-]/g, ''));
+    return isNaN(value) ? 0 : value; // Trả về 0 nếu không chuyển được
+  };
   
+  const convertArea = (area) => {
+    const value = parseFloat(area.replace(/[^\d.-]/g, ''));
+    return isNaN(value) ? 0 : value; // Trả về 0 nếu không chuyển được
+  };  
+  
+  //tìm kiếm bài đăng
+  exports.searchPosts = async (req, res) => {
+    try {
+      const { keyword, province, category, minPrice, maxPrice, minArea, maxArea } = req.query;
+  
+      // Tạo filter từ query
+      const filter = {
+        visibility: 'visible',
+        status: 'approved',
+      };
+  
+      // Tìm theo từ khóa
+      if (keyword) {
+        filter.$or = [
+          { category: { $regex: keyword, $options: 'i' } },
+          { title: { $regex: keyword, $options: 'i' } },
+          { content: { $regex: keyword, $options: 'i' } },
+        ];
+      }
+  
+      // Tìm theo tỉnh thành
+      if (province) filter["address.province"] = province;
+  
+      // Tìm theo danh mục
+      if (category) filter.category = category;
+  
+      // Tìm theo giá
+      if (minPrice || maxPrice) {
+        filter["contactInfo.rentalPrice"] = {};
+        if (minPrice) filter["contactInfo.rentalPrice"].$gte = convertPrice(minPrice);
+        if (maxPrice) filter["contactInfo.rentalPrice"].$lte = convertPrice(maxPrice);
+      }
+  
+      // Tìm theo diện tích
+      if (minArea || maxArea) {
+        filter.area = {};
+        if (minArea) filter.area.$gte = convertArea(minArea);
+        if (maxArea) filter.area.$lte = convertArea(maxArea);
+      }
+  
+      // Lấy bài đăng từ MongoDB
+      const posts = await Post.find(filter);
+      res.status(200).json(posts);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };  

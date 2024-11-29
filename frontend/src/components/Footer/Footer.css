@@ -1,16 +1,100 @@
 .footer {
-    background-color: #292929;
-    padding: 20px;
-    text-align: center;
-    margin-top: auto; /* Giúp footer đứng ở dưới cùng nếu sử dụng flexbox */
-}
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    background-color: #000000;
+    padding: 20px 50px;
+    color: white;
+    margin-top: auto;
+  }
+  
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;  
+  }
 
-.footer h6 {
-    margin: 0;
-    font-size: 1.5rem; /* Kích thước chữ cho tiêu đề */
-}
-
-.footer p {
-    margin: 5px 0; /* Khoảng cách giữa các dòng */
-    font-size: 1rem; /* Kích thước chữ cho các dòng khác */
-}
+  .footer-logo-description, .footer-links, .footer-newsletter, .footer-contact {
+    padding: 10px;
+  }
+  
+  .footer-logo {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .footer-description {
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  
+  .footer-social {
+    margin-top: 20px;
+  }
+  
+  .social-button {
+    color: white;
+    margin-right: 10px;
+  }
+  
+  .footer-links {
+    margin-left: 20px;
+  }
+  
+  .footer-links h6 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .footer-links .MuiTypography-body2 {
+    margin-bottom: 5px;
+  }
+  
+  .footer-newsletter {
+    margin-left: 20px;
+  }
+  
+  .footer-newsletter h6 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .footer-newsletter .email-input {
+    background-color: aliceblue;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .footer-newsletter .subscribe-button {
+    background-color: #4caf50;
+    color: white;
+    margin-top: 10px;
+  }
+  
+  .footer-contact {
+    margin-left: 20px;
+  }
+  
+  .footer-contact h6 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .footer-contact .MuiTypography-body2 {
+    margin-top: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .footer {
+      grid-template-columns: 1fr;
+      padding: 20px;
+    }
+  
+    .footer-logo-description, .footer-links, .footer-newsletter, .footer-contact {
+      margin-bottom: 20px;
+    }
+  
+    .footer-social {
+      margin-top: 15px;
+    }
+  }  
