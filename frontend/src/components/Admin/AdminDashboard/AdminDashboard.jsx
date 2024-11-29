@@ -68,7 +68,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  BarElement, // Đăng ký BarElement cho biểu đồ cột
+  BarElement, 
   Title,
   Tooltip,
   Legend
@@ -78,12 +78,12 @@ const AdminDashboard = () => {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [chartData, setChartData] = useState(null);
   const [chartTitle, setChartTitle] = useState("");
-  const [activeStat, setActiveStat] = useState("date"); // Mặc định là thống kê theo ngày
-  const [loading, setLoading] = useState(false); // Quản lý trạng thái tải dữ liệu
-  const [error, setError] = useState(null); // Quản lý trạng thái lỗi
+  const [activeStat, setActiveStat] = useState("date");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const [startDate, setStartDate] = useState(new Date()); // Ngày bắt đầu
-  const [endDate, setEndDate] = useState(new Date()); // Ngày kết thúc
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
     if (!user || !user.accessToken) {
@@ -94,8 +94,8 @@ const AdminDashboard = () => {
   }, [user]);
 
   const fetchData = async (type) => {
-    setLoading(true); // Bắt đầu tải dữ liệu
-    setError(null); // Reset lỗi nếu có
+    setLoading(true);
+    setError(null);
 
     let endpoint;
     let title;
@@ -135,57 +135,75 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu:", error);
       setError("Có lỗi xảy ra khi tải dữ liệu.");
+      setChartData(getEmptyChartData(type)); // Biểu đồ trống
     } finally {
       setLoading(false);
     }
   };
 
-  // Xử lý và định dạng dữ liệu biểu đồ từ phản hồi API
   const processChartData = (data, type) => {
+    if (!data || data.length === 0) {
+      setChartData(getEmptyChartData(type));
+      return;
+    }
+
     const labels = data.map((item) =>
       type === "date" ? item._id : item._id || "Không rõ"
     );
     const counts = data.map((item) => item.count);
 
-    // Kiểm tra loại thống kê để chọn biểu đồ thích hợp
-    if (type === "date") {
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: "Số lượng bài đăng",
-            data: counts,
-            fill: false, // Không tô màu vùng dưới đường
-            borderColor: "#A3D9A5", // Màu đường
-            tension: 0.1, // Độ cong của đường
-            borderWidth: 2, // Độ dày của đường
-          },
-        ],
-      });
-    } else {
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: "Số lượng bài đăng",
-            data: counts,
-            fill: true,
-            backgroundColor: "#B7E4C7", 
-            borderColor: "#2D6A4F", 
-            tension: 0.1, // Độ cong của đường
-            borderWidth: 2,
-          },
-        ],
-      });
-    }
-  };
+      // Kiểm tra loại thống kê để chọn biểu đồ thích hợp
+      if (type === "date") {
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: "Số lượng bài đăng",
+              data: counts,
+              fill: false, // Không tô màu vùng dưới đường
+              borderColor: "#A3D9A5", // Màu đường
+              tension: 0.1, // Độ cong của đường
+              borderWidth: 2, // Độ dày của đường
+            },
+          ],
+        });
+      } else {
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: "Số lượng bài đăng",
+              data: counts,
+              fill: true,
+              backgroundColor: "#B7E4C7", 
+              borderColor: "#2D6A4F", 
+              tension: 0.1, // Độ cong của đường
+              borderWidth: 2,
+            },
+          ],
+        });
+      }
+    };
+
+  // Hàm tạo dữ liệu biểu đồ trống
+  const getEmptyChartData = (type) => ({
+    labels: type === "date" ? ["Ngày 1", "Ngày 2", "Ngày 3"] : ["Danh mục 1", "Danh mục 2", "Danh mục 3"],
+    datasets: [
+      {
+        label: "Dữ liệu trống",
+        data: [0, 0, 0],
+        backgroundColor: "#e0e0e0",
+        borderColor: "#9e9e9e",
+        borderWidth: 1,
+      },
+    ],
+  });
 
   return (
     <>
       <AdminHeader />
       <div className="admin-dashboard">
         <h2>Thống Kê Quản Trị</h2>
-        
         <div className="buttons">
           <button
             className={activeStat === "date" ? "active" : ""}
@@ -206,42 +224,36 @@ const AdminDashboard = () => {
             Top 7 Tỉnh/Thành Phố
           </button>
         </div>
-  
-        {/* Chọn ngày bắt đầu và ngày kết thúc ở dưới các nút thống kê */}
-        <div className="date-picker">
-          <label>Chọn ngày bắt đầu:</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            dateFormat="yyyy/MM/dd"
-          />
-          <label>Chọn ngày kết thúc:</label>
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            dateFormat="yyyy/MM/dd"
-          />
-        </div>
-  
-        {/* Hiển thị thông báo lỗi nếu có */}
+        {activeStat === "date" && (
+          <div className="date-picker">
+            <label>Chọn ngày bắt đầu:</label>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              dateFormat="yyyy/MM/dd"
+            />
+            <label>Chọn ngày kết thúc:</label>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="yyyy/MM/dd"
+            />
+          </div>
+        )}
         {error && <p style={{ color: "red" }}>{error}</p>}
-  
-        {/* Hiển thị biểu đồ nếu có dữ liệu */}
-        {chartData ? (
-          <div className="chart-container">
-            <h3>{chartTitle}</h3>
-            {activeStat === "date" ? (
+        <div className="chart-container">
+          <h3>{chartTitle}</h3>
+          {chartData && (
+            activeStat === "date" ? (
               <Line data={chartData} />
             ) : (
               <Bar data={chartData} />
-            )}
-          </div>
-        ) : (
-          <p>Không có dữ liệu để hiển thị.</p>
-        )}
+            )
+          )}
+        </div>
       </div>
     </>
   );
-};  
+};
 
 export default AdminDashboard;
