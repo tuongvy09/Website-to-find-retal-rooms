@@ -27,9 +27,18 @@ router.get('/list-post-pending',middlewareControllers.verifyToken, postControlle
 router.put('/update/:postId',middlewareControllers.verifyToken, postController.updatePost);
 
 // Route ẩn/hiện bài đăng
-router.put('/toggle-visibility/:postId',middlewareControllers.verifyToken, postController.toggleVisibility);
+router.put('/toggle-visibility/:postId', middlewareControllers.verifyToken, postController.toggleVisibility);
 
 // Route tìm kiếm bài đăng
 router.get('/search', postController.searchPosts);
+
+// Route thống kê số lượng bài đăng theo ngày
+router.get('/by-date', middlewareControllers.verifyTokenAndAdminAuth, postController.getPostCountByDateRange);
+
+// Route thống kê 7 loại hình cho thuê nhiều bài đăng nhất
+router.get('/top-categories', middlewareControllers.verifyTokenAndAdminAuth, postController.getTopCategories);
+
+// Route thống kê 7 tỉnh/thành phố nhiều bài đăng nhất
+router.get('/top-provinces', middlewareControllers.verifyTokenAndAdminAuth, postController.getTopProvinces);
 
 module.exports = router;

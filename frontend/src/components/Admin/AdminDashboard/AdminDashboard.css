@@ -1,4 +1,4 @@
-.container-home-admin {
+/* .container-home-admin {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -15,4 +15,64 @@
   background-color: #f4f4f4;
   height: 100%;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+} */
+
+.admin-dashboard {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.admin-dashboard h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.buttons button {
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.buttons button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.buttons .active {
+  background-color: #0056b3;
+}
+
+.chart-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.chart-container h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #555;
+}
+
+.chart-container p {
+  text-align: center;
+  color: #888;
 }
