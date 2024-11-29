@@ -67,7 +67,7 @@ const AddPost = () => {
     const [rentalPrice, setRentalPrice] = useState('');
     const [currency, setCurrency] = useState('dong_thang');
     const [area, setArea] = useState('');
-    const formattedArea = `${area}m²`;
+    const formattedArea = `${area} m²`;
     const [areaError, setAreaError] = useState(''); 
     const [rentalTarget, setRentalTarget] = useState('');
     const [maxOccupants, setMaxOccupants] = useState('');
