@@ -125,3 +125,48 @@ export const searchPosts = async (params, token) => {
     throw new Error(error.message);
   }
 };
+
+export const getPostCountByDateRange = async (startDate, endDate, token) => {
+  try {
+    const response = await axios.get(`${API_URL}by-date`, {
+      params: { startDate, endDate },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // Trả về dữ liệu thống kê số lượng bài đăng theo ngày
+  } catch (error) {
+    console.error('Lỗi khi gọi API thống kê số lượng bài đăng theo ngày:', error);
+    throw error;
+  }
+};
+
+// Get top categories with the most posts
+export const getTopCategories = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}top-categories`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // Trả về danh sách 7 loại hình cho thuê có nhiều bài đăng nhất
+  } catch (error) {
+    console.error('Lỗi khi gọi API thống kê 7 loại hình cho thuê nhiều bài đăng nhất:', error);
+    throw error;
+  }
+};
+
+// Get top provinces with the most posts
+export const getTopProvinces = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}top-provinces`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // Trả về danh sách 7 tỉnh/thành phố có nhiều bài đăng nhất
+  } catch (error) {
+    console.error('Lỗi khi gọi API thống kê 7 tỉnh/thành phố nhiều bài đăng nhất:', error);
+    throw error;
+  }
+};

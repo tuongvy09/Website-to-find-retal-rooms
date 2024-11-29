@@ -195,7 +195,7 @@ exports.toggleVisibility = async (req, res) => {
       // Tạo filter từ query
       const filter = {
         visibility: 'visible',
-        status: 'approved',
+        status: 'aprroved',
       };
   
       // Tìm theo từ khóa
@@ -270,3 +270,92 @@ exports.getUserPostAd = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+// Thống kê số lượng bài đăng theo ngày
+exports.getPostCountByDateRange = async (req, res) => {
+    try {
+      const { startDate, endDate } = req.query;
+  
+      if (!startDate || !endDate) {
+        return res.status(400).json({ error: "startDate and endDate are required" });
+      }
+  
+      const postsByDate = await Post.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(startDate),
+              $lte: new Date(endDate),
+            },
+            visibility: "visible",
+            status: "aprroved",
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+            },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+  
+      res.status(200).json(postsByDate);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };  
+
+// Thống kê 7 loại hình cho thuê có nhiều bài đăng nhất
+exports.getTopCategories = async (req, res) => {
+    try {
+      const topCategories = await Post.aggregate([
+        {
+          $match: {
+            visibility: "visible",
+            status: "aprroved",
+          },
+        },
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 7 },
+      ]);
+  
+      res.status(200).json(topCategories);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+// Thống kê 7 tỉnh/thành phố có nhiều bài đăng nhất
+exports.getTopProvinces = async (req, res) => {
+    try {
+      const topProvinces = await Post.aggregate([
+        {
+          $match: {
+            visibility: "visible",
+            status: "aprroved",
+          },
+        },
+        {
+          $group: {
+            _id: "$address.province",
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 7 },
+      ]);
+  
+      res.status(200).json(topProvinces);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };  
