@@ -177,64 +177,63 @@ exports.toggleVisibility = async (req, res) => {
     }
   };
 
-  const convertPrice = (price) => {
-    const value = parseFloat(price.replace(/[^\d.-]/g, ''));
-    return isNaN(value) ? 0 : value; // Trả về 0 nếu không chuyển được
-  };
-  
-  const convertArea = (area) => {
-    const value = parseFloat(area.replace(/[^\d.-]/g, ''));
-    return isNaN(value) ? 0 : value; // Trả về 0 nếu không chuyển được
-  };  
-  
+  function convertPrice(priceString) {
+    if (!priceString) return 0;
+    // Loại bỏ chữ cái và ký tự không phải số
+    const cleanString = priceString.replace(/[^\d.]/g, "");
+    return parseFloat(cleanString);
+  }   
+
+// Chuyển đổi diện tích từ chuỗi sang số (m²)
+const convertArea = (area) => {
+  if (!area) return 0;
+  const match = area.match(/([\d.]+)\s*m²/);
+  console.log("Convert Area Input:", area, "Output:", match ? parseFloat(match[1]) : 0);
+  return match ? parseFloat(match[1]) : 0;
+};
+
   //tìm kiếm bài đăng
   exports.searchPosts = async (req, res) => {
     try {
       const { keyword, province, category, minPrice, maxPrice, minArea, maxArea } = req.query;
-  
-      // Tạo filter từ query
+      console.log("minPrice từ request:", minPrice);
+      
       const filter = {
-        visibility: 'visible',
-        status: 'aprroved',
+        visibility: "visible",
+        status: "aprroved",
       };
   
-      // Tìm theo từ khóa
+      if (province) filter["address.province"] = province;
+  
       if (keyword) {
         filter.$or = [
-          { category: { $regex: keyword, $options: 'i' } },
-          { title: { $regex: keyword, $options: 'i' } },
-          { content: { $regex: keyword, $options: 'i' } },
+          { category: { $regex: keyword, $options: "i" } },
+          { title: { $regex: keyword, $options: "i" } },
+          { content: { $regex: keyword, $options: "i" } },
         ];
       }
   
-      // Tìm theo tỉnh thành
-      if (province) filter["address.province"] = province;
-  
-      // Tìm theo danh mục
       if (category) filter.category = category;
   
-      // Tìm theo giá
       if (minPrice || maxPrice) {
         filter["contactInfo.rentalPrice"] = {};
         if (minPrice) filter["contactInfo.rentalPrice"].$gte = convertPrice(minPrice);
         if (maxPrice) filter["contactInfo.rentalPrice"].$lte = convertPrice(maxPrice);
       }
   
-      // Tìm theo diện tích
       if (minArea || maxArea) {
         filter.area = {};
         if (minArea) filter.area.$gte = convertArea(minArea);
         if (maxArea) filter.area.$lte = convertArea(maxArea);
       }
   
-      // Lấy bài đăng từ MongoDB
       const posts = await Post.find(filter);
       res.status(200).json(posts);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  };  
-
+  };
+   
 //Lấy post của admin theo trạng thái có phân trang
 exports.getUserPostAd = async (req, res) => {
     try {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { searchPosts } from '../../../redux/postAPI';
 import { setPosts, setLoading, setError } from '../../../redux/postSlice';
 import RoomPost from '../Post/RoomPost';
@@ -13,6 +14,7 @@ import './searchPosts.css';
 
 const SearchPosts = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { posts, loading, error } = useSelector((state) => state.posts);
 
   const [filters, setFilters] = useState({
@@ -96,6 +98,10 @@ const SearchPosts = () => {
     } finally {
       dispatch(setLoading(false));
     }
+  };
+
+  const handlePostClick = (postId) => {
+    navigate(`/posts/${postId}`);
   };
   
   return (
@@ -334,18 +340,21 @@ const SearchPosts = () => {
   {/* Error message */}
   {error && <p className="error">{error}</p>}
 
-  {/* Post List Section */}
   <div className="post-list">
-    {posts.length > 0 ? (
-      posts.map((post) => (
-        <RoomPost key={post.id} post={post} onTitleClick={(postId) => console.log(postId)} />
-      ))
-    ) : (
-      <p>Không tìm thấy bài đăng nào.</p>
-    )}
-  </div>
-</div>
-</div>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <RoomPost
+              key={post.id}
+              post={post}
+              onTitleClick={() => handlePostClick(post.id)}
+            />
+          ))
+        ) : (
+          <p>Không tìm thấy bài đăng nào.</p>
+        )}
+      </div>
+    </div>
+    </div>
   );
 };
 
