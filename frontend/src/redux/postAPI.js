@@ -170,3 +170,49 @@ export const getTopProvinces = async (token) => {
     throw error;
   }
 };
+
+// API URL cho reviews
+const REVIEW_API_URL = 'http://localhost:8000/v1/reviews/';
+
+export const createReview = async (postId, reviewData, token) => {
+  try {
+    const response = await axios.post(
+      `${REVIEW_API_URL}${postId}`,
+      reviewData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi tạo bài đánh giá:', error);
+    throw error;
+  }
+};
+
+export const getReviewsByPostId = async (postId) => {
+  try {
+    const response = await axios.get(`${REVIEW_API_URL}${postId}`); 
+    return response.data || []; // Đảm bảo luôn trả về mảng
+  } catch (error) {
+    console.error('Lỗi khi lấy bài đánh giá:', error);
+    return []; // Trả về mảng rỗng trong trường hợp lỗi
+  }
+};
+
+export const deleteReview = async (reviewId, token) => {
+  try {
+    const response = await axios.delete(`${REVIEW_API_URL}${reviewId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi xóa bài đánh giá:', error);
+    throw error;
+  }
+};

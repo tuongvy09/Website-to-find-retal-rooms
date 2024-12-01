@@ -1,0 +1,41 @@
+.review-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.review-item p {
+  margin: 5px 0;
+}
+
+.review-item strong {
+  font-size: 1.1em;
+  color: #333;
+}
+
+/* Định nghĩa kiểu hiển thị ngôi sao */
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  font-size: 20px;
+  color: #ccc; /* Màu mặc định cho ngôi sao */
+  margin-right: 2px;
+}
+
+.star.filled {
+  color: #FFD700; /* Màu vàng cho ngôi sao đã chọn */
+}
+
+/* Kiểu dáng cho từng đánh giá */
+.review-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.review-item p {
+  margin: 5px 0;
+}

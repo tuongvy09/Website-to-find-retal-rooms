@@ -5,10 +5,13 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
-import { Avatar, Box, Button, Card, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography, Rating } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPostDetail } from '../../../redux/postAPI';
+import { getPostDetail, getReviewsByPostId, createReview } from '../../../redux/postAPI';
+import { useDispatch, useSelector } from 'react-redux';
+import { setReviews } from '../../../redux/reviewSlice';
+import ReviewsList from '../Review/ReviewList/ReviewsList';
 import Header from '../Header/Header';
 import './PostDetail.css';
 import Slider from 'react-slick';
@@ -21,6 +24,11 @@ const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [reviewContent, setReviewContent] = useState(''); 
+  const [rating, setRating] = useState(0);
+  const { reviews, loading, error } = useSelector((state) => state.reviews);
+  const currentUser = useSelector((state) => state.auth.login.currentUser);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -36,7 +44,22 @@ const PostDetail = () => {
     fetchPostDetail();
   }, [id]);
 
-  if (!post) return <div>Loading...</div>;
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await getReviewsByPostId(id);
+        dispatch(setReviews(response.data));
+      } catch (error) {
+        console.error('Lỗi khi lấy đánh giá:', error);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
+
+  useEffect(() => {
+    console.log("Dữ liệu reviews hiện tại:", reviews); 
+  }, [reviews]);
 
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % post.images.length);
@@ -46,6 +69,43 @@ const PostDetail = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + post.images.length) % post.images.length);
   };
 
+  const handleAddReview = async () => {
+    // Kiểm tra nếu rating hoặc reviewContent không được nhập
+    if (rating === 0 || reviewContent === "") {
+      alert("Vui lòng chọn sao và nhập bình luận");
+      return;
+    }
+  
+    try {
+      // Lấy token từ Redux
+      const token = currentUser?.accessToken; // Token được lưu trong Redux
+  
+      if (!token) {
+        alert("Bạn cần đăng nhập để thực hiện đánh giá");
+        return;
+      }
+  
+      const newReview = {
+        comment: reviewContent,
+        rating, 
+      };
+  
+      const response = await createReview(id, newReview, token); 
+  
+      // Thêm đánh giá mới vào danh sách và cập nhật Redux 
+      dispatch(setReviews([...reviews, response])); 
+  
+      // Reset form sau khi thêm thành công
+      setReviewContent("");
+      setRating(0);
+      alert("Đánh giá đã được thêm thành công!");
+    } catch (error) {
+      console.error("Lỗi khi thêm đánh giá:", error);
+      alert("Lỗi khi thêm đánh giá. Vui lòng thử lại sau.");
+    }
+  };  
+
+  if (!post) return <div>Loading...</div>;
 
   return (
     <div className="post-detail-container">
@@ -113,6 +173,57 @@ const PostDetail = () => {
             </Button>
           </Card>
         </Box>
+      </Box>
+
+      <Box className="reviews-section">
+        <Typography variant="h5" className="reviews-title">Reviews</Typography>
+        {loading ? (
+          <p>Loading reviews...</p>
+        ) : error ? (
+          <p>Error loading reviews</p>
+        ) : (
+          <ReviewsList postId={post._id} />
+        )}
+
+
+      <Box className="add-review-form">
+      <Typography variant="h6" gutterBottom>
+        Thêm đánh giá
+      </Typography>
+
+      {/* Hiển thị 5 ngôi sao */}
+      <Box>
+        <Rating
+          name="rating"
+          value={rating}
+          onChange={(event, newValue) => setRating(newValue)}
+          precision={0.5} // Chọn sao theo mức độ chính xác, có thể chọn 0.5 sao
+          size="large"
+        />
+      </Box>
+
+      {/* Khung nhập bình luận */}
+      <TextField
+        label="Thêm bình luận"
+        multiline
+        rows={4}
+        value={reviewContent}
+        onChange={(e) => setReviewContent(e.target.value)}
+        fullWidth
+        variant="outlined"
+        margin="normal"
+      />
+
+      {/* Nút thêm đánh giá */}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleAddReview}
+        className="add-review-btn"
+      >
+        Thêm đánh giá
+      </Button>
+    </Box>
       </Box>
     </div>
   );
