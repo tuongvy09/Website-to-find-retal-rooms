@@ -5,6 +5,7 @@ import menuReducer from "./menuSlice";
 import newsReducer from "./newsSlice";
 import postReducer from "./postSlice";
 import userReducer from "./userSlice";
+import reviewReducer from './reviewSlice';
 
 import {
   FLUSH,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   posts: postReducer,
   news: newsReducer,
   menu: menuReducer,
+  reviews: reviewReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -24,7 +24,7 @@ router.get('/posts-by-status', postController.getPostsByStatus);
 router.get('/list-post-pending',middlewareControllers.verifyToken, postController.getUserPostsByStateAndVisibility);
 
 // Route cập nhật bài đăng
-router.put('/update/:postId',middlewareControllers.verifyToken, postController.updatePost);
+router.put('/update/:postId', middlewareControllers.verifyToken, postController.updatePost);
 
 // Route ẩn/hiện bài đăng
 router.put('/toggle-visibility/:postId', middlewareControllers.verifyToken, postController.toggleVisibility);
