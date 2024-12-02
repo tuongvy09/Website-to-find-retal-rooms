@@ -201,34 +201,27 @@ exports.toggleVisibility = async (req, res) => {
     }
   };
 
-  function convertPrice(priceString) {
-    if (!priceString) return 0;
-    // Loại bỏ chữ cái và ký tự không phải số
-    const cleanString = priceString.replace(/[^\d.]/g, "");
-    return parseFloat(cleanString);
-  }   
-
-// Chuyển đổi diện tích từ chuỗi sang số (m²)
-const convertArea = (area) => {
-  if (!area) return 0;
-  const match = area.match(/([\d.]+)\s*m²/);
-  console.log("Convert Area Input:", area, "Output:", match ? parseFloat(match[1]) : 0);
-  return match ? parseFloat(match[1]) : 0;
-};
-
-  //tìm kiếm bài đăng
   exports.searchPosts = async (req, res) => {
     try {
       const { keyword, province, category, minPrice, maxPrice, minArea, maxArea } = req.query;
       console.log("minPrice từ request:", minPrice);
-      
+  
+      // Hàm chuyển đổi chuỗi thành số
+      const convertToNumber = (value) => {
+        if (!value) return null;
+        const numericValue = parseFloat(value.replace(/[^\d.-]/g, '')); // Loại bỏ tất cả ký tự không phải số
+        return isNaN(numericValue) ? null : numericValue;
+      };
+  
       const filter = {
         visibility: "visible",
         status: "aprroved",
       };
   
+      // Lọc theo tỉnh
       if (province) filter["address.province"] = province;
   
+      // Lọc theo từ khóa
       if (keyword) {
         filter.$or = [
           { category: { $regex: keyword, $options: "i" } },
@@ -237,18 +230,30 @@ const convertArea = (area) => {
         ];
       }
   
+      // Lọc theo category
       if (category) filter.category = category;
   
+      // Lọc theo rentalPrice
       if (minPrice || maxPrice) {
-        filter["contactInfo.rentalPrice"] = {};
-        if (minPrice) filter["contactInfo.rentalPrice"].$gte = convertPrice(minPrice);
-        if (maxPrice) filter["contactInfo.rentalPrice"].$lte = convertPrice(maxPrice);
+        filter.rentalPrice = {};
+        const numericMinPrice = convertToNumber(minPrice);
+        const numericMaxPrice = convertToNumber(maxPrice);
+
+        console.log("rentalPrice filter:", filter.rentalPrice);
+        console.log("numericMinPrice:", numericMinPrice);
+  
+        if (numericMinPrice) filter.rentalPrice.$gte = numericMinPrice;
+        if (numericMaxPrice) filter.rentalPrice.$lte = numericMaxPrice;
       }
   
+      // Lọc theo area
       if (minArea || maxArea) {
         filter.area = {};
-        if (minArea) filter.area.$gte = convertArea(minArea);
-        if (maxArea) filter.area.$lte = convertArea(maxArea);
+        const numericMinArea = convertToNumber(minArea);
+        const numericMaxArea = convertToNumber(maxArea);
+  
+        if (numericMinArea) filter.area.$gte = numericMinArea;
+        if (numericMaxArea) filter.area.$lte = numericMaxArea;
       }
   
       const posts = await Post.find(filter);
@@ -256,7 +261,7 @@ const convertArea = (area) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  };
+  };  
    
 //Lấy post của admin theo trạng thái có phân trang
 exports.getUserPostAd = async (req, res) => {

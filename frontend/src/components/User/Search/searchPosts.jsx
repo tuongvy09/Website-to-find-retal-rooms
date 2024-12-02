@@ -90,15 +90,18 @@ const SearchPosts = () => {
   };
 
   const convertValue = (value) => {
-    if (!value) return '';
+    if (!value) return ''; 
     const converted = parseFloat(value.replace(/[^\d.-]/g, ''));
     return isNaN(converted) ? '' : converted;
   };
+  
 
   const handleSearch = async () => {
     dispatch(setLoading(true));
     try {
       const token = localStorage.getItem('token');
+  
+      // Chuẩn bị các bộ lọc, đảm bảo các trường trống không được bao gồm
       const preparedFilters = {
         ...filters,
         minPrice: convertValue(filters.minPrice),
@@ -106,17 +109,22 @@ const SearchPosts = () => {
         minArea: convertValue(filters.minArea),
         maxArea: convertValue(filters.maxArea),
       };
-
-      console.log("Prepared Filters:", preparedFilters);
-
-      const results = await searchPosts(preparedFilters, token);
+  
+      // Loại bỏ các giá trị trống trước khi gửi yêu cầu
+      const filtersWithoutEmptyValues = Object.fromEntries(
+        Object.entries(preparedFilters).filter(([key, value]) => value !== '')
+      );
+  
+      console.log("Bộ lọc đã chuẩn bị:", filtersWithoutEmptyValues);
+  
+      const results = await searchPosts(filtersWithoutEmptyValues, token);
       dispatch(setPosts(results));
     } catch (error) {
       dispatch(setError(error.message));
     } finally {
       dispatch(setLoading(false));
     }
-  };
+  };  
 
   const handlePostClick = (postId) => {
     navigate(`/posts/${postId}`);
