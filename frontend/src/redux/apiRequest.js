@@ -214,35 +214,33 @@ export const resetPassword = async (passwordData, dispatch, setMessage, navigate
 };
 
   //Cập nhật thông tin người dùng
-  export const updateUserProfile = async (userId, profileData, dispatch, navigate, setErrorMessage) => {
-    axios.defaults.baseURL = 'http://localhost:8000';  
-    dispatch(loginStart());
+  export const updateUserProfile = async (userId, profileData, accessToken, dispatch) => {
+    axios.defaults.baseURL = 'http://localhost:8000';
+    dispatch(loginStart()); 
 
     try {
         // Gửi yêu cầu PUT đến API
         const res = await axios.put(`/v1/user/update-profile/${userId}`, profileData, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,  
+                Authorization: `Bearer ${accessToken}`,
             },
         });
+        console.log("token", accessToken);
 
-        // Xử lý phản hồi khi cập nhật thành công
-        const updatedUser = res.data.user;
-        dispatch(loginSuccess(updatedUser));
+        // Cập nhật thành công
+        const updatedUser = res.data.user; // Thông tin người dùng mới từ API
+        dispatch(loginSuccess(updatedUser)); // Dispatch action để cập nhật store
         toast.success("Cập nhật thông tin người dùng thành công!");
     } catch (err) {
-        // Kiểm tra lỗi trả về từ server
         if (err.response) {
+            // Xử lý lỗi trả về từ server
             console.error("Error updating profile:", err.response.data);
-            setErrorMessage(err.response.data.message || "Đã xảy ra lỗi khi cập nhật thông tin.");
-        } else if (err.request) {
-            console.error("Network error or no response from the server:", err.message);
-            setErrorMessage("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.");
+            const errorMessage = err.response.data.message || "Cập nhật thông tin thất bại.";
+            console.error("Error message:", errorMessage);
         } else {
-            console.error("Other error:", err.message);
-            setErrorMessage("Đã xảy ra lỗi không xác định. Vui lòng thử lại.");
+            // Lỗi khác (mạng hoặc không phản hồi)
+            console.error("Error updating profile:", err.message);
         }
-
-        dispatch(loginFailed());
+        dispatch(loginFailed()); // Dispatch action thông báo thất bại
     }
-  };
+};

@@ -3,6 +3,9 @@ import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { updateUserProfile } from '../../../redux/apiRequest';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import './EditProfile.css';
 
 const EditProfile = ({ user }) => {
@@ -14,11 +17,12 @@ const EditProfile = ({ user }) => {
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [selectedWard, setSelectedWard] = useState(null);
-    const [address, setAddress] = useState('');
+    const [address, setAddress] = useState(user?.profile?.address || '');
     const [selectedAddress, setSelectedAddress] = useState(null);   
     const [username, setUsername] = useState(user?.username || '');
-    const [phone, setPhone] = useState(user?.phone || '');
+    const [phone, setPhone] = useState(user?.profile?.phone || '');
     const [bio, setBio] = useState(user?.profile?.bio || '');
+    const dispatch = useDispatch();
 
     const SelectWithLabel = ({ label, options, value, onChange }) => {
         return (
@@ -110,16 +114,30 @@ const EditProfile = ({ user }) => {
             avatar,
             bio,
         };
-
+    
         try {
-            const response = await axios.put('http://localhost:8000/v1/user/update-profile', updatedProfile, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
+            await updateUserProfile(user._id, updatedProfile, user.accessToken, dispatch);
+            toast.success("Cập nhật hồ sơ thành công!", {
+                position: "top-right",
+                autoClose: 5000, // Đóng thông báo sau 3 giây
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
             });
-            console.log('Profile updated successfully', response.data);
+            console.log("Cập nhật hồ sơ thành công!");
         } catch (error) {
-            console.error('Error updating profile', error);
+            const errorMessage =
+                error.response?.data?.message || "Đã xảy ra lỗi trong quá trình cập nhật hồ sơ.";
+            toast.error(errorMessage, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            console.error("Lỗi khi cập nhật hồ sơ:", error);
         }
     };
 
@@ -152,7 +170,7 @@ const EditProfile = ({ user }) => {
 
                 <div className="user-details">
                     <h3 className="user-name">{user?.username || 'Unknown User'}</h3>
-                    <p className="user-phone">{user?.phone || 'No phone number'}</p>
+                    <p className="user-phone">{user?.profile?.phone || 'No phone number'}</p>
                 </div>
             </div>
 
@@ -162,12 +180,20 @@ const EditProfile = ({ user }) => {
                     size="small"
                     fullWidth
                     required
-                    defaultValue={user?.username || ''}
-                    placeholder=""
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
-                <TextField label="Thêm số điện thoại" size="small" fullWidth defaultValue={user.phone} />
+                <TextField
+                    label="Thêm số điện thoại"
+                    size="small"
+                    fullWidth
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)} 
+                />
             </Box>
-            <TextField label="Địa chỉ" size="small" fullWidth onClick={handleClickOpen} defaultValue={selectedAddress}/>
+
+            <TextField label="Địa chỉ" size="small" fullWidth onClick={handleClickOpen} value={selectedAddress || address} />
+
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Chọn Địa chỉ</DialogTitle>
                 <DialogContent>
@@ -213,11 +239,14 @@ const EditProfile = ({ user }) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <textarea placeholder="Viết vài dòng giới thiệu bản thân" 
-            className="bio-textarea"
-            value={user.profile.bio} 
-            onChange={(e) => setBio(e.target.value)}
+
+            <textarea
+                placeholder="Viết vài dòng giới thiệu bản thân"
+                className="bio-textarea"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
             />
+
             <Button variant="contained" color="primary" onClick={handleUpdateProfile}>
                 Cập nhật hồ sơ
             </Button>
