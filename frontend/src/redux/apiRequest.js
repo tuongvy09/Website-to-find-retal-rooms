@@ -212,3 +212,37 @@ export const resetPassword = async (passwordData, dispatch, setMessage, navigate
         setMessage("Đã xảy ra lỗi, vui lòng thử lại.");
     }
 };
+
+  //Cập nhật thông tin người dùng
+  export const updateUserProfile = async (userId, profileData, dispatch, navigate, setErrorMessage) => {
+    axios.defaults.baseURL = 'http://localhost:8000';  
+    dispatch(loginStart());
+
+    try {
+        // Gửi yêu cầu PUT đến API
+        const res = await axios.put(`/v1/user/update-profile/${userId}`, profileData, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,  
+            },
+        });
+
+        // Xử lý phản hồi khi cập nhật thành công
+        const updatedUser = res.data.user;
+        dispatch(loginSuccess(updatedUser));
+        toast.success("Cập nhật thông tin người dùng thành công!");
+    } catch (err) {
+        // Kiểm tra lỗi trả về từ server
+        if (err.response) {
+            console.error("Error updating profile:", err.response.data);
+            setErrorMessage(err.response.data.message || "Đã xảy ra lỗi khi cập nhật thông tin.");
+        } else if (err.request) {
+            console.error("Network error or no response from the server:", err.message);
+            setErrorMessage("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.");
+        } else {
+            console.error("Other error:", err.message);
+            setErrorMessage("Đã xảy ra lỗi không xác định. Vui lòng thử lại.");
+        }
+
+        dispatch(loginFailed());
+    }
+  };

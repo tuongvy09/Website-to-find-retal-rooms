@@ -16,6 +16,10 @@ const EditProfile = ({ user }) => {
     const [selectedWard, setSelectedWard] = useState(null);
     const [address, setAddress] = useState('');
     const [selectedAddress, setSelectedAddress] = useState(null);   
+    const [username, setUsername] = useState(user?.username || '');
+    const [phone, setPhone] = useState(user?.phone || '');
+    const [bio, setBio] = useState(user?.profile?.bio || '');
+
     const SelectWithLabel = ({ label, options, value, onChange }) => {
         return (
             <FormControl fullWidth variant="outlined" >
@@ -79,11 +83,13 @@ const EditProfile = ({ user }) => {
         setSelectedWard(newValue);
     };
 
-    // Chọn địa chỉ
-    const handleSelectAddress = (selectedAddress) => {
-        setAddress(selectedAddress);
-        setOpen(false);
-    };
+    const handleSelectAddress = () => {
+        const fullAddress = `${selectedProvince?.name || ''}, ${selectedDistrict?.name || ''}, ${selectedWard?.name || ''}, ${address}`;
+        
+        setSelectedAddress(fullAddress);  
+        setAddress(fullAddress);         
+        setOpen(false);                   
+    }; 
 
     const handleAvatarChange = (event) => {
         const file = event.target.files[0];
@@ -93,6 +99,27 @@ const EditProfile = ({ user }) => {
                 setAvatar(reader.result);
             };
             reader.readAsDataURL(file);
+        }
+    };
+
+    const handleUpdateProfile = async () => {
+        const updatedProfile = {
+            username,
+            phone,
+            address: selectedAddress,
+            avatar,
+            bio,
+        };
+
+        try {
+            const response = await axios.put('http://localhost:8000/v1/user/update-profile', updatedProfile, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            console.log('Profile updated successfully', response.data);
+        } catch (error) {
+            console.error('Error updating profile', error);
         }
     };
 
@@ -181,13 +208,21 @@ const EditProfile = ({ user }) => {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleSelectAddress} color="primary">
                         Xác nhận
                     </Button>
                 </DialogActions>
             </Dialog>
-            <textarea placeholder="Viết vài dòng giới thiệu bản thân" className="bio-textarea" value={user.profile.bio} />
+            <textarea placeholder="Viết vài dòng giới thiệu bản thân" 
+            className="bio-textarea"
+            value={user.profile.bio} 
+            onChange={(e) => setBio(e.target.value)}
+            />
+            <Button variant="contained" color="primary" onClick={handleUpdateProfile}>
+                Cập nhật hồ sơ
+            </Button>
         </div>
     );
 };
+
 export default EditProfile;
