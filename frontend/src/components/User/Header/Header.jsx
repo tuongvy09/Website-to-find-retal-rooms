@@ -57,20 +57,21 @@ const Header = () => {
     };
 
     return (
-        <AppBar position="static" className="header">
-            <Toolbar className='toolbar'>
+        <AppBar position="static" className="user-header-app-bar">
+            <Toolbar className='user-header-tool-bar'>
                 <Typography variant="h6" className="header-title">
                     PhongTroXinh.com
                 </Typography>
-                <Box className="header-buttons">
-                    <Button color="inherit" onClick={() => navigate('/')}>Trang Chủ</Button>
-                    <FormControl variant="outlined" className="property-select">
+                <Box className="header-container-btn">
+                    <Button className='user-header-btn' onClick={() => navigate('/')}>Trang Chủ</Button>
+                    <FormControl  className='user-header-btn'>
                         <Select
                             id="property-type"
+                            size='small'
                             value={propertyType}
                             onChange={handleChange}
                             displayEmpty
-                            className="property-select-input"
+                            className="header-select-input"
                             inputProps={{
                                 'aria-label': 'Chọn Loại Bất Động Sản',
                             }}
@@ -81,9 +82,9 @@ const Header = () => {
                             <MenuItem value="matbang">Cho Thuê Mặt Bằng</MenuItem>
                         </Select>
                     </FormControl>
-                    <Button color="inherit" onClick={() => navigate('/TinTuc')}>Tin Tức</Button>
-                    <Button color="inherit" onClick={handleAddPost}>Đăng tin mới</Button>
-                    <Button color="inherit" onClick={handleClick}>
+                    <Button  className='user-header-btn' onClick={() => navigate('/TinTuc')}>Tin Tức</Button>
+                    <Button  className='user-header-btn'  onClick={handleAddPost}>Đăng tin mới</Button>
+                    <Button  className='user-header-btn' onClick={handleClick}>
                         {currentUser ? `Hi, ${currentUser.username}` : 'Tài khoản'}
                     </Button>
                 </Box>

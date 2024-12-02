@@ -28,7 +28,9 @@ router.put('/update/:postId', middlewareControllers.verifyToken, postController.
 
 // Route ẩn/hiện bài đăng
 router.put('/toggle-visibility/:postId', middlewareControllers.verifyToken, postController.toggleVisibility);
-
+router.put('/:id/approve', middlewareControllers.verifyTokenAndAdminAuth, postController.approvePost);
+// Route cho từ chối bài
+router.put('/:id/reject', middlewareControllers.verifyTokenAndAdminAuth, postController.rejectPost);
 // Route tìm kiếm bài đăng
 router.get('/search', postController.searchPosts);
 

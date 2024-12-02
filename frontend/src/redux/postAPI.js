@@ -35,10 +35,12 @@ export const getAllPosts = async (token, page = 1, limit = 10) => {
 
 export const getApprovedPosts = async () => {
   try {
-    const response = await axios.get(`${API_URL}posts-by-status?status=approved`);
-    return response;
+    const response = await axios.get(`${API_URL}posts-by-status`, {
+      params: { status: 'approved', visibility: 'visible' }
+    });
+    return response.data;
   } catch (error) {
-    throw error;
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 
@@ -109,6 +111,46 @@ export const updatePost = async (postId, postData, token) => {
   } catch (error) {
     console.error('Lỗi khi cập nhật bài đăng:', error);
     throw error;
+  }
+};
+
+export const approvePost = async (token, postId) => {
+  try {
+    const response = await axios.put(`${API_URL}${postId}/approve`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const rejectPost = async (token, postId) => {
+  try {
+    const response = await axios.put(`${API_URL}${postId}/reject`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+//Admin lấy bài đăng của người dùng
+export const getUserPostsByUserId = async (token, userId) => {
+  try {
+    const response = await axios.get(`${API_URL}user-posts/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 
