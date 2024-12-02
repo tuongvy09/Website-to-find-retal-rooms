@@ -157,14 +157,15 @@ export const getUserPostsByUserId = async (token, userId) => {
 export const searchPosts = async (params, token) => {
   try {
     const response = await axios.get(`${API_URL}search`, {
-      params,
+      params: params,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; // Trả về danh sách bài đăng tìm kiếm
+    return response.data; 
   } catch (error) {
-    throw new Error(error.message);
+    console.error('Lỗi khi tìm kiếm bài đăng:', error);
+    throw error;
   }
 };
 
