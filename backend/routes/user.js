@@ -12,7 +12,7 @@ router.get("/", middlewareControllers.verifyToken, userController.getAllUsers);
 router.delete("/:id", middlewareControllers.verifyTokenAndAdminAuth, userController.deleteUser);
 
 //update user profile
-router.put("/update-profile/:id", middlewareControllers.verifyToken, uploadCloud.array('profile.avatar', 1), userController.updateUserProfile);
+router.put("/update-profile/:id", uploadCloud.array('profile.avatar', 1), userController.updateUserProfile);
 
 //khóa/mở khóa tài khoản
 router.put("/block/:id", middlewareControllers.verifyTokenAndAdminAuth, userController.toggleBlockUser);

@@ -347,6 +347,7 @@ exports.approvePost = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
 // Thống kê số lượng bài đăng theo ngày
 exports.getPostCountByDateRange = async (req, res) => {
     try {

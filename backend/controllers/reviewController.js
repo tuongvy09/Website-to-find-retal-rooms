@@ -14,7 +14,7 @@ exports.createReview = async (req, res) => {
 
         const review = new Review({
             post_id: postId,
-            user_id: req.user.id, // Lấy từ middlewareControllers.verifyToken
+            user_id: req.user.id, 
             rating,
             comment,
         });
