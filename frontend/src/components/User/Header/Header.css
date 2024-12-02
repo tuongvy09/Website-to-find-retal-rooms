@@ -1,16 +1,44 @@
-.header {
-    background-color: #000000 !important;
+.user-header-app-bar {
+    background-color: white !important;
     padding: 0;
     margin: 0;
-    position: fixed; /* Đặt header cố định ở trên cùng */
-    top: 0; /* Đảm bảo nó ở trên cùng */
+    position: fixed;
+    top: 0; 
     left: 0;
-    width: 100%; /* Chiều rộng của header là 100% */
-    z-index: 1000; /* Đảm bảo header luôn ở trên cùng so với các phần tử khác */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Thêm bóng cho header để dễ phân biệt với nội dung */
+    width: 100%;
+    z-index: 1000;
+}
+
+.user-header-tool-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 0 20px; 
+    height: 60px;
+}
+
+.header-container-btn{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.header-container-btn .user-header-btn{
+    color: #82828A !important;
+    font-family: work-sans, sans-serif !important;
+    font-size: 16px;
+    font-weight: 600 !important;
+    text-transform: none;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+}
+
+.header-container-btn .user-header-btn:hover{
+    color: #63AB45 !important;
 }
 
 .header-title {
+    color: #000000 !important;
     flex-grow: 1; 
     font-family: 'Times New Roman', serif !important; 
     font-weight: bold !important; 
@@ -20,44 +48,42 @@
 }
 
 .header-buttons {
-    display: flex; /* Hiển thị các nút ở dạng hàng ngang */
-    gap: 10px; /* Khoảng cách giữa các nút */
-    margin-left: auto; /* Đẩy các nút sang bên phải */
+    display: flex;
+    gap: 10px; 
+    margin-left: auto;
     color: #FFFFFF;
 }
 
 .property-select {
     margin: 10px 0;
 }
-.property-select-input {
-    color: #FFFFFF ; /* Màu chữ trắng */
-    border: 1px solid transparent; /* Viền trong suất */
-    cursor: pointer; /* Con trỏ chuột khi hover */
-    transition: background-color 0.3s, transform 0.3s; /* Hiệu ứng chuyển đổi */
+
+.header-container-btn .header-select-input .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+
+.header-container-btn .header-select-input{
+    color: #82828A;
+    font-size: 16px;
+    font-family: work-sans, sans-serif !important;
+    border: transparent !important;
+    font-weight: 600 !important;
+    cursor: pointer; 
 }
 
-/* Đặt viền khi không hover */
+.header-container-btn .header-select-input:hover{
+    color: #63AB45;
+}
+
 .property-select-input.MuiOutlinedInput-notchedOutline {
-    border-color: transparent; /* Viền trong suất */
+    border-color: transparent; 
 }
 
-/* Khi hover */
 .property-select-input:hover {
-    background-color: #45a049; /* Màu nền khi hover */
-    transform: scale(1.05); /* Tăng kích thước khi hover */
+    background-color: #45a049; 
+    transform: scale(1.05);
 }
 
-/* Đặt viền cho Select */
 .property-select-input.MuiOutlinedInput-root {
-    border: transparent; /* Màu viền mặc định */
-}
-
-/* Tùy chỉnh cho MenuItem */
-.MuiMenuItem-root {
-    color: #FFFFFF; /* Màu chữ cho MenuItem */
-}
-
-/* Nếu bạn muốn đổi màu chữ cho MenuItem khi hover */
-.MuiMenuItem-root:hover {
-    background-color: #e0e0e0; /* Màu nền khi hover MenuItem */
+    border: transparent; 
 }

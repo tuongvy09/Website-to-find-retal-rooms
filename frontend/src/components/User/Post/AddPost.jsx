@@ -2,10 +2,9 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Box, Button, FormControl, FormHelperText, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../../redux/postAPI';
-import { setPosts } from '../../../redux/postSlice';
 import './AddPost.css';
 
 const SelectWithLabel = ({ label, options, value, onChange }) => {
@@ -67,8 +66,8 @@ const AddPost = () => {
     const [rentalPrice, setRentalPrice] = useState('');
     const [currency, setCurrency] = useState('dong_thang');
     const [area, setArea] = useState('');
-    const formattedArea = `${area} m²`;
-    const [areaError, setAreaError] = useState(''); 
+    const formattedArea = `${area}m²`;
+    const [areaError, setAreaError] = useState('');
     const [rentalTarget, setRentalTarget] = useState('');
     const [maxOccupants, setMaxOccupants] = useState('');
     const [maxOccupantsError, setMaxOccupantsError] = useState('');
@@ -76,9 +75,57 @@ const AddPost = () => {
     const [selectedImages, setSelectedImages] = useState([]);
     const fullAddress = `${address} ${selectedWard ? selectedWard.name : ''} ${selectedDistrict ? selectedDistrict.name : ''} ${selectedProvince ? selectedProvince.name : ''}`;
     const [propertyType, setpropertyType] = useState('');
-    const dispatch = useDispatch();
-    const [error, setError] = useState(''); 
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [errorTitle, setErrorTitle] = useState('');
+    const [errorContent, setErrorContent] = useState('');
+    const [errorPhone, setErrorPhone] = useState('');
+
+    const validatePhone = (value) => {
+        const phoneRegex = /^0[0-9]{8,10}$/;
+        if (!phoneRegex.test(value)) {
+            return 'Số điện thoại phải bắt đầu bằng 0 và có độ dài từ 9 đến 11 chữ số.';
+        }
+        return '';
+    };
+
+    const handleChangePhone = (e) => {
+        const value = e.target.value;
+        setPhone(value);
+        const errorMessage = validatePhone(value);
+        setErrorPhone(errorMessage);
+    };
+
+    const handleContentChange = (e) => {
+        const value = e.target.value;
+        if (value.length < 400) {
+            setContent(value);
+            setErrorContent('');
+        } else {
+            setErrorContent('Mô tả không được vượt quá 400 ký tự');
+        }
+    };
+
+
+    const handleTitleChange = (e) => {
+        const value = e.target.value;
+        if (value.length < 50) {
+            setTitle(value);
+            setErrorTitle('');
+        } else {
+            setErrorTitle('Tiêu đề không được vượt quá 50 ký tự');
+        }
+    };
+
+    const handleAddressChange = (e) => {
+        const value = e.target.value;
+        setAddress(value);
+        if (value.length >= 20) {
+            setError('Địa chỉ không được quá 20 ký tự');
+        } else {
+            setError('');
+        }
+    };
 
     const handleMaxOccupantsChange = (e) => {
         const value = e.target.value;
@@ -93,7 +140,7 @@ const AddPost = () => {
     };
     const handleRentalPriceChange = (e) => {
         const value = e.target.value;
-        const regex = /^[0-9]*\.?[0-9]*$/; 
+        const regex = /^[0-9]*\.?[0-9]*$/;
 
         if (value === '' || regex.test(value)) {
             setRentalPrice(value);
@@ -138,7 +185,7 @@ const AddPost = () => {
                 .then(newImages => {
                     setSelectedImages(prevImages => [
                         ...prevImages,
-                        ...newImages 
+                        ...newImages
                     ]);
                 })
                 .catch(error => {
@@ -184,13 +231,9 @@ const AddPost = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        // Định dạng giá trị rentalPrice
         const formattedRentalPrice = `${rentalPrice} ${currency === 'dong_thang' ? 'Triệu/tháng' : 'Triệu/m²/tháng'}`;
 
         const formData = new FormData();
-
-        // Thêm các dữ liệu khác vào formData
         formData.append('address', JSON.stringify({
             exactaddress: address,
             province: selectedProvince ? selectedProvince.name : '',
@@ -221,25 +264,19 @@ const AddPost = () => {
             }
 
             const response = await createPost(formData, accessToken);
-            if (response.success) {
-                dispatch(setPosts((prevPosts) => [...prevPosts, response.data]));
-                navigate('/');
-            } else {
-                console.error('Lỗi khi tạo bài đăng:', response.message);
-            }        } catch (err) {
+            alert("Đăng bài thành công, vui lòng chờ admin duyệt")
+            navigate('/');
+        } catch (err) {
             if (err.response) {
-                console.error('Server error:', err.response.data);
-            } else {
-                console.error('Error adding post:', err.message);
+                alert(err.response.data.message);
             }
         }
     };
 
-
     return (
         <div>
             <Box sx={{ display: 'flex', height: '100vh' }} className="addpost-container">
-                <Box sx={{ flex: 4, bgcolor: '#ffffff', padding: 2, justifyContent: 'center'}}>
+                <Box sx={{ flex: 4, bgcolor: '#ffffff', padding: 2, justifyContent: 'center' }}>
                     <form className="form-container " onSubmit={handleSubmit}>
                         <Typography className='title'>Đăng tin mới</Typography>
                         <Typography className='title2'>Địa chỉ cho thuê</Typography>
@@ -269,10 +306,19 @@ const AddPost = () => {
                                 />
                             </div>
                             <div style={{ flex: 1 }}>
-                                <TextFieldWithoutLabel
+                                <TextField
+                                    id="address-field"
+                                    label="Địa chỉ"
+                                    variant="outlined"
+                                    size="small"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error}
                                     value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    placeholder="Số nhà, tên đường"
+                                    onChange={handleAddressChange}
+                                    inputProps={{
+                                        maxLength: 20,
+                                    }}
                                 />
                             </div>
                         </div>
@@ -284,183 +330,259 @@ const AddPost = () => {
                                 value={fullAddress}
                                 InputProps={{
                                     readOnly: true,
-                                    sx: { bgcolor: '#f0f0f0', marginBottom:'0.5rem' },
+                                    sx: { bgcolor: '#f0f0f0', marginBottom: '0.5rem' },
                                 }}
                                 fullWidth
                                 sx={{ marginTop: 1 }}
                             />
                         </Box>
-                        <Typography className='title2'>Thông tin mô tả</Typography>
                         <Box className='container-info-detail'>
-                        <Typography className='title3'>Chọn loại hình cho thuê</Typography>
-                        <FormControl sx={{ m: 1, minWidth: 300 }} size="small">
-                            <Select
-                                sx={{ fontSize: "" }}
-                                native
-                                value={propertyType}
-                                onChange={(e) => setpropertyType(e.target.value)}
-                            >
-                                <option aria-label="None" value="">--Chọn loại chuyên mục--</option>
-                                <option value="Nhà trọ, phòng trọ">Nhà trọ, phòng trọ</option>
-                                <option value="Nhà nguyên căn">Nhà nguyên căn</option>
-                                <option value="Cho thuê căn hộ">Cho thuê căn hộ</option>
-                                <option value="Cho thuê căn hộ mini">Cho thuê căn hộ mini</option>
-                                <option value="Cho thuê căn hộ dịch vụ">Cho thuê căn hộ dịch vụ</option>
-                                <option value="Cho thuê mặt bằng, văn phòng">Cho thuê mặt bằng, văn phòng</option>
-                            </Select>
-                        </FormControl>
-                        <Typography className='title3' >Tiêu đề</Typography>
-                        <TextField
-                            size="small"
-                            variant="outlined"
-                            fullWidth
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                        <Typography className='title3'>Nội dung miêu tả</Typography>
-                        <TextField
-                            size="small"
-                            variant="outlined"
-                            fullWidth
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                        />
-                        <Typography className='title3'>Thông tin liên hệ</Typography>
-                        <TextField
-                            variant="outlined"
-                            size='small'
-                            value={currentUser?.username || ''} // Hiển thị username từ currentUser
-                            InputProps={{
-                                readOnly: true, // Không cho phép chỉnh sửa
-                                sx: { bgcolor: '#f0f0f0', width: '30vw' },
-                            }}
-                        />
-                        <Typography className='title3'>Điện thoại</Typography>
-                        <TextField
-                            sx={{ width: '30vw' }}
-                            variant="outlined"
-                            size='small'
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                        <Typography className='title3'>Giá cho thuê</Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', width: '40vw', marginBottom: 2 }}>
-                            <TextField
-                                id="outlined-amount"
-                                variant="outlined"
-                                size='small'
-                                sx={{ flex: 1, marginRight: 1 }} // Thêm khoảng cách bên phải
-                                value={rentalPrice}
-                                onChange={handleRentalPriceChange}
-                                inputProps={{
-                                    inputMode: 'decimal', // Chỉ định kiểu nhập là số thập phân
-                                    pattern: "\\d+(\\.\\d{1,2})?", // Chấp nhận số thập phân với tối đa hai chữ số sau dấu phẩy
-                                    step: "0.01"
-                                }}
-                                error={!!error} // Đặt error nếu có thông báo lỗi
-                            />
-                            <FormControl variant="outlined" sx={{ minWidth: '120px' }}>
-                                <InputLabel id="currency-label"></InputLabel>
+                            <Typography className='title3'>Chọn loại hình cho thuê</Typography>
+                            <FormControl sx={{ m: 1, minWidth: 300 }} size="small">
                                 <Select
-                                    labelId="currency-label"
-                                    size='small'
-                                    id="currency-select"
-                                    value={currency} // Đặt giá trị của Select từ state
-                                    onChange={handleCurrencyChange} // Cập nhật state khi thay đổi
+                                    sx={{ fontSize: "" }}
+                                    native
+                                    value={propertyType}
+                                    onChange={(e) => setpropertyType(e.target.value)}
                                 >
-                                    <MenuItem value="dong_thang">Triệu/tháng</MenuItem>
-                                    <MenuItem value="dong_m2_thang">Triệu/m²/tháng</MenuItem>
+                                    <option aria-label="None" value="">--Chọn loại chuyên mục--</option>
+                                    <option value="Nhà trọ, phòng trọ">Nhà trọ, phòng trọ</option>
+                                    <option value="Nhà nguyên căn">Nhà nguyên căn</option>
+                                    <option value="Cho thuê căn hộ">Cho thuê căn hộ</option>
+                                    <option value="Cho thuê căn hộ mini">Cho thuê căn hộ mini</option>
+                                    <option value="Cho thuê căn hộ dịch vụ">Cho thuê căn hộ dịch vụ</option>
+                                    <option value="Cho thuê mặt bằng, văn phòng">Cho thuê mặt bằng, văn phòng</option>
                                 </Select>
                             </FormControl>
-                            {error && <FormHelperText error sx={{ marginLeft: 1 }}>{error}</FormHelperText>} {/* Hiển thị thông báo lỗi */}
-                        </Box>
-
-                        <Typography className='title3'>Diện tích</Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', width: '40vw' }}>
+                            <Typography className='title3' >Tiêu đề</Typography>
                             <TextField
-                                id="amount-field"
+                                size="small"
                                 variant="outlined"
-                                size='small'
                                 fullWidth
-                                value={area}
-                                onChange={handleAreaChange}
+                                value={title}
+                                onChange={handleTitleChange}
                                 inputProps={{
-                                    min: 0, // Chỉ cho phép số dương
-                                    pattern: "\\d+(\\.\\d{1,2})?", // Chấp nhận số thập phân với tối đa hai chữ số sau dấu phẩy
-                                    step: "0.01"
+                                    maxLength: 50,
                                 }}
-                                error={!!areaError} // Đặt error nếu có thông báo lỗi
+                                error={!!errorTitle}
+                                helperText={errorTitle}
                             />
-                            <TextField
-                                id="area-field"
-                                variant="outlined"
-                                size='small'
-                                value="m²" // Giá trị cố định là m²
-                                InputProps={{ readOnly: true }}
-                                sx={{ backgroundColor: '#f0f0f0', marginLeft: 1 }} // Thêm khoảng cách bên trái
-                            />
-                        </Box>
-                        {areaError && <FormHelperText error sx={{ marginLeft: 1 }}>{areaError}</FormHelperText>}
-                        <Typography className='title3'>Đối tượng cho thuê</Typography>
-                        <Select
-
-                            size='small'
-                            value={rentalTarget}
-                            onChange={(e) => setRentalTarget(e.target.value)}
-                            sx={{ width: '30vw' }}
-                        >
-                            <MenuItem value="Tất cả">--Tất cả--</MenuItem>
-                            <MenuItem value="Nam">Nam</MenuItem>
-                            <MenuItem value="Nữ">Nữ</MenuItem>
-                        </Select>
-                        <Typography className='title3'>Số lượng tối đa</Typography>
-                        <TextField
-                            variant="outlined"
-                            size='small'
-                            value={maxOccupants}
-                            onChange={handleMaxOccupantsChange}
-                            sx={{ width: '30vw' }}
-                        />
-                        {maxOccupantsError && <FormHelperText error sx={{ marginLeft: 1 }}>{maxOccupantsError}</FormHelperText>} {/* Hiển thị thông báo lỗi */}
-
-                        <Typography className='title3'>Link Youtube</Typography>
-                        <TextField
-                            variant="outlined"
-                            size='small'
-                            value={youtubeLink}
-                            onChange={(e) => setYoutubeLink(e.target.value)}
-                            sx={{ width: '30vw' }}
-                            inputProps={{
-                                min: 0, // Chỉ cho phép số dương
-                            }}
-                            error={!!maxOccupantsError}
-                        />
-                        <Typography className='title3'>Hình ảnh</Typography>
-                        <p className='custom-fontp'>Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn</p>
-                        <input
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            id="upload-button"
-                            type="file"
-                            name="images"  
-                            multiple
-                            onChange={handleImageChange}
-                        />
-                        <label htmlFor="upload-button">
-                            <IconButton component="span" sx={{ width: '20vw', height: 'auto' }}>
-                                <PhotoCamera sx={{ width: '20vw', height: 'auto' }} />
-                            </IconButton>
-                        </label>
-                        <div>
-                            {selectedImages.map((image, index) => (
-                                <img
-                                    key={index}
-                                    src={image.preview}
-                                    alt={`uploaded-${index}`}
-                                    style={{ width: '100px', margin: '5px', top: '300px' }}
+                            <Typography className='title3'>Nội dung miêu tả</Typography>
+                            <div style={{ width: '100%' }}>
+                                <textarea
+                                    value={content}
+                                    onChange={handleContentChange}
+                                    rows={4}
+                                    style={{
+                                        width: '100%',
+                                        borderColor: errorContent ? 'red' : 'gray',
+                                        borderRadius: '4px',
+                                        padding: '8px',
+                                        fontSize: '16px',
+                                    }}
                                 />
-                            ))}
-                        </div>
+                                {errorContent && (
+                                    <div style={{ color: 'red', marginTop: '4px' }}>{errorContent}</div>
+                                )}
+                            </div>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: '16px', // Khoảng cách giữa các thành phần
+                                    alignItems: 'center', // Căn chỉnh theo trục dọc
+                                    marginTop: '1rem'
+                                }}
+                            >
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Thông tin liên hệ"
+                                    variant="outlined"
+                                    size="small"
+                                    value={currentUser?.username || ''}
+                                    InputProps={{
+                                        readOnly: true,
+                                        sx: { bgcolor: '#f0f0f0', width: '30vw' },
+                                    }}
+                                />
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Điện thoại"
+                                    variant="outlined"
+                                    sx={{ width: '30vw' }}
+                                    size="small"
+                                    value={phone}
+                                    onChange={handleChangePhone}
+                                    error={!!errorPhone}
+                                    helperText={errorPhone}
+                                />
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: 2, // Khoảng cách giữa hai box
+                                    alignItems: 'flex-start', // Căn trên
+                                    flexWrap: 'nowrap', // Không cho phép xuống dòng
+                                    width: '100%', // Chiều rộng tối đa của container
+                                    marginTop: '0.5rem'
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        width: '48%', // Thu hẹp chiều rộng để 2 Box nằm trên một hàng
+                                        marginBottom: 2,
+                                    }}
+                                >
+                                    <TextField
+                                        id="outlined-basic"
+                                        label="Giá cho thuê"
+                                        variant="outlined"
+                                        size="small"
+                                        value={rentalPrice}
+                                        onChange={handleRentalPriceChange}
+                                        inputProps={{
+                                            inputMode: 'decimal',
+                                            pattern: '\\d+(\\.\\d{1,2})?',
+                                            step: '0.01',
+                                        }}
+                                        error={!!error}
+                                    />
+                                    <FormControl variant="outlined" sx={{ minWidth: '120px', marginLeft: 1 }}>
+                                        <InputLabel id="currency-label"></InputLabel>
+                                        <Select
+                                            labelId="currency-label"
+                                            size="small"
+                                            id="currency-select"
+                                            value={currency}
+                                            onChange={handleCurrencyChange}
+                                        >
+                                            <MenuItem value="dong_thang">Triệu/tháng</MenuItem>
+                                            <MenuItem value="dong_m2_thang">Triệu/m²/tháng</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    {error && (
+                                        <FormHelperText error sx={{ marginLeft: 1 }}>
+                                            {error}
+                                        </FormHelperText>
+                                    )}
+                                </Box>
+
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        width: '48%', // Thu hẹp chiều rộng
+                                    }}
+                                >
+                                    <TextField
+                                        id="outlined-basic"
+                                        label="Diện tích"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth
+                                        value={area}
+                                        onChange={handleAreaChange}
+                                        inputProps={{
+                                            min: 0,
+                                            pattern: '\\d+(\\.\\d{1,2})?',
+                                            step: '0.01',
+                                        }}
+                                        error={!!areaError}
+                                    />
+                                    <TextField
+                                        id="area-field"
+                                        variant="outlined"
+                                        size="small"
+                                        value="m²"
+                                        InputProps={{ readOnly: true }}
+                                        sx={{ backgroundColor: '#f0f0f0', marginLeft: 1, maxWidth: '80px' }}
+                                    />
+                                    {areaError && <FormHelperText error sx={{ marginLeft: 1 }}>{areaError}</FormHelperText>}
+                                </Box>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: 2, // Khoảng cách giữa các thành phần
+                                    alignItems: 'center', // Căn giữa theo trục dọc
+                                    flexWrap: 'nowrap', // Ngăn không cho xuống dòng
+                                    width: '100%', // Chiều rộng tối đa của container
+                                }}
+                            >
+                                <FormControl
+                                    size="small"
+                                    sx={{ width: '30%' }} // Điều chỉnh chiều rộng của thành phần
+                                >
+                                    <InputLabel id="demo-simple-select-helper-label">Đối tượng cho thuê</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-helper-label"
+                                        label="Đối tượng cho thuê"
+                                        value={rentalTarget}
+                                        onChange={(e) => setRentalTarget(e.target.value)}
+                                    >
+                                        <MenuItem value="Tất cả">--Tất cả--</MenuItem>
+                                        <MenuItem value="Nam">Nam</MenuItem>
+                                        <MenuItem value="Nữ">Nữ</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Số lượng tối đa"
+                                    variant="outlined"
+                                    size="small"
+                                    value={maxOccupants}
+                                    onChange={handleMaxOccupantsChange}
+                                    sx={{ width: '30%' }}
+                                    error={!!maxOccupantsError}
+                                />
+                                {maxOccupantsError && (
+                                    <FormHelperText error sx={{ marginLeft: 1 }}>
+                                        {maxOccupantsError}
+                                    </FormHelperText>
+                                )}
+
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Link youtube"
+                                    variant="outlined"
+                                    size="small"
+                                    value={youtubeLink}
+                                    onChange={(e) => setYoutubeLink(e.target.value)}
+                                    sx={{ width: '30%' }}
+                                    inputProps={{
+                                        min: 0,
+                                    }}
+                                    error={!!maxOccupantsError}
+                                />
+                            </Box>
+                            <Typography className='title3'>Hình ảnh</Typography>
+                            <p className='custom-fontp'>Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn</p>
+                            <input
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                id="upload-button"
+                                type="file"
+                                name="images"
+                                multiple
+                                onChange={handleImageChange}
+                            />
+                            <label htmlFor="upload-button">
+                                <IconButton component="span" sx={{ width: '20vw', height: 'auto' }}>
+                                    <PhotoCamera sx={{ width: '15vw', height: 'auto', justifyContent: 'center' }} />
+                                </IconButton>
+                            </label>
+                            <div>
+                                {selectedImages.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={image.preview}
+                                        alt={`uploaded-${index}`}
+                                        style={{ width: '100px', margin: '5px', top: '300px' }}
+                                    />
+                                ))}
+                            </div>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '2vw', marginTop: 2 }}>
                             <Button

@@ -6,6 +6,10 @@ exports.createPost = async (req, res) => {
     try {
         const { title, content, address, category, rentalPrice, area, rentalTarget, maxOccupants, youtubeLink, contactInfo } = req.body;
 
+        if (!title || !content || !address || !category || !rentalPrice || !area || !rentalTarget || !contactInfo) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
         const imageUrls = [];
         if (req.files && req.files.length > 0) {
             req.files.forEach(file => {
@@ -28,22 +32,39 @@ exports.createPost = async (req, res) => {
         });
 
         const savedPost = await newPost.save();
-        res.status(201).json(savedPost); 
+        res.status(201).json({
+            message: "Post created successfully",
+            post: savedPost
+        }); 
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: "Validation error", error: error.message });
+        }
         console.error("Error creating post:", error);  
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({
+            message: "Server error",
+            error: error.message
+        });
     }
 };
 
 exports.getAllPosts = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10; 
+        const limit = parseInt(req.query.limit) || 10;
+        const status = req.query.status || '';
+        const visibility = req.query.visibility || '';
         const startIndex = (page - 1) * limit;
-        const total = await Post.countDocuments();
-        const posts = await Post.find()
+
+        const query = {};
+        if (status) query.status = status;
+        if (visibility) query.visibility = visibility;
+
+        const total = await Post.countDocuments(query);
+        const posts = await Post.find(query)
             .skip(startIndex)
             .limit(limit);
+
         res.status(200).json({
             currentPage: page,
             totalPages: Math.ceil(total / limit),
@@ -54,7 +75,6 @@ exports.getAllPosts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 exports.getPostById = async (req, res) => {
     try {
         console.log("Request ID:", req.params.id);
@@ -106,15 +126,19 @@ exports.deletePost = async (req, res) => {
 
 exports.getPostsByStatus = async (req, res) => {
     try {
-        const { status } = req.query;
-        if (!status) {
-            return res.status(400).json({ message: "Status is required" });
+        const { status, visibility } = req.query; 
+
+        if (!status || !visibility) {
+            return res.status(400).json({ message: "State and visibility are required" });
         }
 
-        const posts = await Post.find({ status });
+        const posts = await Post.find({
+            status,
+            visibility
+        });
+
         res.status(200).json(posts);
     } catch (error) {
-        console.error("Error fetching posts by status:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -270,6 +294,59 @@ exports.getUserPostAd = async (req, res) => {
     }
 };
 
+//Duyệt bài viết của admin
+exports.approvePost = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const post = await Post.findByIdAndUpdate(
+        postId,
+        { status: 'approved', visibility: 'visible' }, 
+        { new: true } 
+      );
+  
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      res.status(200).json({ message: 'Post approved successfully', post });
+    } catch (error) {
+      res.status(500).json({ message: 'Error approving post', error: error.message });
+    }
+  };
+
+  //Từ chối bài viết
+  exports.rejectPost = async (req, res) => {
+    try {
+      const postId = req.params.id; 
+      const post = await Post.findByIdAndUpdate(
+        postId,
+        { status: 'rejected', visibility: 'hiden' },
+        { new: true } 
+      );
+  
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      res.status(200).json({ message: 'Post rejected successfully', post });
+    } catch (error) {
+      res.status(500).json({ message: 'Error rejecting post', error: error.message });
+    }
+  };
+
+  exports.getUserPostsByUserId = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const posts = await Post.find({
+            "contactInfo.user": userId
+        });
+
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error("Error fetching user posts by user ID:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 // Thống kê số lượng bài đăng theo ngày
 exports.getPostCountByDateRange = async (req, res) => {
     try {
