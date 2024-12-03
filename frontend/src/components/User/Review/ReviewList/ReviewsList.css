@@ -39,3 +39,30 @@
 .review-item p {
   margin: 5px 0;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.pagination li.active {
+  background-color: #24e457;
+  color: white;
+  border-color: #059416;
+}
+
+.pagination li:hover:not(.active) {
+  background-color: #f0f0f0;
+}
+
