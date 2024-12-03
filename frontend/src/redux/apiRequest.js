@@ -155,7 +155,6 @@ export const logout = async (dispatch, id, navigate, accessToken, axiosJWT) => {
     }
 };
 
-
 export const googleLogin = async (tokenId, dispatch, navigate) => {
     axios.defaults.baseURL = 'http://localhost:8000';
     dispatch(googleLoginStart());
