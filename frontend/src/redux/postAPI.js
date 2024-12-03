@@ -242,7 +242,7 @@ export const getReviewsByPostId = async (postId) => {
     return response.data || []; // Đảm bảo luôn trả về mảng
   } catch (error) {
     console.error('Lỗi khi lấy bài đánh giá:', error);
-    return []; // Trả về mảng rỗng trong trường hợp lỗi
+    return []; 
   }
 };
 
@@ -256,6 +256,25 @@ export const deleteReview = async (reviewId, token) => {
     return response.data;
   } catch (error) {
     console.error('Lỗi khi xóa bài đánh giá:', error);
+    throw error;
+  }
+};
+
+export const editReview = async (reviewId, updatedData, token) => {
+  try {
+    const response = await axios.put(
+      `${REVIEW_API_URL}${reviewId}`,
+      updatedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi chỉnh sửa bài đánh giá:', error);
     throw error;
   }
 };
