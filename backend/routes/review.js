@@ -9,4 +9,10 @@ router.post("/:postId", middlewareControllers.verifyToken, reviewController.crea
 // Lấy danh sách đánh giá theo bài đăng
 router.get("/:postId", reviewController.getReviewsByPost);
 
+// Xóa đánh giá 
+router.delete("/:reviewId", middlewareControllers.verifyToken, reviewController.deleteReview);
+
+// Chỉnh sửa đánh giá 
+router.put("/:reviewId", middlewareControllers.verifyToken, reviewController.updateReview);
+
 module.exports = router;

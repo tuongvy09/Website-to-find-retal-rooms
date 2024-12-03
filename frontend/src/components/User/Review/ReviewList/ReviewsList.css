@@ -66,3 +66,18 @@
   background-color: #f0f0f0;
 }
 
+.review-actions {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.review-actions svg {
+  font-size: 20px; /* Đặt kích thước của biểu tượng */
+  color: #58e35d; /* Đặt màu sắc của biểu tượng */
+  transition: color 0.3s ease;
+}
+
+.review-actions svg:hover {
+  color: #19980b; /* Thay đổi màu sắc khi hover */
+}
