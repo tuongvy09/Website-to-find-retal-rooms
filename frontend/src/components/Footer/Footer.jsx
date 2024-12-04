@@ -46,12 +46,12 @@ const Footer = () => {
         <Typography variant="body2">Contact us</Typography>
       </Box>
 
-      <Box className="footer-newsletter">
+      {/* <Box className="footer-newsletter">
         <Typography variant="h6">Bản tin</Typography>
         <Typography variant="body2">Đăng ký ngay để nhận bản tin mới nhất.</Typography>
         <TextField label="Email address" variant="outlined" className="email-input" />
         <Button className="subscribe-button">Đăng ký</Button>
-      </Box>
+      </Box> */}
 
       <Box className="footer-contact">
         <Typography variant="h6">Liên hệ</Typography>
