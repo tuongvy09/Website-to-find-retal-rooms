@@ -22,7 +22,7 @@ import UpdatePost from './components/User/ManageAcount/UpdatePost';
 import NewsDetailUser from './components/User/News/NewsDetail/NewsDetailUser';
 import NewsListUser from './components/User/News/NewsList/NewsListUser';
 import AddPost from './components/User/Post/AddPost';
-import ListPostHome from './components/User/Post/ListPostHome';
+import ListAllPost from './components/User/Post/ListAllPost';
 import PostDetail from './components/User/Post/PostDetail';
 import SearchPosts from './components/User/Search/searchPosts';
 
@@ -37,7 +37,27 @@ function App() {
               <Header />
               <SearchPosts /> 
               <Home />
-              <ListPostHome/>
+            </>
+          } />
+          <Route path="/search" element={
+            <>
+            <Header />
+            <SearchPosts />
+            </>
+          }/>
+          <Route path='/posts' element={
+            <>
+            <Header />
+            <SearchPosts/>
+            <ListAllPost/>
+            </>
+          }
+          />
+          <Route path='/news' element={
+            <>
+            <Header/>
+            <SearchPosts/>
+            <NewsListUser/>
             </>
           } />
           <Route path="/admin-dashboard" element={

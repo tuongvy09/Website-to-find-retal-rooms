@@ -26,6 +26,7 @@ const SearchPosts = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isDropdowncategoryOpen, setIsDropdowncategoryOpen] = useState(false);
   const [isDropdowncostOpen, setIsDropdowncostgoryOpen] = useState(false);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
   const handleToggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -98,6 +99,7 @@ const SearchPosts = () => {
 
   const handleSearch = async () => {
     dispatch(setLoading(true));
+    setSearchPerformed(true);
     try {
       const token = localStorage.getItem('token');
   
@@ -129,16 +131,14 @@ const SearchPosts = () => {
   const handlePostClick = (postId) => {
     navigate(`/posts/${postId}`);
   };
-  
+
   const settings = {
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2500,
-    navigator: true,
   };
 
   return (
@@ -315,15 +315,24 @@ const SearchPosts = () => {
         </div>
       </div>
       {error && <p className="error">{error}</p>}
-      <div className="post-list">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <RoomPost key={post.id} post={post} onTitleClick={(postId) => console.log(postId)} />
-          ))
-        ) : (
-          <p>Không tìm thấy bài đăng nào.</p>
-        )}
-      </div>
+      {searchPerformed && (
+        <div>
+          <div className='search-container-result-count'>
+            {posts.length > 0 && (
+              <p className='search-result-count'>Tìm thấy {posts.length} bài đăng</p>
+            )}
+          </div>
+          <div className="post-list">
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <RoomPost key={post.id} post={post} onTitleClick={(postId) => console.log(postId)} />
+              ))
+            ) : (
+              <p className='search-no-result'>Không tìm thấy bài đăng nào.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -36,7 +36,7 @@ export const getAllPosts = async (token, page = 1, limit = 10) => {
 export const getApprovedPosts = async () => {
   try {
     const response = await axios.get(`${API_URL}posts-by-status`, {
-      params: { status: 'approved', visibility: 'visible' }
+      params: { status: 'aprroved', visibility: 'visible' }
     });
     return response.data;
   } catch (error) {
