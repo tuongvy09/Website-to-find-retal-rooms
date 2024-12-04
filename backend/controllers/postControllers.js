@@ -235,26 +235,76 @@ exports.toggleVisibility = async (req, res) => {
   
       // Lọc theo rentalPrice
       if (minPrice || maxPrice) {
-        filter.rentalPrice = {};
         const numericMinPrice = convertToNumber(minPrice);
         const numericMaxPrice = convertToNumber(maxPrice);
-
-        console.log("rentalPrice filter:", filter.rentalPrice);
-        console.log("numericMinPrice:", numericMinPrice);
-  
-        if (numericMinPrice) filter.rentalPrice.$gte = numericMinPrice;
-        if (numericMaxPrice) filter.rentalPrice.$lte = numericMaxPrice;
+      
+        const rentalPriceFilter = {};
+      
+        if (numericMinPrice !== null) rentalPriceFilter.$gte = numericMinPrice;
+        if (numericMaxPrice !== null) rentalPriceFilter.$lte = numericMaxPrice;
+      
+        filter.$expr = {
+          $and: [
+            // Normalize and filter rentalPrice
+            numericMinPrice !== null
+              ? { $gte: [{ $toDouble: { $replaceAll: { input: { $arrayElemAt: [{ $split: ["$rentalPrice", " "] }, 0] }, find: ",", replacement: "." } } }, numericMinPrice] }
+              : true,
+            numericMaxPrice !== null
+              ? { $lte: [{ $toDouble: { $replaceAll: { input: { $arrayElemAt: [{ $split: ["$rentalPrice", " "] }, 0] }, find: ",", replacement: "." } } }, numericMaxPrice] }
+              : true,
+          ],
+        };
       }
+      
   
       // Lọc theo area
       if (minArea || maxArea) {
-        filter.area = {};
         const numericMinArea = convertToNumber(minArea);
         const numericMaxArea = convertToNumber(maxArea);
-  
-        if (numericMinArea) filter.area.$gte = numericMinArea;
-        if (numericMaxArea) filter.area.$lte = numericMaxArea;
+      
+        const rentalAreaFilter = {};
+      
+        if (numericMinArea !== null) rentalAreaFilter.$gte = numericMinArea;
+        if (numericMaxArea !== null) rentalAreaFilter.$lte = numericMaxArea;
+      
+        filter.$expr = {
+          $and: [
+            numericMinArea !== null
+              ? {
+                  $gte: [
+                    {
+                      $toDouble: {
+                        $replaceAll: {
+                          input: { $arrayElemAt: [{ $split: ["$area", " "] }, 0] },
+                          find: ",",
+                          replacement: ".",
+                        },
+                      },
+                    },
+                    numericMinArea,
+                  ],
+                }
+              : true,
+            numericMaxArea !== null
+              ? {
+                  $lte: [
+                    {
+                      $toDouble: {
+                        $replaceAll: {
+                          input: { $arrayElemAt: [{ $split: ["$area", " "] }, 0] },
+                          find: ",",
+                          replacement: ".",
+                        },
+                      },
+                    },
+                    numericMaxArea,
+                  ],
+                }
+              : true,
+          ],
+        };
       }
+      
   
       const posts = await Post.find(filter);
       res.status(200).json(posts);
