@@ -6,7 +6,7 @@ const ListPostPending = () => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const token = currentUser?.accessToken;
   const status = 'pending';
-  const visibility = 'hiden'; 
+  const visibility = 'hidden'; 
 
   return (
     <div>
