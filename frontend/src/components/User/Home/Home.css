@@ -5,3 +5,7 @@
     padding: 0 20px;
     width: auto;
 }
+
+.content-wrapper {
+    overflow: hidden;
+  }

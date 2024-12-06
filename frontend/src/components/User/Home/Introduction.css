@@ -27,7 +27,7 @@
   
   .feature-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 20px;
   }
   
