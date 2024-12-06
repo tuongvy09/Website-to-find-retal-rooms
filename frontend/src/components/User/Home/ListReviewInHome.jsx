@@ -12,7 +12,7 @@ const ListReviewInHome = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-
+console.log(newsList)
     useEffect(() => {
         const fetchNews = async () => {
             try {
