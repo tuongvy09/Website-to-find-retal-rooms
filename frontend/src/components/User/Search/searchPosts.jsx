@@ -15,7 +15,6 @@ import slide2 from '../../../assets/images/slide2.jpg';
 import slide3 from '../../../assets/images/slide3.jpg';
 import { searchPosts } from '../../../redux/postAPI';
 import { setError, setLoading, setPosts } from '../../../redux/postSlice';
-import RoomPost from '../Post/RoomPost';
 import './searchPosts.css';
 
 const SearchPosts = () => {
@@ -121,6 +120,7 @@ const SearchPosts = () => {
   
       const results = await searchPosts(filtersWithoutEmptyValues, token);
       dispatch(setPosts(results));
+      navigate('/search', { state: { results, filters: filtersWithoutEmptyValues } });
     } catch (error) {
       dispatch(setError(error.message));
     } finally {
@@ -315,7 +315,7 @@ const SearchPosts = () => {
         </div>
       </div>
       {error && <p className="error">{error}</p>}
-      {searchPerformed && (
+      {/*{searchPerformed && (
         <div>
           <div className='search-container-result-count'>
             {posts.length > 0 && (
@@ -332,7 +332,7 @@ const SearchPosts = () => {
             )}
           </div>
         </div>
-      )}
+      )}*/}
     </div>
   );
 };

@@ -193,7 +193,7 @@ exports.toggleVisibility = async (req, res) => {
       if (!post) {
         return res.status(404).json({ message: 'Bài đăng không tồn tại' });
       }
-      post.visibility = post.visibility === 'visible' ? 'hiden' : 'visible';
+      post.visibility = post.visibility === 'visible' ? 'hidden' : 'visible';
       await post.save();
   
       res.json({ message: 'Trạng thái hiển thị đã được cập nhật', visibility: post.visibility });
@@ -216,7 +216,7 @@ exports.toggleVisibility = async (req, res) => {
   
       const filter = {
         visibility: "visible",
-        status: "aprroved",
+        status: "approved",
       };
   
       // Lọc theo tỉnh
@@ -352,31 +352,37 @@ exports.getUserPostAd = async (req, res) => {
 
 //Duyệt bài viết của admin
 exports.approvePost = async (req, res) => {
-    try {
-      const postId = req.params.id;
-      const post = await Post.findByIdAndUpdate(
-        postId,
-        { status: 'approved', visibility: 'visible' }, 
-        { new: true } 
-      );
-  
-      if (!post) {
-        return res.status(404).json({ message: 'Post not found' });
-      }
-  
-      res.status(200).json({ message: 'Post approved successfully', post });
-    } catch (error) {
-      res.status(500).json({ message: 'Error approving post', error: error.message });
-    }
-  };
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
 
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const daysToShow = post.defaultDaysToShow;
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + daysToShow);
+
+    post.status = 'approved';
+    post.visibility = 'visible';
+    post.expiryDate = expiryDate;
+    post.daysRemaining = daysToShow;
+
+    await post.save();
+
+    res.status(200).json({ message: 'Post approved successfully', post });
+  } catch (error) {
+    res.status(500).json({ message: 'Error approving post', error: error.message });
+  }
+};
   //Từ chối bài viết
   exports.rejectPost = async (req, res) => {
     try {
       const postId = req.params.id; 
       const post = await Post.findByIdAndUpdate(
         postId,
-        { status: 'rejected', visibility: 'hiden' },
+        { status: 'rejected', visibility: 'hidden' },
         { new: true } 
       );
   
@@ -387,6 +393,52 @@ exports.approvePost = async (req, res) => {
       res.status(200).json({ message: 'Post rejected successfully', post });
     } catch (error) {
       res.status(500).json({ message: 'Error rejecting post', error: error.message });
+    }
+  };
+
+  //Ẩn bài đăng
+  exports.hiddenPost = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const post = await Post.findByIdAndUpdate(
+        postId,
+        { status: 'approved', visibility: 'hidden' },
+        { new: true }
+      );
+
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+
+      res.status(200).json({ message: 'Post hidden successfully', post });
+    } catch (error) {
+      if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Invalid token' });
+      }
+      res.status(500).json({ message: 'Error hiding post', error: error.message });
+    }
+  };
+
+  //Hiện bài đăng của admin
+  exports.visiblePost = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const post = await Post.findByIdAndUpdate(
+        postId,
+        { status: 'approved', visibility: 'visible' },
+        { new: true }
+      );
+
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+
+      res.status(200).json({ message: 'Post visible successfully', post });
+    } catch (error) {
+      if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Invalid token' });
+      }
+      res.status(500).json({ message: 'Error visible post', error: error.message });
     }
   };
 
@@ -421,7 +473,7 @@ exports.getPostCountByDateRange = async (req, res) => {
               $lte: new Date(endDate),
             },
             visibility: "visible",
-            status: "aprroved",
+            status: "approved",
           },
         },
         {
@@ -448,7 +500,7 @@ exports.getTopCategories = async (req, res) => {
         {
           $match: {
             visibility: "visible",
-            status: "aprroved",
+            status: "approved",
           },
         },
         {
@@ -474,7 +526,7 @@ exports.getTopProvinces = async (req, res) => {
         {
           $match: {
             visibility: "visible",
-            status: "aprroved",
+            status: "approved",
           },
         },
         {
@@ -492,7 +544,7 @@ exports.getTopProvinces = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };  
-  
+
   exports.addToFavorites = async (req, res) => {
     const postId = req.params.id;   
     try {
@@ -569,3 +621,28 @@ exports.getFavorites = async (req, res) => {
       res.status(500).json({ message: "Lỗi server", error: error.message });
   }
 };
+
+exports.updateDefaultDaysToShow = async (req, res) => {
+    const { days } = req.body;
+  
+    try {
+      const posts = await Post.find({});
+  
+      for (const post of posts) {
+        const oldDaysToShow = post.defaultDaysToShow;
+        post.defaultDaysToShow = days;
+  
+        if (days > oldDaysToShow) {
+          post.daysRemaining += (days - oldDaysToShow);
+        } else {
+          post.daysRemaining = Math.max(0, post.daysRemaining - (oldDaysToShow - days));
+        }
+  
+        await post.save();
+      }
+  
+      res.status(200).json({ message: 'Updated default days to show for all posts' });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  };

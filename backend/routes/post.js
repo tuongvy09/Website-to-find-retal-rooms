@@ -33,15 +33,16 @@ router.put('/:id/approve', middlewareControllers.verifyTokenAndAdminAuth, postCo
 // Route cho từ chối bài
 router.put('/:id/reject', middlewareControllers.verifyTokenAndAdminAuth, postController.rejectPost);
 
+//Route ẩn bài đăng của admin
+router.put('/:id/hidden', middlewareControllers.verifyTokenAndAdminAuth, postController.hiddenPost);
+//Route hiện bài đăng của admin
+router.put('/:id/visible', middlewareControllers.verifyTokenAndAdminAuth, postController.visiblePost);
 // Route tìm kiếm bài đăng
 router.get('/search', postController.searchPosts);
-
 // Route thống kê số lượng bài đăng theo ngày
 router.get('/by-date', middlewareControllers.verifyTokenAndAdminAuth, postController.getPostCountByDateRange);
-
 // Route thống kê 7 loại hình cho thuê nhiều bài đăng nhất
 router.get('/top-categories', middlewareControllers.verifyTokenAndAdminAuth, postController.getTopCategories);
-
 // Route thống kê 7 tỉnh/thành phố nhiều bài đăng nhất
 router.get('/top-provinces', middlewareControllers.verifyTokenAndAdminAuth, postController.getTopProvinces);
 
@@ -54,4 +55,6 @@ router.delete('/:id/favorite', middlewareControllers.verifyToken, postController
 //Route lấy danh sách yêu thích 
 router.get('/favorites', middlewareControllers.verifyToken, postController.getFavorites);
 
+//Route cập nhật số ngày hiển thị tất cả bài post trên trang chủ
+router.put('/update-default-days', middlewareControllers.verifyTokenAndAdminAuth, postController.updateDefaultDaysToShow);
 module.exports = router;

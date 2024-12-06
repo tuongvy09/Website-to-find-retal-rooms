@@ -29,7 +29,7 @@ const postsSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
+    required: false,
   },
   contactInfo: {
     user: {
@@ -43,7 +43,7 @@ const postsSchema = new mongoose.Schema({
     },
     phoneNumber: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   rentalPrice: {
@@ -60,7 +60,7 @@ const postsSchema = new mongoose.Schema({
   },
   maxOccupants: {
     type: Number,
-    required: true,
+    required: false,
   },
   images:[String],
   youtubeLink: {
@@ -68,13 +68,25 @@ const postsSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected", "updated"],
+    enum: ["pending", "approved", "rejected", "update"],
     default: "pending",
   },
   visibility:{
     type: String,
-    enum: ["visible","hiden"],
-    default: "hiden",
+    enum: ["visible","hidden"],
+    default: "hidden",
+  },
+  expiryDate: {
+    type: Date,
+    required: false,
+  },
+  daysRemaining: {
+    type: Number,
+    default: 0,
+  },
+  defaultDaysToShow: {
+    type: Number,
+    default: 7,
   },
 }, { timestamps: true });
 

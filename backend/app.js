@@ -5,9 +5,10 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
-const postRoute = require('./routes/post');
+const postRoute = require("./routes/post");
 const newsRoutes = require("./routes/news");
 const reviewRoutes = require("./routes/review");
+require('./congfig/cronJobs');
 
 dotenv.config();
 const app = express();

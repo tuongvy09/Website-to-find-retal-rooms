@@ -3,6 +3,7 @@ import 'froala-editor/css/froala_style.min.css';
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
+import ManagePostAdmin from './components/Admin/AdminDashboard/ManagePostAdmin';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
 import EditNewsForm from './components/Admin/News/EditNewsForm/EditNewsForm';
@@ -25,103 +26,108 @@ import AddPost from './components/User/Post/AddPost';
 import ListAllPost from './components/User/Post/ListAllPost';
 import PostDetail from './components/User/Post/PostDetail';
 import SearchPosts from './components/User/Search/searchPosts';
+import SearchResultsPage from './components/User/Search/searchResultPage';
 
 function App() {
   return (
     <Router>
       <div className="app-container">
-      <div className="content-wrapper">
-      <Routes>
-          <Route path="/" element={
-            <>
-              <Header />
-              <SearchPosts /> 
-              <Home />
-            </>
-          } />
-          <Route path="/search" element={
-            <>
-            <Header />
-            <SearchPosts />
-            </>
-          }/>
-          <Route path='/posts' element={
-            <>
-            <Header />
-            <SearchPosts/>
-            <ListAllPost/>
-            </>
-          }
-          />
-          <Route path='/news' element={
-            <>
-            <Header/>
-            <SearchPosts/>
-            <NewsListUser/>
-            </>
-          } />
-          <Route path="/admin-dashboard" element={
+        <div className="content-wrapper">
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Header />
+                <SearchPosts />
+                <Home />
+              </>
+            } />
+            <Route path="/search" element={
+              <>
+                <Header />
+                <SearchPosts />
+                <SearchResultsPage />
+              </>
+            } />
+            <Route path='/posts' element={
+              <>
+                <Header />
+                <SearchPosts />
+                <ListAllPost />
+              </>
+            }
+            />
+            <Route path='/news' element={
+              <>
+                <Header />
+                <SearchPosts />
+                <NewsListUser />
+              </>
+            } />
+            <Route path="/admin-dashboard" element={
               <AdminDashboard />
-          } />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
-            
-          <Route path="/AddPost" element={<AddPost />} />
-          <Route path="/AddPost" element={
-            <>
-            <Header/>
-            <AddPost />
-            </>
-          } 
-          />
-          <Route path="/posts/:id" element={<PostDetail />} />
-          <Route path="/managerAc" element={<ManageAcount/>}/>
-          <Route path="/update-post/:id" element={<UpdatePost/>}/> 
-          <Route path="/manage-news/edit/:id" element={
-            <>
-            <AdminHeader />
-            <EditNewsForm />
-            </>
             } />
-          <Route path="/TinTuc" element={
-            <>
-            <Header />
-            <NewsListUser />
-            </>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/AddPost" element={
+              <>
+                <Header />
+                <AddPost />
+              </>
+            }
+            />
+            <Route path="/posts/:id" element={<PostDetail />} />
+            <Route path="/managerAc" element={<ManageAcount />} />
+            <Route path="/update-post/:id" element={<UpdatePost />} />
+            <Route path="/manage-news/edit/:id" element={
+              <>
+                <AdminHeader />
+                <EditNewsForm />
+              </>
             } />
-          <Route path="/news/:id" element={
-            <>
-            <Header />
-            <NewsDetailUser />
-            </>
+            <Route path="/TinTuc" element={
+              <>
+                <Header />
+                <NewsListUser />
+              </>
             } />
-          <Route path="/manage-news/:id" element={
-           <>
-           <AdminHeader />
-           <NewsDetail />
-         </>
+            <Route path="/news/:id" element={
+              <>
+                <Header />
+                <NewsDetailUser />
+              </>
             } />
-          <Route path="/manage-users" element={
-            <>
-              <AdminHeader />
-              <ManageUsers />
-            </>
-          } />
-          <Route path="/manage-news/*" element={
-            <>
-              <AdminHeader />
-              <NewsManagement />
-            </>
-          }>
-            {/* Các Route con của /manage-news */}
-            <Route path="list" element={<NewsList />} />
-            <Route path="add" element={<NewsForm />} />
-            <Route path=":id" element={<NewsDetail />} />
-
-          </Route>
-        </Routes>
+            <Route path="/manage-news/:id" element={
+              <>
+                <AdminHeader />
+                <NewsDetail />
+              </>
+            } />
+            <Route path="/manage-users" element={
+              <>
+                <AdminHeader />
+                <ManageUsers />
+              </>
+            } />
+            <Route path="/manage-news/*" element={
+              <>
+                <AdminHeader />
+                <NewsManagement />
+              </>
+            }>
+              {/* Các Route con của /manage-news */}
+              <Route path="list" element={<NewsList />} />
+              <Route path="add" element={<NewsForm />} />
+              <Route path=":id" element={<NewsDetail />} />
+            </Route>
+            <Route path="/manage-posts" element={
+              <>
+                <AdminHeader />
+                <ManagePostAdmin />
+              </>
+            } />
+          </Routes>
         </div>
         <Footer />
       </div>

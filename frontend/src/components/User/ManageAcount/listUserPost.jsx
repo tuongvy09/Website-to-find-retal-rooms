@@ -1,7 +1,7 @@
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
 import React, { useState } from 'react';
-import ListPostHiden from './ListPostHiden';
+import ListPostHidden from './ListPostHiden';
 import ListPostPending from './ListPostPending';
 import ListPostVisible from './ListPostVisible';
 import './listUserPost.css';
@@ -25,7 +25,7 @@ const ListUserPost = () => {
         </Box>
         <TabPanel value="1" className="tab-panel"><ListPostVisible /></TabPanel>
         <TabPanel value="2" className="tab-panel"><ListPostPending/></TabPanel>
-        <TabPanel value="3" className="tab-panel"><ListPostHiden/></TabPanel>
+        <TabPanel value="3" className="tab-panel"><ListPostHidden/></TabPanel>
       </TabContext>
     </div>
   );

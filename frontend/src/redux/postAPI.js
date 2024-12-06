@@ -19,24 +19,24 @@ export const createPost = async (postData, token) => {
   }
 }
 
-export const getAllPosts = async (token, page = 1, limit = 10) => { 
+export const getAllPosts = async (token, page = 1, limit = 10, status = '', visibility = '') => {
   try {
     const response = await axios.get(`${API_URL}posts`, {
-      params: { page, limit },
+      params: { page, limit, status, visibility },
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
     return response.data;
   } catch (error) {
-    throw new Error(error.message); 
+    throw new Error(error.message);
   }
 };
 
 export const getApprovedPosts = async () => {
   try {
     const response = await axios.get(`${API_URL}posts-by-status`, {
-      params: { status: 'aprroved', visibility: 'visible' }
+      params: { status: 'approved', visibility: 'visible' }
     });
     return response.data;
   } catch (error) {
@@ -76,7 +76,7 @@ export const togglePostVisibility = async (postId, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error('Lỗi khi gọi API thay đổi trạng thái hiển thị bài viết:', error);
     throw error;
@@ -85,14 +85,14 @@ export const togglePostVisibility = async (postId, token) => {
 
 export const deletePost = async (postId, token) => {
   try {
-      const response = await axios.delete(`${API_URL}posts/${postId}`, {
-          headers: {
-              Authorization: `Bearer ${token}`,
-          },
-      });
-      return response.data; 
+    const response = await axios.delete(`${API_URL}posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   } catch (error) {
-      throw error;
+    throw error;
   }
 };
 
@@ -100,10 +100,10 @@ export const updatePost = async (postId, postData, token) => {
   try {
     const response = await axios.put(
       `${API_URL}update/${postId}`,
-      postData, 
+      postData,
       {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -140,6 +140,34 @@ export const rejectPost = async (token, postId) => {
   }
 };
 
+export const hiddePost = async (token, postId) => {
+  try {
+    const response = await axios.put(`${API_URL}${postId}/hidden`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API ẩn bài viết:', error);
+    throw error;
+  }
+};
+
+export const visiblePost = async (token, postId) => {
+  try {
+    const response = await axios.put(`${API_URL}${postId}/visible`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API hiện bài viết:', error);
+    throw error;
+  }
+};
+
 //Admin lấy bài đăng của người dùng
 export const getUserPostsByUserId = async (token, userId) => {
   try {
@@ -162,7 +190,7 @@ export const searchPosts = async (params, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error('Lỗi khi tìm kiếm bài đăng:', error);
     throw error;
@@ -238,11 +266,11 @@ export const createReview = async (postId, reviewData, token) => {
 
 export const getReviewsByPostId = async (postId) => {
   try {
-    const response = await axios.get(`${REVIEW_API_URL}${postId}`); 
+    const response = await axios.get(`${REVIEW_API_URL}${postId}`);
     return response.data || []; // Đảm bảo luôn trả về mảng
   } catch (error) {
     console.error('Lỗi khi lấy bài đánh giá:', error);
-    return []; 
+    return [];
   }
 };
 

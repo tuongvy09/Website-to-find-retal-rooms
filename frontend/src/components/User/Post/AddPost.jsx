@@ -277,7 +277,7 @@ const AddPost = () => {
         <div>
             <Box sx={{ display: 'flex', height: '100vh' }} className="addpost-container">
                 <Box sx={{ flex: 4, bgcolor: '#ffffff', padding: 2, justifyContent: 'center' }}>
-                    <form className="form-container " onSubmit={handleSubmit}>
+                    <form className="form-container-user-add-post" onSubmit={handleSubmit}>
                         <Typography className='title'>Đăng tin mới</Typography>
                         <Typography className='title2'>Địa chỉ cho thuê</Typography>
                         <div style={{ display: 'flex', gap: '16px', flexGrow: 1 }}>
