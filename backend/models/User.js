@@ -41,8 +41,14 @@ const userSchema = new mongoose.Schema({
     },  
     bio:{
       type: String,
-    }   
-  }
+    },
+  },
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
+    }
+  ]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

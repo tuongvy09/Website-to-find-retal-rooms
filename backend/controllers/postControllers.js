@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const User = require('../models/User'); 
 const cloudinary = require('cloudinary').v2;
 const mongoose = require('mongoose');
 
@@ -491,3 +492,80 @@ exports.getTopProvinces = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };  
+  
+  exports.addToFavorites = async (req, res) => {
+    const postId = req.params.id;   
+    try {
+      // Kiểm tra người dùng
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ message: "Không tìm thấy người dùng" });
+      }
+  
+      // Kiểm tra postId hợp lệ
+      if (!mongoose.Types.ObjectId.isValid(postId)) {
+        console.log(postId);
+        return res.status(400).json({ message: "ID bài đăng không hợp lệ" });
+      }
+  
+      // Kiểm tra bài đăng có tồn tại không
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: "Không tìm thấy bài đăng" });
+      }
+  
+      // Kiểm tra nếu bài đăng đã có trong favorites
+      if (user.favorites.includes(postId)) {
+        return res.status(400).json({ message: "Bài đăng đã có trong danh sách yêu thích" });
+      }
+  
+      // Thêm bài đăng vào danh sách yêu thích của người dùng
+      user.favorites.push(postId);
+      await user.save();
+  
+      res.status(200).json({ message: "Đã thêm bài đăng vào danh sách yêu thích", favorites: user.favorites });
+      console.log(postId);
+    } catch (error) {
+      console.error(error);  // In lỗi ra console để kiểm tra chi tiết
+      res.status(500).json({ message: "Lỗi server", error: error.message });
+    }
+  };  
+
+  exports.removeFromFavorites = async (req, res) => {
+    const postId = req.params.id; 
+  
+    try {
+        // Kiểm tra người dùng có tồn tại không
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: "Không tìm thấy người dùng" });
+        }
+  
+        // Kiểm tra xem bài đăng có trong danh sách yêu thích không
+        console.log("Favorites before removing:", user.favorites);
+        user.favorites = user.favorites.filter(fav => fav.toString() !== postId);
+        
+        // Lưu lại thông tin người dùng sau khi thay đổi
+        await user.save();
+        console.log("User after save:", user);
+  
+        res.status(200).json({ message: "Đã xóa bài đăng khỏi danh sách yêu thích", favorites: user.favorites });
+    } catch (error) {
+        console.error("Error during removing from favorites:", error);
+        res.status(500).json({ message: "Lỗi server", error: error.message });
+    }
+  };  
+
+//Lấy danh sách post yêu thích
+exports.getFavorites = async (req, res) => {
+  try {
+      const user = await User.findById(req.user.id).populate('favorites');
+      if (!user) {
+          return res.status(404).json({ message: "Không tìm thấy người dùng" });
+      }
+
+      res.status(200).json({ favorites: user.favorites });
+  } catch (error) {
+      res.status(500).json({ message: "Lỗi server", error: error.message });
+  }
+};

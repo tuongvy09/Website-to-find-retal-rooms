@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMenu } from '../../../redux/menuSlice';
+import { toggleFavoritePost } from '../../../redux/postSlice'; 
 import Footer from "../../Footer/Footer";
 import Header from "../Header/Header";
 import EditProfile from "./EditProfile";
@@ -12,27 +13,33 @@ import UpdatePost from "./UpdatePost";
 const ManageAcount = () => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const dispatch = useDispatch();
-  const selectedMenu = useSelector((state) => state.menu.selectedMenu); 
-  const setSelectedPost = useSelector((state) => state.posts.selectedPost); 
+  const selectedMenu = useSelector((state) => state.menu.selectedMenu);
+  const posts = useSelector((state) => state.posts.items); 
+
+  const handleToggleFavorite = (postId) => {
+    dispatch(toggleFavoritePost(postId)); 
+  };
 
   const renderContent = () => {
     switch (selectedMenu) {
       case 'postList':
         return <ListUserPost 
-        setSelectedMenu={setSelectedMenu} 
-        setSelectedPost={setSelectedPost} 
-      />;
+          posts={posts} 
+          onToggleFavorite={handleToggleFavorite} 
+        />;
       case 'updatePost':
-        return <UpdatePost postId={setSelectedPost} />;
+        return <UpdatePost />;
       case 'manageAccount':
-        return <EditProfile user={currentUser}/>;
+        return <EditProfile user={currentUser} />;
+      case 'favoritePosts':
+        return <div>Danh sách yêu thích</div>;
       default:
         return <div>Quản lý tài khoản</div>;
     }
   };
 
   const handleChangeMenu = (menu) => {
-    dispatch(setSelectedMenu(menu)); 
+    dispatch(setSelectedMenu(menu));
   };
 
   return (

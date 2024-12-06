@@ -35,6 +35,14 @@ const postSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    toggleFavoritePost: (state, action) => {
+      const postId = action.payload;
+      if (state.favoritePosts.includes(postId)) {
+        state.favoritePosts = state.favoritePosts.filter(id => id !== postId);
+      } else {
+        state.favoritePosts.push(postId);
+      }
+    }
   },
 });
 
@@ -46,6 +54,7 @@ export const {
   deletePost,
   setLoading,
   setError,
+  toggleFavoritePost
 } = postSlice.actions;
 
 export default postSlice.reducer;

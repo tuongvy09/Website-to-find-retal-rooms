@@ -29,8 +29,10 @@ router.put('/update/:postId', middlewareControllers.verifyToken, postController.
 // Route ẩn/hiện bài đăng
 router.put('/toggle-visibility/:postId', middlewareControllers.verifyToken, postController.toggleVisibility);
 router.put('/:id/approve', middlewareControllers.verifyTokenAndAdminAuth, postController.approvePost);
+
 // Route cho từ chối bài
 router.put('/:id/reject', middlewareControllers.verifyTokenAndAdminAuth, postController.rejectPost);
+
 // Route tìm kiếm bài đăng
 router.get('/search', postController.searchPosts);
 
@@ -42,5 +44,14 @@ router.get('/top-categories', middlewareControllers.verifyTokenAndAdminAuth, pos
 
 // Route thống kê 7 tỉnh/thành phố nhiều bài đăng nhất
 router.get('/top-provinces', middlewareControllers.verifyTokenAndAdminAuth, postController.getTopProvinces);
+
+//Route thêm post vào yêu thích
+router.post('/:id/favorite', middlewareControllers.verifyToken, postController.addToFavorites);
+
+//Route xóa post khỏi yêu thích
+router.delete('/:id/favorite', middlewareControllers.verifyToken, postController.removeFromFavorites);
+
+//Route lấy danh sách yêu thích 
+router.get('/favorites', middlewareControllers.verifyToken, postController.getFavorites);
 
 module.exports = router;
