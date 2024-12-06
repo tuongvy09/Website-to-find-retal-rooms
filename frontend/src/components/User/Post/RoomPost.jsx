@@ -1,8 +1,14 @@
 import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import React from 'react';
 import './RoomPost.css';
 
-const RoomPost = ({ post, onTitleClick }) => {
+const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
+  const handleFavoriteClick = () => {
+    onToggleFavorite(post.id); 
+  };
+
   return (
     <Card className="room-post-card">
       <Box className="room-post-images">
@@ -30,6 +36,9 @@ const RoomPost = ({ post, onTitleClick }) => {
           <Button className="post-area">{post.area}</Button>
         </Box>
       </CardContent>
+      <Box className="favorite-icon" onClick={handleFavoriteClick}>
+        {isFavorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+      </Box>
     </Card>
   );
 };

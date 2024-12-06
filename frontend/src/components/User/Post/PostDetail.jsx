@@ -5,6 +5,8 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Avatar, Box, Button, Card, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography, Rating } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -18,7 +20,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import './PostDetail.css'; // Tạo file CSS riêng nếu cần
 
-const PostDetail = () => {
+const PostDetail = ({ onToggleFavorite }) => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,6 +52,10 @@ const PostDetail = () => {
 
   const prevImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + post.images.length) % post.images.length);
+  };
+
+  const handleFavoriteClick = () => {
+    onToggleFavorite(post.id);
   };
 
   if (!post) return <div>Loading...</div>;
@@ -120,6 +126,9 @@ const PostDetail = () => {
             </Button>
           </Card>
         </Box>
+        <Box className="favorite-icon" onClick={handleFavoriteClick}>
+        {post.isFavorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+      </Box>
       </Box>
       <AddReviewForm/>
       <ReviewsList postId={id} />
