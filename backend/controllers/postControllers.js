@@ -216,7 +216,7 @@ exports.toggleVisibility = async (req, res) => {
   
       const filter = {
         visibility: "visible",
-        status: "aprroved",
+        status: "approved",
       };
   
       // Lọc theo tỉnh
@@ -421,7 +421,7 @@ exports.getPostCountByDateRange = async (req, res) => {
               $lte: new Date(endDate),
             },
             visibility: "visible",
-            status: "aprroved",
+            status: "approved",
           },
         },
         {
@@ -448,7 +448,7 @@ exports.getTopCategories = async (req, res) => {
         {
           $match: {
             visibility: "visible",
-            status: "aprroved",
+            status: "approved",
           },
         },
         {
@@ -474,7 +474,7 @@ exports.getTopProvinces = async (req, res) => {
         {
           $match: {
             visibility: "visible",
-            status: "aprroved",
+            status: "approved",
           },
         },
         {
