@@ -6,6 +6,7 @@ import RoomPost from './RoomPost';
 const ListAllPost = () => {
   const [approvedPosts, setApprovedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState('default'); // Default sorting option
   const navigate = useNavigate();
 
   const handleTitleClick = (id) => {
@@ -14,6 +15,26 @@ const ListAllPost = () => {
       navigate(`/posts/${id}`);
     } else {
       console.error('ID bài đăng không hợp lệ');
+    }
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  // Sort function
+  const sortPosts = (posts, option) => {
+    switch (option) {
+      case 'priceAsc':
+        return [...posts].sort((a, b) => a.rentalPrice - b.rentalPrice);
+      case 'priceDesc':
+        return [...posts].sort((a, b) => b.rentalPrice - a.rentalPrice); 
+      case 'areaAsc':
+        return [...posts].sort((a, b) => a.area - b.area);
+      case 'areaDesc':
+        return [...posts].sort((a, b) => b.area - a.area); 
+      default:
+        return posts;
     }
   };
 
@@ -50,15 +71,29 @@ const ListAllPost = () => {
     fetchApprovedPosts();
   }, []);
 
+  const sortedPosts = sortPosts(approvedPosts, sortOption);
+
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="approved-posts-list">
-      {approvedPosts.map((post, index) => (
+      {/* Thanh Sắp Xếp */}
+      <div className="sort-options" style={{ marginBottom: '20px' }}>
+        <select value={sortOption} onChange={handleSortChange}>
+          <option value="default">Mặc định</option>
+          <option value="priceAsc">Giá thuê (Tăng dần)</option>
+          <option value="priceDesc">Giá thuê (Giảm dần)</option>
+          <option value="areaAsc">Diện tích (Tăng dần)</option>
+          <option value="areaDesc">Diện tích (Giảm dần)</option>
+        </select>
+      </div>
+  
+      {/* Hiển thị các bài đăng đã được sắp xếp */}
+      {sortedPosts.map((post, index) => (
         <RoomPost key={index} post={post} onTitleClick={handleTitleClick} />
       ))}
     </div>
   );
-};
+}  
 
 export default ListAllPost;
