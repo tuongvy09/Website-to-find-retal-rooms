@@ -329,4 +329,51 @@ export const useFavoriteToggle = (user) => {
   };
 
   return { favorites, toggleFavorite };
+
+  export const updateDefaultDaysToShow = async (days, token) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}update-default-days`,
+      { days },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi cập nhật số ngày hiển thị mặc định:', error);
+    throw error;
+  }
+};
+
+export const searchAndCategorizePosts = async (params, token) => {
+  try {
+    const posts = await searchPosts(params, token);
+
+    const category1 = [];
+    const category2 = [];
+    const category3 = [];
+
+    posts.forEach(post => {
+      if (post.category === 'Nhà trọ, phòng trọ') {
+        category1.push(post);
+      } else if (['Nhà nguyên căn', 'Cho thuê căn hộ', 'Cho thuê căn hộ mini', 'Cho thuê căn hộ dịch vụ'].includes(post.category)) {
+        category2.push(post);
+      } else if (post.category === 'Cho thuê mặt bằng, văn phòng') {
+        category3.push(post);
+      }
+    });
+
+    return {
+      category1,
+      category2,
+      category3,
+    };
+  } catch (error) {
+    console.error('Lỗi khi phân loại bài đăng:', error);
+    throw error;
+  }
 };

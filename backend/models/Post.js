@@ -84,6 +84,10 @@ const postsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  hoursRemaining: {
+    type: Number,
+    default: 0,
+  },
   defaultDaysToShow: {
     type: Number,
     default: 7,

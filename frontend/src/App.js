@@ -2,7 +2,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import AdminDashboard from './components/Admin/AdminDashboard/AdminDashboard';
+import HomeAdmin from './components/Admin/AdminDashboard/HomeAdmin';
 import ManagePostAdmin from './components/Admin/AdminDashboard/ManagePostAdmin';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
@@ -64,7 +64,7 @@ function App() {
               </>
             } />
             <Route path="/admin-dashboard" element={
-              <AdminDashboard />
+              <HomeAdmin />
             } />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

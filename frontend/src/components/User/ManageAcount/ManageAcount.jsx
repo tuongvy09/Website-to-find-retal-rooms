@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMenu } from '../../../redux/menuSlice';
-import Footer from "../../Footer/Footer";
 import Header from "../Header/Header";
 import EditProfile from "./EditProfile";
 import ListUserPost from "./listUserPost";
@@ -25,7 +24,7 @@ const ManageAcount = () => {
         setSelectedPost={setSelectedPost} 
       />;
       case 'updatePost':
-        return <UpdatePost />;
+        return <UpdatePost postId={setSelectedPost} />;
       case 'manageAccount':
         return <EditProfile user={currentUser}/>;
         case "changePass":

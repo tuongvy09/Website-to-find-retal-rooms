@@ -52,6 +52,16 @@ const RoomPostManage = ({ post, onTitleClick, onApprove, onReject, onHide, onVis
             </Button>
           </Box>
         )}
+        {post.status === 'update' && (
+          <Box className="manage-post-admin-btn-container">
+            <Button className="manage-post-admin-btn-approved" onClick={() => onApprove(post.id)}>
+              Duyệt
+            </Button>
+            <Button className="manage-post-admin-btn-rejected" onClick={() => onReject(post.id)}>
+              Từ chối
+            </Button>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );
