@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -10,6 +11,9 @@ import ListNewsHome from "./ListNewsHome";
 const Home = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const token = currentUser?.accessToken;
   const [category1Posts, setTroPosts] = useState([]);
@@ -34,6 +38,7 @@ const Home = () => {
 
     fetchPosts();
   }, [token]);
+
   const formatPost = (post) => ({
     id: post._id,
     address: {
@@ -66,10 +71,33 @@ const Home = () => {
     setUser(null);
   };
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/v1/posts/favorites", {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
+          },
+        });
+        setFavorites(response.data.favorites);
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách yêu thích:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.accessToken) {
+      fetchFavorites();
+    }
+  }, [user]);
+
   return (
     <div className="home-container">
       <div style={{ width: '100%', height: 'auto' }}>
         <ListPostHome post={category1Posts} title='Nhà trọ, phòng trọ' />
+      <div style={{width: '100%', height: 'auto'}}>
+        <ListPostHome favorites={favorites} />
       </div>
       <div style={{ width: '100%', height: 'auto' }}>
         <ListPostHome post={category2Posts} title='Cho thuê căn hộ, nhà ở' />
@@ -89,6 +117,7 @@ const Home = () => {
           <button onClick={handleLogout}>Logout</button>
         </>
       ) : null}
+      </div>
     </div>
   );
 };
