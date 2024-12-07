@@ -8,38 +8,39 @@
     display: flex;
     justify-content: center;
     margin: 0 8px;
+    cursor: pointer;
 }
 
-.approved-posts-slider  .slick-slide {
+.approved-posts-slider .slick-slide {
     display: flex;
     justify-content: center;
     padding: 0 8px;
 }
 
-.approved-posts-slider  .slick-prev:before,
-.approved-posts-slider  .slick-next:before {
+.approved-posts-slider .slick-prev:before,
+.approved-posts-slider .slick-next:before {
     content: '';
 }
 
-.approved-posts-slider  .slick-prev {
+.approved-posts-slider .slick-prev {
     left: 10px;
     z-index: 10;
     font-size: 30px;
 }
 
-.approved-posts-slider  .slick-next {
+.approved-posts-slider .slick-next {
     right: 10px;
     z-index: 10;
     font-size: 30px;
 }
 
-.approved-posts-slider  .slick-prev:before {
+.approved-posts-slider .slick-prev:before {
     content: '←';
     color: #63AB45;
     font-size: xx-large;
 }
 
-.approved-posts-slider  .slick-next:before {
+.approved-posts-slider .slick-next:before {
     content: '→';
     color: #63AB45;
     font-size: xx-large;

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ListPostHome from '../Post/ListPostHome';
 import './Home.css';
 import Introduction from './Introduction';
-import ListReviewInHome from './ListReviewInHome';
+import ListNewsHome from "./ListNewsHome";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -35,7 +35,7 @@ const Home = () => {
         <Introduction/>
       </div>
       <div style={{width: '100%', height: 'auto'}}>
-      <ListReviewInHome />
+      <ListNewsHome />
       </div>
       {user ? (
         <>
