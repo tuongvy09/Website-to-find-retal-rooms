@@ -7,11 +7,17 @@ import arrowsIcon from '../../../assets/images/arrowIcon.png';
 import { getApprovedPosts } from '../../../redux/postAPI';
 import './ListPostHome.css';
 import RoomPost from './RoomPost';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useFavoriteToggle } from '../../../redux/postAPI';
 
-const ListPostHome = () => {
+const ListPostHome = (favorite) => {
   const [approvedPosts, setApprovedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const { favorites, toggleFavorite } = useFavoriteToggle(user);
+
 
   const handleTitleClick = (id) => {
     console.log("Navigating to post with ID:", id);
@@ -21,7 +27,7 @@ const ListPostHome = () => {
       console.error('ID bài đăng không hợp lệ');
     }
   };
-
+  
   useEffect(() => {
     const fetchApprovedPosts = async () => {
       try {
@@ -72,9 +78,12 @@ const ListPostHome = () => {
         {approvedPosts.slice(0, 5).map((post, index) => (
           <div key={index} className="approved-posts-item">
             <RoomPost
-              post={post}
-              onTitleClick={() => handleTitleClick(post.id)}
-            />
+            post={post}
+            onTitleClick={() => handleTitleClick(post.id)}
+            onToggleFavorite={(id, isFavorite) => toggleFavorite(id, isFavorite)}
+            isFavorite={favorites.some((fav) => fav._id === post._id)}
+          />;
+
             {index === approvedPosts.slice(0, 5).length - 1 && (
               <button
                 className="see-more-button"
