@@ -1,7 +1,7 @@
-import React from "react";
-import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import React from "react";
 import "./RoomPost.css";
 
 const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
@@ -27,7 +27,7 @@ const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
           />
         )}
         <Button className="room-post-price" variant="contained" color="primary">
-          {post.rentalPrice} VNĐ
+          {post.rentalPrice}
         </Button>
       </Box>
       <CardContent className="room-post-content">
@@ -45,7 +45,7 @@ const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
         </Box>
         <Box>
           <Button className="post-area" variant="outlined">
-            {post.area} m²
+            {post.area}
           </Button>
         </Box>
       </CardContent>
