@@ -205,7 +205,7 @@ const ManagePostAdmin = () => {
                             backgroundColor: "transparent",
                         }
                     }}>
-                        <Button sx={{}} variant="contained" color="primary" onClick={handleUpdateDays}>
+                        <Button className='manage-post-admin-btn-change-date' onClick={handleUpdateDays}>
                             Xác nhận
                         </Button>
                     </MenuItem>

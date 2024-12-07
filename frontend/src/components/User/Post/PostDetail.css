@@ -5,14 +5,13 @@
 
 .image-gallery {
   position: relative;
-  width: calc(100% - 2rem);
+  width: 100%;
   height: 30%;
-  margin: 1rem auto;
 }
 
 .post-detail-image {
   width: 100%;
-  height: 100%;
+  height: 400px;
   object-fit: cover;
   border-radius: 20px;
 }
@@ -66,10 +65,12 @@
 .container-cost{
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
-.container-left .container-cost .room-post-price{
+
+.container-cost .room-post-price{
   flex: 1 !important;
-  background-color: #F7837A;
+  background-color: #7ecc5d;
   font-family: Helvetica;
   font-weight: 200;
   color: #2A261A;
@@ -101,6 +102,8 @@
 }
 
 .container-right {
+  padding: 0;
+  margin: 0;
   flex: 1;
 }
 
@@ -111,12 +114,13 @@
 }
 
 .container-left .container-table{
-  background-color: #fff1f0;
+  background-color: white;
   font-family: 'Times New Roman', Times, serif;
   font-size: 1rem;
   border-radius: 25px;
   overflow: hidden;
   width: 95%;
+  margin-bottom: 20px;
 }
 
 .container-right .title-cell {
@@ -126,9 +130,9 @@
 }
 
 .container-right .card-info{
-  background-color: #fff1f0;
-  margin: 3rem;
+  background-color: #c2f8ab;
   border-radius: 25px;
+  width: 300px;
 }
 
 .card-info .container-contactinfo{
@@ -144,13 +148,19 @@
 }
 
 .card-info .room-post-button{
-  background-color: #F7837A;
-  border-color: #F7837A;
+  background-color: #7ecc5d;
+  border-color: #7ecc5d;
   border-radius: 20px;
-  color: #3A6D2B;
+  color: black;
   font-size: 1rem;
   font-weight: bold;
   width: 100%;
   margin-top: 0.5rem;
   pointer-events: none;
+}
+
+.post-detail-container-comment{
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
 }

@@ -3,7 +3,7 @@ import "./Sidebar.css";
 
 const Sidebar = ({ user, setSelectedMenu }) => {
   return (
-    <div className="sidebar">
+    <div className="sidebar-manage-user">
       <div className="user-info">
         <img src={user.profile.picture} alt="User Avatar" className="avatar" />
         <div className="user-details">

@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
-import { getReviewsByPostId } from "../../../../redux/postAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteReview as deleteReviewAPI, editReview, getReviewsByPostId } from "../../../../redux/postAPI";
 import {
-  setReviews,
   deleteReview,
+  setReviews,
   updateReview,
 } from "../../../../redux/reviewSlice";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import {
-  editReview,
-  deleteReview as deleteReviewAPI,
-} from "../../../../redux/postAPI";
 import "./ReviewsList.css";
 
 const ReviewsList = ({ postId, userId }) => {
@@ -132,79 +128,79 @@ const ReviewsList = ({ postId, userId }) => {
     <div className="review-wrapper">
       {/* Phần mới thêm vào */}
       <div className="product-rating-overview">
-  {/* <h2>Đánh Giá Sản Phẩm</h2> */}
-  <div className="product-rating-overview__briefing">
-    {/* Điểm trung bình */}
-    <div className="product-rating-overview__score-wrapper">
-      <span className="product-rating-overview__rating-score">
-        {averageRating}
-      </span>
-      <span className="product-rating-overview__rating-score-out-of"> trên 5 </span>
-    </div>
-    <div className="shopee-rating-stars product-rating-overview__stars">
-      <div className="shopee-rating-stars__stars">
-        {Array.from({ length: 5 }, (_, index) => {
-          const starPercentage = index < Math.floor(averageRating)
-            ? 100
-            : index < averageRating
-            ? (averageRating % 1) * 100
-            : 0;
+        {/* <h2>Đánh Giá Sản Phẩm</h2> */}
+        <div className="product-rating-overview__briefing">
+          {/* Điểm trung bình */}
+          <div className="product-rating-overview__score-wrapper">
+            <span className="product-rating-overview__rating-score">
+              {averageRating}
+            </span>
+            <span className="product-rating-overview__rating-score-out-of"> trên 5 </span>
+          </div>
+          <div className="shopee-rating-stars product-rating-overview__stars">
+            <div className="shopee-rating-stars__stars">
+              {Array.from({ length: 5 }, (_, index) => {
+                const starPercentage = index < Math.floor(averageRating)
+                  ? 100
+                  : index < averageRating
+                    ? (averageRating % 1) * 100
+                    : 0;
 
-          return (
-            <div className="shopee-rating-stars__star-wrapper" key={index}>
-              <div
-                className="shopee-rating-stars__lit"
-                style={{ width: `${starPercentage}%` }}
-              >
-                <svg
-                  enableBackground="new 0 0 15 15"
-                  viewBox="0 0 15 15"
-                  x="0"
-                  y="0"
-                  className="shopee-svg-icon shopee-rating-stars__primary-star icon-rating-solid"
-                >
-                  <polygon
-                    points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeMiterlimit="10"
-                  ></polygon>
-                </svg>
-              </div>
-              <svg
-                enableBackground="new 0 0 15 15"
-                viewBox="0 0 15 15"
-                x="0"
-                y="0"
-                className="shopee-svg-icon shopee-rating-stars__hollow-star icon-rating"
-              >
-                <polygon
-                  fill="none"
-                  points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeMiterlimit="10"
-                ></polygon>
-              </svg>
+                return (
+                  <div className="shopee-rating-stars__star-wrapper" key={index}>
+                    <div
+                      className="shopee-rating-stars__lit"
+                      style={{ width: `${starPercentage}%` }}
+                    >
+                      <svg
+                        enableBackground="new 0 0 15 15"
+                        viewBox="0 0 15 15"
+                        x="0"
+                        y="0"
+                        className="shopee-svg-icon shopee-rating-stars__primary-star icon-rating-solid"
+                      >
+                        <polygon
+                          points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeMiterlimit="10"
+                        ></polygon>
+                      </svg>
+                    </div>
+                    <svg
+                      enableBackground="new 0 0 15 15"
+                      viewBox="0 0 15 15"
+                      x="0"
+                      y="0"
+                      className="shopee-svg-icon shopee-rating-stars__hollow-star icon-rating"
+                    >
+                      <polygon
+                        fill="none"
+                        points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeMiterlimit="10"
+                      ></polygon>
+                    </svg>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
-    </div>
-  </div>
+          </div>
+        </div>
 
-  {/* Hiển thị breakdown */}
-  <div className="product-rating-overview__filters">
-  <div className="product-rating-overview__filter total-reviews-box">
-      Tất cả ({totalReviews.toLocaleString()})
-    </div>
-    {Object.entries(ratingsBreakdown).map(([star, count]) => (
-      <div className="product-rating-overview__filter" key={star}>
-        {star} Sao ({count.toLocaleString()})
+        {/* Hiển thị breakdown */}
+        <div className="product-rating-overview__filters">
+          <div className="product-rating-overview__filter total-reviews-box">
+            Tất cả ({totalReviews.toLocaleString()})
+          </div>
+          {Object.entries(ratingsBreakdown).map(([star, count]) => (
+            <div className="product-rating-overview__filter" key={star}>
+              {star} Sao ({count.toLocaleString()})
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
 
 
       {/* Phần cũ */}
@@ -222,7 +218,7 @@ const ReviewsList = ({ postId, userId }) => {
           Cũ tới mới
         </button>
       </div>
-  
+
       {reviews.length === 0 ? (
         <p>No reviews yet.</p>
       ) : (
@@ -240,7 +236,7 @@ const ReviewsList = ({ postId, userId }) => {
                 </span>
               </p>
               <p>Comment: {review.comment}</p>
-  
+
               {review.user_id._id === id && (
                 <div className="review-actions">
                   <FaEdit onClick={() => handleEdit(review)} />
@@ -249,7 +245,7 @@ const ReviewsList = ({ postId, userId }) => {
               )}
             </div>
           ))}
-  
+
           <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
@@ -263,7 +259,7 @@ const ReviewsList = ({ postId, userId }) => {
           />
         </>
       )}
-  
+
       {showForm && (
         <div className="addreview-overlay">
           <div className="addreview-form-container">
@@ -296,7 +292,7 @@ const ReviewsList = ({ postId, userId }) => {
                   ))}
                 </div>
               </div>
-  
+
               <div className="addreview-form-group">
                 <label htmlFor="comment">Bình luận:</label>
                 <textarea
@@ -307,9 +303,9 @@ const ReviewsList = ({ postId, userId }) => {
                   className="addreview-textarea"
                 ></textarea>
               </div>
-  
+
               {error && <p style={{ color: "red" }}>{error}</p>}
-  
+
               <div className="addreview-buttons">
                 <button
                   type="submit"
@@ -332,6 +328,6 @@ const ReviewsList = ({ postId, userId }) => {
       )}
     </div>
   );
-}  
+}
 
 export default ReviewsList;

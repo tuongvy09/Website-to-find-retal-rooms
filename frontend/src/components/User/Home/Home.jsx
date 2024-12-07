@@ -6,6 +6,7 @@ import { searchAndCategorizePosts } from '../../../redux/postAPI';
 import ListPostHome from '../Post/ListPostHome';
 import './Home.css';
 import Introduction from './Introduction';
+import Introduction2 from "./Introduction2";
 import ListNewsHome from "./ListNewsHome";
 
 const Home = () => {
@@ -106,6 +107,9 @@ const Home = () => {
       </div>
       <div style={{ width: '100%', height: 'auto' }}>
         <ListNewsHome />
+      </div>
+      <div style={{ width: '100%', height: 'auto' }}>
+        <Introduction2 />
       </div>
       {user ? (
         <>

@@ -3,13 +3,15 @@
   flex-direction: column;
   align-items: center; /* Căn giữa theo chiều ngang */
   margin-bottom: 20px; /* Tạo khoảng cách dưới tiêu đề */
-  margin-left: 20px; /* Tăng khoảng cách từ lề trái */
-  margin-right: 560px; /* Tăng khoảng cách từ lề phải nếu cần */
+  text-align: center;;
 }
 
-.addreview-review-header h3 {
-  margin: 0 0 10px 0; /* Bỏ khoảng cách bên trên, thêm khoảng cách dưới */
-  text-align: center; /* Căn giữa văn bản trong tiêu đề */
+.add-review-post-title{
+  font-family: work sans, sans-serif;
+  font-size: 16px;
+  color: black;
+  font-weight: bold !important;
+  text-align: center;
 }
 
 .addreview-review-header .addreview-button {
@@ -87,12 +89,12 @@
 
 /* Nút thêm đánh giá */
 .addreview-button {
-  background-color: #2cc655;
-  color: white;
+  background-color: #7ecc5d;
+  color: black;
   font-size: 1.2rem;
   padding: 12px 18px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

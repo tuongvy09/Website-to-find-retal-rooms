@@ -1,6 +1,7 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import supportPic from '../../../../assets/images/supportPic.png';
 import './NewsDetailUser.css';
 
 const NewsDetailUser = () => {
@@ -33,6 +34,34 @@ const NewsDetailUser = () => {
       <div className="news-detail-content">
       <div dangerouslySetInnerHTML={{ __html: news.content }} />
       </div>
+      <div className="support-container">
+      {/* Image Section */}
+      <div className="support-image">
+        <img
+          src={supportPic}
+          alt="Support"
+          className="support-image-img"
+        />
+      </div>
+      {/* Info Section */}
+      <div className="support-info">
+        <div className="icon">
+          <i className="fas fa-headset"></i>
+        </div>
+        <h3>Hỗ trợ chủ nhà đăng tin</h3>
+        <p>
+          Nếu bạn cần hỗ trợ đăng tin, vui lòng liên hệ số điện thoại bên dưới:
+        </p>
+        <div className="contact-buttons">
+          <button className="contact-btn phone-btn">
+            <i className="fas fa-phone-alt"></i> ĐT: 0909316890
+          </button>
+          <button className="contact-btn zalo-btn">
+            <i className="fas fa-comment-dots"></i> Zalo: 0909316890
+          </button>
+        </div>
+      </div>
+    </div>
     </div>
   );
 };
