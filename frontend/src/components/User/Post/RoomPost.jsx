@@ -1,31 +1,42 @@
-import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import React from 'react';
-import './RoomPost.css';
+import React from "react";
+import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import "./RoomPost.css";
 
 const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
   const handleFavoriteClick = () => {
-    onToggleFavorite(post.id); 
+    console.log("onToggleFavorite in RoomPost:", onToggleFavorite);
+    
+    if (onToggleFavorite) {
+      onToggleFavorite(post._id, !isFavorite);  
+    } else {
+      console.error("onToggleFavorite không được cung cấp!");
+    }
   };
 
   return (
     <Card className="room-post-card">
       <Box className="room-post-images">
-        {/* Chỉ hiển thị ảnh đầu tiên */}
-        {post.images && post.images[0] && (
+        {post.images && post.images.length > 0 && (
           <CardMedia
             component="img"
-            image={post.images[0]} 
+            image={post.images[0]}
             alt="Room image"
             className="room-post-image"
           />
         )}
-        <button className="room-post-price">{post.rentalPrice}</button>
+        <Button className="room-post-price" variant="contained" color="primary">
+          {post.rentalPrice} VNĐ
+        </Button>
       </Box>
       <CardContent className="room-post-content">
         <Box>
-          <Typography className="room-post-title" onClick={() => onTitleClick(post.id)}>
+          <Typography
+            variant="h6"
+            className="room-post-title"
+            onClick={() => onTitleClick(post._id)}
+          >
             {post.title}
           </Typography>
           <Typography variant="body2" className="room-post-location">
@@ -33,11 +44,17 @@ const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
           </Typography>
         </Box>
         <Box>
-          <Button className="post-area">{post.area}</Button>
+          <Button className="post-area" variant="outlined">
+            {post.area} m²
+          </Button>
         </Box>
       </CardContent>
       <Box className="favorite-icon" onClick={handleFavoriteClick}>
-        {isFavorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+        {isFavorite ? (
+          <FavoriteIcon color="error" className="favorite-icon-filled" />
+        ) : (
+          <FavoriteBorderIcon className="favorite-icon-border" />
+        )}
       </Box>
     </Card>
   );
