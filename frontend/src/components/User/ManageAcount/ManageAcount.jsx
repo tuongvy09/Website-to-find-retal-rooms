@@ -7,6 +7,7 @@ import EditProfile from "./EditProfile";
 import ListUserPost from "./listUserPost";
 import './ManageAcount.css';
 import Sidebar from "./Sidebar";
+import FavoritePosts from "../FavoritePosts/FavoritePosts";
 import UpdatePost from "./UpdatePost";
 
 const ManageAcount = () => {
@@ -26,6 +27,8 @@ const ManageAcount = () => {
         return <UpdatePost />;
       case 'manageAccount':
         return <EditProfile user={currentUser}/>;
+        case "favoritePosts":
+      return <FavoritePosts />;
       default:
         return <div>Quản lý tài khoản</div>;
     }
