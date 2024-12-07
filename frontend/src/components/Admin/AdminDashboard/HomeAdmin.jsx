@@ -6,6 +6,7 @@ import AdminHeader from '../AdminHeader/AdminHeader';
 import ManageUsers from '../ManageUsers/ManageUsers';
 import NewsForm from '../News/NewsForm/NewsForm';
 import NewsList from '../News/NewsList/NewsList';
+import NewsManagement from '../News/NewsManagement/NewsManagement';
 import Sidebar from '../Sidebar/Sidebar';
 import './HomeAdmin.css';
 import ManagePostAdmin from './ManagePostAdmin';
@@ -32,6 +33,10 @@ const HomeAdmin = () => {
                 return <NewsForm />;
             default:
                 return <AdminDashboard />;
+            case 'managePost':
+                return <ManagePostAdmin/>;
+            case 'manageNews':
+                return <NewsManagement/>;
         }
     };
 

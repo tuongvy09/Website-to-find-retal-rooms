@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import arrowsIcon from '../../../assets/images/arrowIcon.png';
 import { useFavoriteToggle } from '../../../redux/postAPI';
+import { getApprovedPosts, searchAndCategorizePosts } from '../../../redux/postAPI';
 import './ListPostHome.css';
 import RoomPost from './RoomPost';
 
