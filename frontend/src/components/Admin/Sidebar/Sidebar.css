@@ -1,50 +1,27 @@
-
-.container-body {
-    display: flex;
-}
-
-.sidebar {
+.home-admin-sidebar {
     width: 250px;
-    padding: 20px;
+    height: 600px;
+    border-radius: 8px;
+    border: #BBBBBB solid 1px;
+    background-color: #c2f8ab;
 }
 
-.user-info {
-    display: flex;
+.home-admin-nav-menu ul {
+    margin-top: 150px;
+    font-size: 15px;
+    font-family: work sans, sans-serif;
+    font-weight: bold;
     align-items: center;
-    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-}
-
-.user-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.user-name {
-    font-size: 16px;
-    font-weight: 500;
-    margin: 0;
-}
-
-.user-phone {
-    font-size: 14px;
-    color: #666;
-    margin: 0;
-}
-
-.nav-menu ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.nav-menu li {
+.home-admin-nav-menu li {
     padding: 10px 0;
     cursor: pointer;
+}
+
+.home-admin-nav-menu li.active {
+    border-radius: 8px;
+    background-color: #63AB45;
 }

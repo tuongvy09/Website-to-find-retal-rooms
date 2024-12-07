@@ -368,6 +368,7 @@ exports.approvePost = async (req, res) => {
     post.visibility = 'visible';
     post.expiryDate = expiryDate;
     post.daysRemaining = daysToShow;
+    post.hoursRemaining = 0;
 
     await post.save();
 
@@ -376,6 +377,7 @@ exports.approvePost = async (req, res) => {
     res.status(500).json({ message: 'Error approving post', error: error.message });
   }
 };
+
   //Từ chối bài viết
   exports.rejectPost = async (req, res) => {
     try {
@@ -623,26 +625,36 @@ exports.getFavorites = async (req, res) => {
 };
 
 exports.updateDefaultDaysToShow = async (req, res) => {
-    const { days } = req.body;
-  
-    try {
-      const posts = await Post.find({});
-  
-      for (const post of posts) {
-        const oldDaysToShow = post.defaultDaysToShow;
-        post.defaultDaysToShow = days;
-  
-        if (days > oldDaysToShow) {
-          post.daysRemaining += (days - oldDaysToShow);
-        } else {
-          post.daysRemaining = Math.max(0, post.daysRemaining - (oldDaysToShow - days));
-        }
-  
-        await post.save();
+  const { days } = req.body;
+
+  try {
+    const posts = await Post.find({});
+
+    for (const post of posts) {
+      const oldDaysToShow = post.defaultDaysToShow;
+      post.defaultDaysToShow = days;
+
+      const now = new Date();
+      const remainingTime = post.expiryDate - now; // Thời gian còn lại tính bằng milliseconds
+      const remainingDays = Math.floor(remainingTime / (1000 * 60 * 60 * 24)); // Chuyển đổi sang ngày
+      const remainingHours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Chuyển đổi sang giờ
+
+      if (days > oldDaysToShow) {
+        post.daysRemaining = remainingDays + (days - oldDaysToShow);
+        post.hoursRemaining = remainingHours;
+      } else {
+        post.daysRemaining = Math.max(0, remainingDays - (oldDaysToShow - days));
+        post.hoursRemaining = remainingHours;
       }
-  
-      res.status(200).json({ message: 'Updated default days to show for all posts' });
-    } catch (error) {
-      res.status(500).json({ message: 'Server error', error: error.message });
+
+      const newExpiryDate = new Date(now.getTime() + post.daysRemaining * (1000 * 60 * 60 * 24) + post.hoursRemaining * (1000 * 60 * 60));
+      post.expiryDate = newExpiryDate;
+
+      await post.save();
     }
-  };
+
+    res.status(200).json({ message: 'Updated default days to show for all posts' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

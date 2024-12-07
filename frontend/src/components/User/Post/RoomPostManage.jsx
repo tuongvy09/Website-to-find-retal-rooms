@@ -37,7 +37,14 @@ const RoomPostManage = ({ post, onTitleClick, onEditPost, onHidePost, onDeletePo
                         {post.address.district}, {post.address.province}
                     </Typography>
                 </Box>
-                <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                    {post.visibility === 'visible' && post.status === 'approved' && (
+                        <>
+                            <Typography className="room-post-manage-date-visible">
+                                Bài đăng sẽ ẩn sau: {post.daysRemaining} ngày, {post.hoursRemaining} giờ
+                            </Typography>
+                        </>
+                    )}
                     <Button className="post-area">{post.area}</Button>
                     <Button
                         className="room-post-more"
@@ -50,7 +57,7 @@ const RoomPostManage = ({ post, onTitleClick, onEditPost, onHidePost, onDeletePo
                         anchorEl={menuVisible}
                         open={Boolean(menuVisible)}
                         onClose={() => setMenuVisible(null)}
-                        className="custom-menu-container"  
+                        className="custom-menu-container"
                     >
                         {post.visibility === 'visible' && post.status === 'approved' && (
                             <>
@@ -63,13 +70,13 @@ const RoomPostManage = ({ post, onTitleClick, onEditPost, onHidePost, onDeletePo
                             </>
                         )}
 
-                        {post.status === 'pending' && post.visibility === 'hidden' &&(
+                        {post.status === 'pending' && post.visibility === 'hidden' && (
                             <MenuItem className="custom-menu-item" onClick={() => onDeletePost(post.id)}>
-                                 Xóa yêu cầu đăng bài
+                                Xóa yêu cầu đăng bài
                             </MenuItem>
                         )}
 
-                        {post.visibility=== 'hidden' && post.status === 'approved' &&(
+                        {post.visibility === 'hidden' && post.status === 'approved' && (
                             <MenuItem className="custom-menu-item" onClick={() => onVisiblePost(post.id)}>
                                 <VisibilityIcon /> Hiển thị lại bài viết
                             </MenuItem>

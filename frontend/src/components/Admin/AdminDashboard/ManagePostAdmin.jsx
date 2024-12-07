@@ -1,21 +1,27 @@
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import { Button, Menu, MenuItem, Pagination, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, Pagination, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { approvePost, getAllPosts, hiddePost, rejectPost, visiblePost } from '../../../redux/postAPI';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { approvePost, getAllPosts, hiddePost, rejectPost, updateDefaultDaysToShow, visiblePost } from '../../../redux/postAPI';
 import './ManagePostAdmin.css';
 import RoomPostManage from './RoomPostManage';
 
 const ManagePostAdmin = () => {
     const [filter, setFilter] = useState('Tất cả');
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorElUpdateDate, setAnchorElUpdateDate] = useState(null);
     const [open, setOpen] = useState(false);
+    const [openUpdateDate, setOpenUpdateDate] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const token = currentUser?.accessToken;
+    const [filterText, setFilterText] = useState('Lọc bài viết');
+    const [days, setDays] = useState();
 
     const navigate = useNavigate();
 
@@ -28,6 +34,15 @@ const ManagePostAdmin = () => {
         setOpen(true);
     };
 
+    const handleOpenUpdateDate = (event) => {
+        setAnchorElUpdateDate(event.currentTarget);
+        setOpenUpdateDate(true);
+    };
+
+    const handleCloseUpdateDate = (event) => {
+        setOpenUpdateDate(false);
+    };
+
     const handleClose = () => {
         setOpen(false);
         setAnchorEl(null);
@@ -37,12 +52,23 @@ const ManagePostAdmin = () => {
         navigate(`/posts/${id}`);
     };
 
+    const handleUpdateDays = async () => {
+        try {
+            const response = await updateDefaultDaysToShow(days, token);
+            toast.success('Cập nhật số ngày hiển thị mặc định thành công!');
+            setOpenUpdateDate(false);
+        } catch (error) {
+            console.error('Lỗi khi cập nhật số ngày hiển thị mặc định:', error);
+        }
+    };
+
     const statusVisibilityMap = {
         'Tất cả': { status: '', visibility: '' },
         'Chờ duyệt': { status: 'pending', visibility: 'hidden' },
         'Đang hiển thị': { status: 'approved', visibility: 'visible' },
         'Đã từ chối': { status: 'rejected', visibility: 'hidden' },
         'Đã ẩn': { status: 'approved', visibility: 'hidden' },
+        'Bài đăng chỉnh sửa': { status: 'update', visibility: 'hidden' },
     };
 
     const fetchFilteredPosts = async () => {
@@ -86,6 +112,7 @@ const ManagePostAdmin = () => {
 
     const handleFilterChange = (event) => {
         setFilter(event.target.innerText);
+        setFilterText(event.target.innerText);
         handleClose();
     };
 
@@ -127,11 +154,62 @@ const ManagePostAdmin = () => {
 
     return (
         <div className="all-posts-list">
+            <ToastContainer position="top-right" autoClose={5000} />
             <div className='manage-post-admin-actions'>
                 <div className='manage-post-admin-container-filter'></div>
                 <Button startIcon={<FilterAltOutlinedIcon />} className='manage-post-admin-btn-filter' onClick={handleClick}>
-                    Lọc bài viết
+                    {filterText}
                 </Button>
+                <Button className='manage-post-admin-btn-update-date' onClick={handleOpenUpdateDate}>
+                    Cập nhật số ngày hiển thị bài đăng
+                </Button>
+                <Menu
+                    className='manage-post-admin-menu-update-date'
+                    anchorEl={anchorElUpdateDate}
+                    open={openUpdateDate}
+                    onClose={handleCloseUpdateDate}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <MenuItem sx={{
+                        "&:hover": {
+                            backgroundColor: "transparent",
+                        },
+                        "&:focus": {
+                            backgroundColor: "transparent",
+                        },
+                        "&.Mui-selected": {
+                            backgroundColor: "transparent",
+                        }
+                    }}>
+                        <TextField
+                            label="Số ngày"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={days}
+                            onChange={(e) => setDays(e.target.value)}
+                        />
+                    </MenuItem>
+                    <MenuItem sx={{
+                        display: 'flex', 
+                        justifyContent: 'center',
+                        "&:hover": {
+                            backgroundColor: "transparent",
+                        },
+                        "&:focus": {
+                            backgroundColor: "transparent",
+                        },
+                        "&.Mui-selected": {
+                            backgroundColor: "transparent",
+                        }
+                    }}>
+                        <Button sx={{}} variant="contained" color="primary" onClick={handleUpdateDays}>
+                            Xác nhận
+                        </Button>
+                    </MenuItem>
+                </Menu>
                 <Menu
                     anchorEl={anchorEl}
                     open={open}
@@ -145,6 +223,7 @@ const ManagePostAdmin = () => {
                     <MenuItem onClick={handleFilterChange}>Đang hiển thị</MenuItem>
                     <MenuItem onClick={handleFilterChange}>Đã từ chối</MenuItem>
                     <MenuItem onClick={handleFilterChange}>Đã ẩn</MenuItem>
+                    <MenuItem onClick={handleFilterChange}>Bài đăng chỉnh sửa</MenuItem>
                 </Menu>
             </div>
             {allPosts.length > 0 ? (

@@ -201,10 +201,9 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <AdminHeader />
       <div className="admin-dashboard">
         <h2>Thống Kê Quản Trị</h2>
-        <div className="buttons">
+        <div className="buttons-type">
           <button
             className={activeStat === "date" ? "active" : ""}
             onClick={() => fetchData("date")}

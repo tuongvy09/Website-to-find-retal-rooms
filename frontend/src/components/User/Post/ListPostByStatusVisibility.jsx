@@ -9,7 +9,7 @@ import './RoomPost.css';
 import RoomPostManage from './RoomPostManage';
 const ListPostByStatusVisibility = ({ status, visibility, token }) => {
     const [userPosts, setUserPosts] = useState([]);
-    const posts = useSelector((state) => state.posts.posts); 
+    const posts = useSelector((state) => state.posts.posts);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -28,8 +28,8 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
     };
 
     const handleEditPost = (postId) => {
-            dispatch(setSelectedPost(postId));
-            dispatch(setSelectedMenu('updatePost')); 
+        dispatch(setSelectedPost(postId));
+        dispatch(setSelectedMenu('updatePost'));
     };
 
     const handleHidePost = async (postId) => {
@@ -59,7 +59,7 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
     const handleDeletePost = async (postId) => {
         try {
             const result = await deletePost(postId, token);
-            console.log('Post deleted:', result); 
+            console.log('Post deleted:', result);
         } catch (error) {
             console.error(error);
         }
@@ -88,6 +88,8 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
                     images: post.images ? post.images.slice(0, 2) : [],
                     visibility: post.visibility || '',
                     status: post.status || '',
+                    daysRemaining: post.daysRemaining || 0,
+                    hoursRemaining: post.hoursRemaining || 0,
                 }));
                 dispatch(setPosts(formattedPosts));
             } catch (error) {
@@ -110,9 +112,9 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
                         post={post}
                         onTitleClick={handleTitleClick}
                         onEditPost={handleEditPost}
-                        onHidePost={handleHidePost} 
+                        onHidePost={handleHidePost}
                         onDeletePost={handleDeletePost}
-                        onVisiblePost={handleVisiblePost}/>
+                        onVisiblePost={handleVisiblePost} />
                 ))
             ) : (
                 <div className='container-nocontent'>

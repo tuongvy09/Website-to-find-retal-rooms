@@ -7,11 +7,18 @@ cron.schedule('0 0 * * *', async () => {
     const posts = await Post.find({ visibility: 'visible' });
 
     for (const post of posts) {
-      if (post.daysRemaining > 0) {
-        post.daysRemaining -= 1;
-        if (post.daysRemaining === 0) {
+      if (post.daysRemaining > 0 || post.hoursRemaining > 0) {
+        if (post.hoursRemaining > 0) {
+          post.hoursRemaining -= 1;
+        } else {
+          post.daysRemaining -= 1;
+          post.hoursRemaining = 23;
+        }
+
+        if (post.daysRemaining === 0 && post.hoursRemaining === 0) {
           post.visibility = 'hidden';
         }
+
         await post.save();
       }
     }
