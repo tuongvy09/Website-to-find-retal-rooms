@@ -8,15 +8,40 @@ import arrowsIcon from '../../../assets/images/arrowIcon.png';
 import { useFavoriteToggle } from '../../../redux/postAPI';
 import './ListPostHome.css';
 import RoomPost from './RoomPost';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useFavoriteToggle } from '../../../redux/postAPI';
 
-const ListPostHome = ({ post = [], title, favorite }) => {
-  const isPostArray = Array.isArray(post);
+const ListPostHome = (favorite) => {
+  const [approvedPosts, setApprovedPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const token = currentUser?.accessToken;
   const user = useSelector((state) => state.auth.login.currentUser);
   const { favorites, toggleFavorite } = useFavoriteToggle(user);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const params = {
+          category: ['Nhà trọ, phòng trọ', 'Nhà nguyên căn', 'Cho thuê căn hộ', 'Cho thuê căn hộ mini', 'Cho thuê căn hộ dịch vụ', 'Cho thuê mặt bằng, văn phòng'],
+        };
+        const { category1, category2, category3 } = await searchAndCategorizePosts(params, token);
+        setTroPosts(category1.map(formatPost));
+        setCanHoPosts(category2.map(formatPost));
+        setVanPhongPosts(category3.map(formatPost));
+      } catch (error) {
+        console.error('Lỗi khi lấy bài đăng:', error);
+      }
+    };
+
+    fetchPosts();
+  }, [token]);
+
+  console.log('Category 1:', category1Posts);
+  console.log('Category 2:', category2Posts);
+  console.log('Category 3:', category3Posts);
 
   const handleTitleClick = (id) => {
     console.log("Navigating to post with ID:", id);
