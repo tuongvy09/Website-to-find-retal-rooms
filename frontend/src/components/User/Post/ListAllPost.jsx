@@ -76,9 +76,8 @@ const ListAllPost = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="approved-posts-list">
-      {/* Thanh Sắp Xếp */}
-      <div className="sort-options" style={{ marginBottom: '20px' }}>
+    <>
+    <div className="sort-options" style={{ marginBottom: '20px' }}>
         <select value={sortOption} onChange={handleSortChange}>
           <option value="default">Mặc định</option>
           <option value="priceAsc">Giá thuê (Tăng dần)</option>
@@ -87,12 +86,12 @@ const ListAllPost = () => {
           <option value="areaDesc">Diện tích (Giảm dần)</option>
         </select>
       </div>
-  
-      {/* Hiển thị các bài đăng đã được sắp xếp */}
+    <div className="approved-posts-list">
       {sortedPosts.map((post, index) => (
         <RoomPost key={index} post={post} onTitleClick={handleTitleClick} />
       ))}
     </div>
+    </>
   );
 }  
 

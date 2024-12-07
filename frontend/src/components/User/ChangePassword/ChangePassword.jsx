@@ -23,10 +23,10 @@ const ChangePassword = ({ onChangePassword }) => {
 
   return (
     <Box className="change-password-container">
+      <form onSubmit={handleSubmit} className="change-password-form">
       <Typography variant="h5" className="change-password-title">
         Đổi Mật Khẩu
       </Typography>
-      <form onSubmit={handleSubmit} className="change-password-form">
         <div className="input-container">
           <TextField
             label="Mật khẩu hiện tại"
@@ -36,6 +36,7 @@ const ChangePassword = ({ onChangePassword }) => {
             fullWidth
             className="form-field"
             required
+            size="small"
           />
           <span
             className="toggle-password"
@@ -54,6 +55,7 @@ const ChangePassword = ({ onChangePassword }) => {
             fullWidth
             className="form-field"
             required
+            size="small"
           />
           <span
             className="toggle-password"
@@ -72,6 +74,7 @@ const ChangePassword = ({ onChangePassword }) => {
             fullWidth
             className="form-field"
             required
+            size="small"
           />
           <span
             className="toggle-password"

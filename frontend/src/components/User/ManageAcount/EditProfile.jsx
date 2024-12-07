@@ -3,9 +3,9 @@ import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { updateUserProfile } from '../../../redux/apiRequest';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { updateUserProfile } from '../../../redux/apiRequest';
 import './EditProfile.css';
 
 const EditProfile = ({ user }) => {
@@ -234,7 +234,7 @@ const EditProfile = ({ user }) => {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSelectAddress} color="primary">
+                    <Button onClick={handleSelectAddress} className='update-profile-confirm-btn'>
                         Xác nhận
                     </Button>
                 </DialogActions>
@@ -247,7 +247,7 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setBio(e.target.value)}
             />
 
-            <Button variant="contained" color="primary" onClick={handleUpdateProfile}>
+            <Button className='update-profile-confirm-btn' onClick={handleUpdateProfile}>
                 Cập nhật hồ sơ
             </Button>
         </div>
