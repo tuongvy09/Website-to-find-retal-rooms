@@ -8,8 +8,6 @@ import arrowsIcon from '../../../assets/images/arrowIcon.png';
 import { getApprovedPosts, searchAndCategorizePosts } from '../../../redux/postAPI';
 import './ListPostHome.css';
 import RoomPost from './RoomPost';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { useFavoriteToggle } from '../../../redux/postAPI';
 
 const ListPostHome = (favorite) => {

@@ -329,6 +329,7 @@ export const useFavoriteToggle = (user) => {
   };
 
   return { favorites, toggleFavorite };
+};
 
   export const updateDefaultDaysToShow = async (days, token) => {
   try {
