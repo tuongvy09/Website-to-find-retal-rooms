@@ -1,7 +1,6 @@
+import { ArrowForward, Email, Facebook, Info, Instagram, LinkedIn, LocationOn, MailOutline, NewReleases, Phone, Policy } from '@mui/icons-material';
+import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import { Facebook, Instagram, LinkedIn, Phone, Email, LocationOn, Info, NewReleases, Policy } from '@mui/icons-material'; 
-import { ArrowForward, MailOutline  } from '@mui/icons-material';
 import './Footer.css';
 
 const Footer = () => {
@@ -13,9 +12,9 @@ const Footer = () => {
           Tìm phòng trọ chưa bao giờ dễ dàng đến thế! Hãy đến với Phòng trọ xinh - vô vàn thông tin hữu ích được mang lại.
         </Typography>
         <Box className="footer-social">
-          <Button className="social-button" startIcon={<Facebook style={{ color: '#4caf50' }} />}></Button>
-          <Button className="social-button" startIcon={<Instagram style={{ color: '#4caf50' }} />}></Button>
-          <Button className="social-button" startIcon={<LinkedIn style={{ color: '#4caf50' }} />}></Button>
+          <Button className="social-button" startIcon={<Facebook style={{ color: '#4caf50', fontSize: '50px'}} />}></Button>
+          <Button className="social-button" startIcon={<Instagram style={{ color: '#4caf50', fontSize: '50px' }} />}></Button>
+          <Button className="social-button" startIcon={<LinkedIn style={{ color: '#4caf50', fontSize: '50px' }} />}></Button>
         </Box>
       </Box>
 
@@ -41,7 +40,6 @@ const Footer = () => {
         🏡 Đăng ký ngay để nâng cao trải nghiệm tìm phòng trọ nào 😎
         </Typography>
         <Button
-          variant="text"
           endIcon={<ArrowForward />}
           className="newsletter-button"
         >

@@ -78,10 +78,10 @@
   margin-bottom: 10px;
 }
 
-.footer-newsletter-button {
+.footer-newsletter .newsletter-button {
   color: #4caf50 !important; 
-  font-weight: bold;
-  margin-top: 10px;
+  font-weight: bold !important;
+  margin-top: 10px !important;
 }
 
 .footer-contact {
