@@ -95,12 +95,12 @@ const Home = () => {
   return (
     <div className="home-container">
       <div style={{ width: '100%', height: 'auto' }}>
-        <ListPostHome post={category1Posts} title='Nhà trọ, phòng trọ' favorite={favorites}/>
+        <ListPostHome post={category1Posts} title='Nhà trọ, phòng trọ'/>
       <div style={{ width: '100%', height: 'auto' }}>
-        <ListPostHome post={category2Posts} title='Cho thuê căn hộ, nhà ở' favorite={favorites} />
+        <ListPostHome post={category2Posts} title='Cho thuê căn hộ, nhà ở'  />
       </div>
       <div style={{ width: '100%', height: 'auto' }}>
-        <ListPostHome post={category3Posts} title='Văn phòng, mặt bằng' favorite={favorites}/>
+        <ListPostHome post={category3Posts} title='Văn phòng, mặt bằng' />
       <div style={{ width: '100%', height: 'auto' }}>
         <Introduction />
       </div>
