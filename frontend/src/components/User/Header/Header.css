@@ -87,3 +87,5 @@
 .property-select-input.MuiOutlinedInput-root {
     border: transparent; 
 }
+
+/* thêm line giữa các thông báo, cho màu xám vs tin chưa đọc (2 cái trên), bth cho cái đã đọc(1 cái cúi) */
