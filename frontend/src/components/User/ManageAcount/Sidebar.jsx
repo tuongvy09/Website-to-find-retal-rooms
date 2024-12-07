@@ -13,10 +13,10 @@ const Sidebar = ({ user, setSelectedMenu }) => {
       </div>
       <nav className="nav-menu">
         <ul>
-          <li onClick={() => setSelectedMenu("postList")}>Danh sách tin đăng</li>
-          <li onClick={() => setSelectedMenu("manageAccount")}>Chỉnh sửa thông tin cá nhân</li>
-          <li onClick={() => setSelectedMenu("changePass")}>Đổi mật khẩu</li>
-          <li onClick={() => setSelectedMenu("favoritePosts")}> Danh sách yêu thích</li>
+          <li onClick={() => setSelectedMenu("postList")}>🏡 Danh sách tin đăng</li>
+          <li onClick={() => setSelectedMenu("manageAccount")}>✏️ Chỉnh sửa thông tin cá nhân</li>
+          <li onClick={() => setSelectedMenu("changePass")}>🔒 Đổi mật khẩu</li>
+          <li onClick={() => setSelectedMenu("favoritePosts")}>❤️ Danh sách yêu thích</li>
         </ul>
       </nav>
     </div>

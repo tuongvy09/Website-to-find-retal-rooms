@@ -30,25 +30,25 @@ const Sidebar = ({ setSelectedMenu }) => {
             className={selectedMenu === 'dashboard' ? 'active' : ''}
             onClick={() => handleMenuClick('dashboard')}
           >
-            Dashboard
+            📊 Thống kê
           </li>
           <li
             className={selectedMenu === 'manageUser' ? 'active' : ''}
             onClick={() => handleMenuClick('manageUser')}
           >
-            Quản lý người dùng
+            👩‍💼 Quản lý người dùng
           </li>
           <li
             className={selectedMenu === 'managePost' ? 'active' : ''}
             onClick={() => handleMenuClick('managePost')}
           >
-            Quản lý bài đăng
+            🏡 Quản lý bài đăng
           </li>
           <li
             className={selectedMenu === 'news' ? 'active' : ''}
             onClick={handleNewsClick}
           >
-            <span>Quản lý tin tức</span>
+            <span>📜 Quản lý tin tức</span>
             {showNewsOptions ? <ExpandLess className="MuiSvgIcon-root" /> : <ExpandMore className="MuiSvgIcon-root" />}
           </li>
           {showNewsOptions && (
@@ -57,13 +57,13 @@ const Sidebar = ({ setSelectedMenu }) => {
                 className={selectedMenu === 'newsList' ? 'active' : ''}
                 onClick={() => handleSubMenuClick('newsList')}
               >
-                Danh sách tin tức
+                📰 Danh sách tin tức
               </li>
               <li
                 className={selectedMenu === 'addNews' ? 'active' : ''}
                 onClick={() => handleSubMenuClick('addNews')}
               >
-                Thêm tin tức
+                ✍️ Thêm tin tức
               </li>
             </ul>
           )}
