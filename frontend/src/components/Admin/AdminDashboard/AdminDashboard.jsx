@@ -113,11 +113,11 @@ const AdminDashboard = () => {
         break;
       case "categories":
         endpoint = "/v1/posts/top-categories";
-        title = "Top 7 Loại Hình Cho Thuê Có Nhiều Bài Đăng Nhất";
+        title = "Các loại Hình Cho Thuê Có Nhiều Bài Đăng Nhất";
         break;
       case "provinces":
         endpoint = "/v1/posts/top-provinces";
-        title = "Top 7 Tỉnh/Thành Phố Có Nhiều Bài Đăng Nhất";
+        title = "Các tỉnh/Thành Phố Có Nhiều Bài Đăng Nhất";
         break;
       default:
         return;
@@ -214,13 +214,13 @@ const AdminDashboard = () => {
             className={activeStat === "categories" ? "active" : ""}
             onClick={() => fetchData("categories")}
           >
-            Top 7 Loại Hình Cho Thuê
+            Các loại Hình Cho Thuê
           </button>
           <button
             className={activeStat === "provinces" ? "active" : ""}
             onClick={() => fetchData("provinces")}
           >
-            Top 7 Tỉnh/Thành Phố
+            Các tỉnh/Thành Phố
           </button>
         </div>
         {activeStat === "date" && (
