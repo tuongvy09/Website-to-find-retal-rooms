@@ -11,7 +11,7 @@ const RoomPostManage = ({ post, onTitleClick }) => {
         {post.images[0] && (
           <CardMedia
             component="img"
-            image={post.images[0]} 
+            image={post.images[0]}
             alt="Room image"
             className="room-post-image"
           />

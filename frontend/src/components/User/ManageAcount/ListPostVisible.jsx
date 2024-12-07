@@ -9,7 +9,7 @@ const ListPostVisible = () => {
   const visibility = 'visible'; 
 
   return (
-    <div>
+    <div className='container-list-visible-in-manage'>
       <ListPostByStatusVisibility status={status} visibility={visibility} token={token} />
     </div>
   );

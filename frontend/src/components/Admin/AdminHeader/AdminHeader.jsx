@@ -27,15 +27,12 @@ const AdminHeader = () => {
     <AppBar position="static" className="admin-header">
       <Toolbar>
         <Typography variant="h6" className="admin-header-title">
-          Admin Dashboard
+          
         </Typography>
         <Box className="admin-header-buttons">
-          <Button color="inherit" onClick={() => navigate('/admin-dashboard')}>Dashboard</Button>
-          <Button color="inherit" onClick={() => navigate('/manage-users')}>Quản Lý Người Dùng</Button>
-          <Button color="inherit" onClick={() => navigate('/manage-posts')}>Quản Lý Bài Đăng</Button>
-          <Button color="inherit" onClick={() => navigate('/manage-news')}>Quản Lý Tin Tức</Button> 
-          <Button color="inherit" onClick={() => navigate('/admin-settings')}>Cài Đặt</Button>
-          <Button color="inherit" onClick={handleLogout}>Đăng Xuất</Button>
+          <Button onClick={() => navigate('/admin-dashboard')}>Dashboard</Button>
+          <Button onClick={() => navigate('/manage-news')}>Quản Lý Tin Tức</Button> 
+          <Button onClick={handleLogout}>Đăng Xuất</Button>
         </Box>
       </Toolbar>
     </AppBar>

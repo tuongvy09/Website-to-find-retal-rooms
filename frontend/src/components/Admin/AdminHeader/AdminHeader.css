@@ -1,15 +1,20 @@
 .admin-header {
-    background-color: #a50000 !important; /* Màu nền cho header admin */
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+  background-color: white !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+  border: #BBBBBB solid 1px !important;
+}
   
   .admin-header-title {
     flex-grow: 1;
-    color: #EDBCD1 !important; /* Màu chữ cho admin */
+    color: #EDBCD1 !important; 
   }
   
   .admin-header-buttons button {
-    color: #fff;
-    margin-left: 10px;
+    color: black;
+    font-family: work sans, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
   }  

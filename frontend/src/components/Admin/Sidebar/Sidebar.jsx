@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useState } from 'react';
+import './Sidebar.css'; // Đảm bảo rằng bạn đã tạo file CSS
 
-const Sidebar = ({ user, setSelectedMenu }) => {
-  const handleLogout = () => {
-    // Implement logout functionality
+const Sidebar = ({ setSelectedMenu }) => {
+  const [selectedMenu, setSelectedMenuState] = useState('dashboard'); // State để lưu trữ mục menu hiện tại
+
+  const handleMenuClick = (menu) => {
+    setSelectedMenu(menu);
+    setSelectedMenuState(menu);
   };
 
   return (
-    <div className="sidebar">
-      <nav className="nav-menu">
+    <div className="home-admin-sidebar">
+      <nav className="home-admin-nav-menu">
         <ul>
-          <li onClick={() => setSelectedMenu('allPost')}>Tất cả</li>
-          <li onClick={() => setSelectedMenu('pendingList')}>Bài viết đang chờ</li>
-          <li onClick={() => setSelectedMenu('visibleList')}>Bài viết đang hiển thị</li>
-          <li onClick={() => setSelectedMenu('updateList')}>Bài viết chỉnh sửa chờ duyệt</li>
-          <li onClick={handleLogout}>Đăng xuất</li>
+          <li
+            className={selectedMenu === 'dashboard' ? 'active' : ''}
+            onClick={() => handleMenuClick('dashboard')}
+          >
+            Dashboard
+          </li>
+          <li
+            className={selectedMenu === 'manageUser' ? 'active' : ''}
+            onClick={() => handleMenuClick('manageUser')}
+          >
+              Quản lý người dùng
+          </li>
+          <li
+            className={selectedMenu === 'managePost' ? 'active' : ''}
+            onClick={() => handleMenuClick('managePost')}
+          >
+            Quản lý bài đăng
+          </li>
         </ul>
       </nav>
     </div>

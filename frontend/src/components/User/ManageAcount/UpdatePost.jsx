@@ -117,7 +117,7 @@ const UpdatePost = ({ postId }) => {
       </div>
 
       <div>
-        <Button variant="contained" color="primary" onClick={handleUpdatePost}>
+        <Button variant="contained" color="primary" onClick={handleUpdatePostData}>
           Cập nhật
         </Button>
       </div>
