@@ -27,6 +27,7 @@ import ListAllPost from './components/User/Post/ListAllPost';
 import PostDetail from './components/User/Post/PostDetail';
 import SearchPosts from './components/User/Search/searchPosts';
 import SearchResultsPage from './components/User/Search/searchResultPage';
+import ChangePassword from './components/User/ChangePassword/ChangePassword';
 
 function App() {
   return (
@@ -70,6 +71,13 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path='/chang-pass' element={
+              <>
+              <AdminHeader/>
+              <ChangePassword />
+              </>
+              } 
+              />
             <Route path="/AddPost" element={
               <>
                 <Header />

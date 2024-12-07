@@ -7,6 +7,9 @@ const ChangePassword = ({ onChangePassword }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,33 +27,60 @@ const ChangePassword = ({ onChangePassword }) => {
         Đổi Mật Khẩu
       </Typography>
       <form onSubmit={handleSubmit} className="change-password-form">
-        <TextField
-          label="Mật khẩu hiện tại"
-          type="password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          fullWidth
-          className="form-field"
-          required
-        />
-        <TextField
-          label="Mật khẩu mới"
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          fullWidth
-          className="form-field"
-          required
-        />
-        <TextField
-          label="Xác nhận mật khẩu mới"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          fullWidth
-          className="form-field"
-          required
-        />
+        <div className="input-container">
+          <TextField
+            label="Mật khẩu hiện tại"
+            type={showCurrentPassword ? "text" : "password"}
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            fullWidth
+            className="form-field"
+            required
+          />
+          <span
+            className="toggle-password"
+            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+          >
+            {showCurrentPassword ? "🙈" : "👁️"}
+          </span>
+        </div>
+
+        <div className="input-container">
+          <TextField
+            label="Mật khẩu mới"
+            type={showNewPassword ? "text" : "password"}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            fullWidth
+            className="form-field"
+            required
+          />
+          <span
+            className="toggle-password"
+            onClick={() => setShowNewPassword(!showNewPassword)}
+          >
+            {showNewPassword ? "🙈" : "👁️"}
+          </span>
+        </div>
+
+        <div className="input-container">
+          <TextField
+            label="Xác nhận mật khẩu mới"
+            type={showConfirmPassword ? "text" : "password"}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            fullWidth
+            className="form-field"
+            required
+          />
+          <span
+            className="toggle-password"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? "🙈" : "👁️"}
+          </span>
+        </div>
+
         {error && <Typography className="error-message">{error}</Typography>}
         <Button
           type="submit"

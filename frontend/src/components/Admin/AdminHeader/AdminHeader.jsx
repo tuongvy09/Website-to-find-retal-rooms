@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { createAxios } from '../../../createInstance';
 import { logout } from '../../../redux/apiRequest';
 import { logoutSuccess } from '../../../redux/authSlice';
+import iconLogout from '../../../assets/images/iconLogout.png';
+import iconChangePass from '../../../assets/images/iconChangePass.png';
 import './AdminHeader.css';
 
 const AdminHeader = () => {
@@ -30,9 +32,14 @@ const AdminHeader = () => {
             Phòng Trọ Xinh
         </Typography>
         <Box className="admin-header-buttons">
-          <Button onClick={() => navigate('/admin-dashboard')}>Dashboard</Button>
-          <Button onClick={() => navigate('/manage-news')}>Quản Lý Tin Tức</Button> 
-          <Button onClick={handleLogout}>Đăng Xuất</Button>
+          <Button onClick={() => navigate('/chang-pass')} className="change-pass-button">
+          <img src={iconChangePass} alt="changePass" style={{ width: '20px', marginRight: '8px' }} />
+            Đổi mật khẩu
+            </Button> 
+          <Button onClick={handleLogout} className="logout-button">
+            <img src={iconLogout} alt="Logout" style={{ width: '20px', marginRight: '8px' }} />
+            Đăng Xuất
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>
