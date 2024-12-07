@@ -1,12 +1,12 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllNews} from '../../../../redux/newsAPI';
-import axios from 'axios';
-import NewsDetail from '../NewsDetail/NewsDetail';
-import { ToastContainer, toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css';
-import { deleteNewsStart, deleteNewsSuccess, deleteNewsFailed } from '../../../../redux/newsSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { getAllNews } from '../../../../redux/newsAPI';
+import { deleteNewsFailed, deleteNewsStart, deleteNewsSuccess } from '../../../../redux/newsSlice';
+import NewsDetail from '../NewsDetail/NewsDetail';
 import './NewsList.css';
 
 const NewsList = () => {

@@ -26,8 +26,8 @@ const AdminHeader = () => {
   return (
     <AppBar position="static" className="admin-header">
       <Toolbar>
-        <Typography variant="h6" className="admin-header-title">
-          
+        <Typography className="admin-header-title">
+            Phòng Trọ Xinh
         </Typography>
         <Box className="admin-header-buttons">
           <Button onClick={() => navigate('/admin-dashboard')}>Dashboard</Button>

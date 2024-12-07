@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './NewsDetail.css'; // Import file CSS
@@ -11,13 +12,14 @@ const NewsDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleEdit = () => {
     navigate(`/manage-news/edit/${id}`);
   };
 
   const handleBack = () => {
-    navigate("/manage-news/list"); // Trở về trang trước
+    navigate("/admin-dashboard"); // Trở về trang trước
   };
 
   useEffect(() => {
@@ -61,25 +63,6 @@ const NewsDetail = () => {
   return (
     <div className="news-detail-page">
       <ToastContainer position="top-right" autoClose={5000} /> {/* Only one ToastContainer */}
-
-      {/* Sidebar */}
-      <div className="sidebar">
-        <ul>
-          <li
-            className={window.location.pathname === '/manage-news/list' ? 'active' : ''}
-            onClick={() => navigate('/manage-news/list')}
-          >
-            Danh sách tin tức
-          </li>
-          <li
-            className={window.location.pathname === '/manage-news/add' ? 'active' : ''}
-            onClick={() => navigate('/manage-news/add')}
-          >
-            Thêm tin tức
-          </li>
-        </ul>
-      </div>
-
       {/* Main Content */}
       <div className="news-detail-content">
         <div className="button-group">
