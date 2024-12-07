@@ -1,24 +1,23 @@
 import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
 import EmailIcon from '@mui/icons-material/Email';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Avatar, Box, Button, Card, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography, Rating } from '@mui/material';
+import { Avatar, Box, Button, Card, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getPostDetail } from '../../../redux/postAPI';
 import { useSelector } from 'react-redux';
-import ReviewsList from '../Review/ReviewList/ReviewsList';
-import AddReviewForm  from '../Review/ReviewForm/ReviewForm';
-import Header from '../Header/Header';
-import './PostDetail.css';
+import { useParams } from 'react-router-dom';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import './PostDetail.css'; // Tạo file CSS riêng nếu cần
+import { getPostDetail } from '../../../redux/postAPI';
+import Header from '../Header/Header';
+import AddReviewForm from '../Review/ReviewForm/ReviewForm';
+import ReviewsList from '../Review/ReviewList/ReviewsList';
+import './PostDetail.css';
 
 const PostDetail = ({ onToggleFavorite }) => {
   const { id } = useParams();
@@ -89,7 +88,7 @@ const PostDetail = ({ onToggleFavorite }) => {
           </Button>
           <Typography className='post-content'>{post.content}</Typography>
           <TableContainer component={Paper} className='container-table'>
-            <Table>
+            <Table className='table-category'>
               <TableBody>
                 <TableRow>
                   <TableCell className='title-cell'> <HouseOutlinedIcon className='style-icon' /> Loại hình cho thuê</TableCell>
@@ -130,8 +129,10 @@ const PostDetail = ({ onToggleFavorite }) => {
         {post.isFavorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
       </Box>
       </Box>
+      <div className='post-detail-container-comment'>
       <AddReviewForm/>
       <ReviewsList postId={id} />
+      </div>
     </div>
   );
 };

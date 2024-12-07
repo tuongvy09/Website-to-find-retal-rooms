@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getPostDetail, updatePost } from '../../../redux/postAPI';
@@ -76,8 +76,7 @@ const UpdatePost = ({ postId }) => {
 
   return (
     <div className='container-updatepost'>
-      <h2>Chỉnh sửa bài đăng</h2>
-
+      <Typography className='update-post-title'>Chỉnh sửa bài đăng</Typography>
       <div>
         <TextField
           label="Tiêu đề"
@@ -117,7 +116,7 @@ const UpdatePost = ({ postId }) => {
       </div>
 
       <div>
-        <Button variant="contained" color="primary" onClick={handleUpdatePostData}>
+        <Button className='manage-update-post-btn-confirm' onClick={handleUpdatePostData}>
           Cập nhật
         </Button>
       </div>

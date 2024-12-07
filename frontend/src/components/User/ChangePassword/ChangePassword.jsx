@@ -1,5 +1,5 @@
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
 import "./ChangePassword.css";
 
 const ChangePassword = ({ onChangePassword }) => {
@@ -88,7 +88,7 @@ const ChangePassword = ({ onChangePassword }) => {
           color="primary"
           className="submit-button"
         >
-          Cập nhật mật khẩu
+          Cập nhật
         </Button>
       </form>
     </Box>

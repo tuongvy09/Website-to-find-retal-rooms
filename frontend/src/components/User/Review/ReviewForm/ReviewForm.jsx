@@ -1,7 +1,8 @@
+import { Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { createReview } from '../../../../redux/postAPI';
-import { useSelector } from 'react-redux';
 import './ReviewForm.css';
 
 const ReviewForm = () => {
@@ -58,11 +59,10 @@ const ReviewForm = () => {
 
   return (
     <div className="addreview-review-header">
-      <h3>Đánh giá & bình luận</h3>
+      <Typography className='add-review-post-title'>Đánh giá & bình luận</Typography>
       <button onClick={() => setShowForm(true)} className="addreview-button">
         Đánh giá ngay
       </button>
-
       {showForm && (
         <div className="addreview-overlay">
           <div className="addreview-form-container">

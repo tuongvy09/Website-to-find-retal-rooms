@@ -1,5 +1,5 @@
-import { Alert, Box, FormControl, Select, Menu, MenuItem, Badge, Button, AppBar, Toolbar, Typography } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { AppBar, Badge, Box, Button, Divider, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ const Header = () => {
             isRead: true,
         },
     ]);
-    
+
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const dispatch = useDispatch();
     const accessToken = currentUser?.accessToken;
@@ -86,26 +86,6 @@ const Header = () => {
                     <Button className="user-header-btn" onClick={() => navigate('/')}>
                         Trang Chủ
                     </Button>
-                    <FormControl className="user-header-btn">
-                        <Select
-                            id="property-type"
-                            size="small"
-                            value={propertyType}
-                            onChange={handleChange}
-                            displayEmpty
-                            className="header-select-input"
-                            inputProps={{
-                                'aria-label': 'Chọn Loại Bất Động Sản',
-                            }}
-                        >
-                            <MenuItem value="" disabled>
-                                Chọn Loại Bất Động Sản
-                            </MenuItem>
-                            <MenuItem value="tro">Cho Thuê Trọ</MenuItem>
-                            <MenuItem value="nha">Cho Thuê Nhà</MenuItem>
-                            <MenuItem value="matbang">Cho Thuê Mặt Bằng</MenuItem>
-                        </Select>
-                    </FormControl>
                     <Button className="user-header-btn" onClick={() => navigate('/TinTuc')}>
                         Tin Tức
                     </Button>
@@ -169,37 +149,52 @@ const Header = () => {
             </Menu>
 
             <Menu
-            anchorEl={notificationsMenuAnchorEl}
-            open={Boolean(notificationsMenuAnchorEl)}
-            onClose={handleNotificationClose}
-            classes={{ paper: 'menu' }}
-        >
-            <Box className="notification-header">
-                <Typography variant="h6" className="notification-title">
-                    THÔNG BÁO
-                </Typography>
-                <Button className="notification-close-btn" onClick={handleNotificationClose}>
-                    ĐÓNG
-                </Button>
-            </Box>
-            <hr className="notification-divider" />
-            {notifications.map((notification, index) => (
-                <MenuItem
-                    key={index}
-                    onClick={handleNotificationClose}
-                    className={notification.isRead ? 'read' : 'unread'}
-                >
-                    <Box className="notification-item">
-                        <Typography variant="body2" className="notification-message">
-                            {notification.message}
-                        </Typography>
-                        <Typography variant="caption" className="notification-date">
-                            {notification.date}
-                        </Typography>
-                    </Box>
-                </MenuItem>
-            ))}
-        </Menu>
+                anchorEl={notificationsMenuAnchorEl}
+                open={Boolean(notificationsMenuAnchorEl)}
+                onClose={handleNotificationClose}
+                sx={{
+                    '& .MuiPaper-root': {
+                        backgroundColor: '#c2f8ab',
+                        borderRadius: '10px',
+                    },
+                }}
+            >
+                <Box className="notification-header">
+                    <Typography className="notification-title">
+                        Thông báo
+                    </Typography>
+                    <Button className="notification-close-btn" onClick={handleNotificationClose}>
+                        Đóng
+                    </Button>
+                </Box>
+                <hr className="notification-divider" />
+                {notifications.map((notification, index) => (
+                    <React.Fragment key={index}>
+                        <MenuItem
+                            onClick={handleNotificationClose}
+                            className={notification.isRead ? 'read' : 'unread'}
+                            sx={{
+                                borderRadius: '10px',
+                                marginBottom: '10px',
+                                backgroundColor: index < 2 ? '#fce4ec' : 'inherit', // Màu cố định cho 2 mục đầu tiên
+                                '&:hover': {
+                                    backgroundColor: index < 2 ? '#f8bbd0' : '#ffe4b5', // Màu hover tùy thuộc
+                                },
+                            }}
+                        >
+                            <Box className="notification-item">
+                                <Typography variant="body2" className="notification-message">
+                                    {notification.message}
+                                </Typography>
+                                <Typography variant="caption" className="notification-date">
+                                    {notification.date}
+                                </Typography>
+                            </Box>
+                        </MenuItem>
+                        {index < notifications.length - 1 && <Divider />} {/* Divider giữa các mục */}
+                    </React.Fragment>
+                ))}
+            </Menu>
         </AppBar>
     );
 };

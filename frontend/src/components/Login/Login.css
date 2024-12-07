@@ -10,7 +10,7 @@
 
 
 .form-main .form-content {
-  background: #000 url('../../assets/images/bg.jpg') no-repeat center /cover;
+  background: #000 url('../../assets/images/bgLogin.png') no-repeat center /cover;
   flex: 1;
   max-width: 100%;
   display: flex;

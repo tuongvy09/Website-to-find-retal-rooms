@@ -8,7 +8,7 @@
     background-color: white;
 }
 
-.sidebar { 
+.sidebar-manage-user { 
     display: flex;
     flex-direction: column; /* Đảm bảo các phần tử con được xếp theo chiều dọc */
     align-items: center; /* Canh giữa các phần tử con theo chiều ngang */
