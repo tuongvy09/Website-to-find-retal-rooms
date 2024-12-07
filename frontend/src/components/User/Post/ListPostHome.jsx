@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import arrowsIcon from '../../../assets/images/arrowIcon.png';
 import { useFavoriteToggle } from '../../../redux/postAPI';
-import { getApprovedPosts, searchAndCategorizePosts } from '../../../redux/postAPI';
 import './ListPostHome.css';
 import RoomPost from './RoomPost';
 
@@ -41,7 +40,7 @@ const ListPostHome = ({post=[], title}) => {
 
   return (
     <div className="approved-posts-slider">
-      <div>{title}</div>
+      <div className='approved-post-in-home-title'>{title}</div>
       {
         isPostArray ? (
           <Slider {...sliderSettings}>

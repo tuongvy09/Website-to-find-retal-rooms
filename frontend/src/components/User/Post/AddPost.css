@@ -1,3 +1,6 @@
+.div-user-container-add-post{
+  height: 1200px;
+}
 .horizontal-line {
   border: 0;
   height: 1px;
@@ -13,6 +16,7 @@
 .form-container-user-add-post {
   width: 100%;
   max-width: 900px;
+  height: auto;
 }
 
 .custom-textfield {
@@ -26,7 +30,7 @@
   font-weight: 400 !important;
   justify-content: center !important;
   margin-left: 8rem;
-  height: auto;
+  height: 100%;
 }
 
 .addpost-container .form-container-user-add-post .title {
