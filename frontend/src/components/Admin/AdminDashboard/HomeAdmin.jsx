@@ -4,7 +4,8 @@ import { setSelectedMenu } from '../../../redux/menuSlice';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import ManageUsers from '../ManageUsers/ManageUsers';
-import NewsManagement from '../News/NewsManagement/NewsManagement';
+import NewsForm from '../News/NewsForm/NewsForm';
+import NewsList from '../News/NewsList/NewsList';
 import Sidebar from '../Sidebar/Sidebar';
 import './HomeAdmin.css';
 import ManagePostAdmin from './ManagePostAdmin';
@@ -14,32 +15,34 @@ const HomeAdmin = () => {
     const selectedMenu = useSelector((state) => state.menu.selectedMenu);
 
     const handleChangeMenu = (menu) => {
-        dispatch(setSelectedMenu(menu)); 
-      };
+        dispatch(setSelectedMenu(menu));
+    };
 
     const renderContent = () => {
         switch (selectedMenu) {
             case 'dashboard':
                 return <AdminDashboard />;
             case 'manageUser':
-                return <ManageUsers/>;
+                return <ManageUsers />;
             case 'managePost':
-                return <ManagePostAdmin/>;
-            case 'manageNews':
-                return <NewsManagement/>;
+                return <ManagePostAdmin />;
+            case 'newsList':
+                return <NewsList />;
+            case 'addNews':
+                return <NewsForm />;
             default:
-                return <div>Dashboard Content</div>;
+                return <AdminDashboard />;
         }
     };
 
     return (
-        <div style={{ display: 'flex' }}>
-            <div style={{ width: '250px' }}>
-                <Sidebar setSelectedMenu={handleChangeMenu}/>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ height: '64px' }}>
+                <AdminHeader />
             </div>
-            <div style={{ flex: 1 }}>
-                <div style={{ height: '64px' }}>
-                    <AdminHeader />
+            <div style={{ display: 'flex', flex: 1 }}>
+                <div style={{ width: '250px' }}>
+                    <Sidebar setSelectedMenu={handleChangeMenu} />
                 </div>
                 <div style={{ flex: 1 }} className='home-admin-container-content'>
                     {renderContent()}
