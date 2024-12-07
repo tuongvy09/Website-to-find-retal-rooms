@@ -1,5 +1,5 @@
 .admin-header {
-  background-color: white !important;
+  background-color: #c2f8ab !important;
   margin: 0 !important;
   padding: 0 !important;
   box-shadow: none !important;
@@ -8,8 +8,12 @@
 }
   
   .admin-header-title {
+    font-size: 25px !important;
+    font-family: work sans, sans-serif !important;
+    color: black;
+    font-weight: bold !important;
     flex-grow: 1;
-    color: #EDBCD1 !important; 
+    text-align: left !important;
   }
   
   .admin-header-buttons button {
