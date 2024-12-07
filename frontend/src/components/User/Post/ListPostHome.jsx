@@ -9,7 +9,6 @@ import { useFavoriteToggle } from '../../../redux/postAPI';
 import { getApprovedPosts, searchAndCategorizePosts } from '../../../redux/postAPI';
 import './ListPostHome.css';
 import RoomPost from './RoomPost';
-import { useFavoriteToggle } from '../../../redux/postAPI';
 
 const ListPostHome = ({post=[], title}) => {
   const navigate = useNavigate();

@@ -308,30 +308,6 @@ export const editReview = async (reviewId, updatedData, token) => {
   }
 };
 
-export const useFavoriteToggle = (user) => {
-  const [favorites, setFavorites] = useState([]);
-
-  const toggleFavorite = async (postId, isCurrentlyFavorite) => {
-    try {
-      const url = `http://localhost:8000/v1/posts/${postId}/favorite`;
-      const headers = { Authorization: `Bearer ${user?.accessToken}` };
-
-      if (isCurrentlyFavorite) {
-        await axios.delete(url, { headers });
-        setFavorites(favorites.filter((fav) => fav._id !== postId));
-      } else {
-        await axios.post(url, {}, { headers });
-        setFavorites((prev) => [...prev, { _id: postId }]);
-      }
-    } catch (error) {
-      console.error("Lỗi khi bật/tắt trạng thái yêu thích:", error);
-    }
-  };
-
-  return { favorites, toggleFavorite };
-};
-
-  export const updateDefaultDaysToShow = async (days, token) => {
 export const updateDefaultDaysToShow = async (days, token) => {
   try {
     const response = await axios.put(
