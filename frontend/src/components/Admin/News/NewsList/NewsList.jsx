@@ -106,11 +106,10 @@ const NewsList = () => {
                 />
             ) : (
                 <div>
-                    <h2>Danh sách tin tức</h2>
                     <ul className="news-list">
                         {currentNews.map((news) => (
                             <li key={news.id} className="news-item" onClick={() => handleNewsClick(news)}>
-                            <Link to={`/manage-news/${news._id}`}>
+                            <Link to={`/manage-news/${news._id}`} className="news-link">
                             <img src={`http://localhost:8000${news.imageUrl || '/placeholder.jpg'}`} alt={news.title} className="news-image" />
                             <div className="news-info">
                                     <h3 className="news-list-title">{news.title}</h3>

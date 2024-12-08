@@ -1,6 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Paper,
   Table,
   TableBody,
@@ -9,11 +14,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { createAxios } from "../../../createInstance";
 import { getAllUsers } from "../../../redux/apiRequest";
 import { loginSuccess } from "../../../redux/authSlice";
+import { setSelectedMenu } from "../../../redux/menuSlice";
 import "./ManageUsers.css";
 
 const ManageUsers = () => {
@@ -102,6 +103,7 @@ const ManageUsers = () => {
 
   // Navigate to user's posts
   const handleViewPosts = (userId) => {
+    dispatch(setSelectedMenu('userPost'));
     navigate(`/user-posts/${userId}`);
   };
 

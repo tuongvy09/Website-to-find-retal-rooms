@@ -135,3 +135,7 @@
 .modal button:hover {
   background-color: #f0f0f0; /* Change color on hover */
 }
+
+.news-link{
+  text-decoration: none;
+}

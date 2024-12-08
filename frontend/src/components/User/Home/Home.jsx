@@ -1,7 +1,9 @@
+import { Email } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import supportPic from '../../../assets/images/supportPic.png';
 import { searchAndCategorizePosts } from '../../../redux/postAPI';
 import ListPostHome from '../Post/ListPostHome';
 import './Home.css';
@@ -111,6 +113,34 @@ const Home = () => {
       <div style={{ width: '100%', height: 'auto' }}>
         <Introduction2 />
       </div>
+      <div className="support-container">
+      {/* Image Section */}
+      <div className="support-image">
+        <img
+          src={supportPic}
+          alt="Support"
+          className="support-image-img"
+        />
+      </div>
+      {/* Info Section */}
+      <div className="support-info">
+        <div className="icon">
+          <i className="fas fa-headset"></i>
+        </div>
+        <h3>Hỗ trợ chủ nhà đăng tin</h3>
+        <p>
+          Nếu bạn cần hỗ trợ đăng tin, vui lòng liên hệ số điện thoại bên dưới:
+        </p>
+        <div className="contact-buttons">
+          <button className="contact-btn phone-btn">
+            <i className="fas fa-phone-alt"></i> ĐT: (+84) 0313-728-397
+          </button>
+          <button className="contact-btn zalo-btn">
+            <Email style={{marginRight: "10px"}}/> Gmail:  PhongTroXinh@gmail.com
+          </button>
+        </div>
+      </div>
+    </div>
       {user ? (
         <>
           <p>Hello, {user}</p>

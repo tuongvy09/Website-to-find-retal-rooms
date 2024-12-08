@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import RoomPost from "../Post/RoomPost";
@@ -66,7 +66,6 @@ const FavoritePosts = () => {
 
   return (
     <div className="favorite-posts">
-      <h2>Danh sách yêu thích</h2>
       {favorites.length === 0 ? (
         <p>Không có bài viết yêu thích nào.</p>
       ) : (

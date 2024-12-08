@@ -147,15 +147,12 @@ const SearchPosts = () => {
         <Slider {...settings}>
           <div>
             <img src={slide1} alt="Room 1" />
-            <div className="slide-text1">Room 1</div>
           </div>
           <div>
             <img src={slide2} alt="Room 2" />
-            <div className="slide-text2">Room 2</div>
           </div>
           <div>
             <img src={slide3} alt="Room 3" />
-            <div className="slide-text3">Room 3</div>
           </div>
         </Slider>
         <input
