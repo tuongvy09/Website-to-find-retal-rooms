@@ -6,6 +6,7 @@ import HomeAdmin from './components/Admin/AdminDashboard/HomeAdmin';
 import ManagePostAdmin from './components/Admin/AdminDashboard/ManagePostAdmin';
 import AdminHeader from './components/Admin/AdminHeader/AdminHeader';
 import ManageUsers from './components/Admin/ManageUsers/ManageUsers';
+import UserPosts from './components/Admin/ManageUsers/UserPosts';
 import EditNewsForm from './components/Admin/News/EditNewsForm/EditNewsForm';
 import NewsDetail from './components/Admin/News/NewsDetail/NewsDetail';
 import NewsForm from './components/Admin/News/NewsForm/NewsForm';
@@ -16,6 +17,7 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword ';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import ResetPassword from './components/ResetPassword/ResetPassword ';
+import ChangePassword from './components/User/ChangePassword/ChangePassword';
 import Header from './components/User/Header/Header';
 import Home from './components/User/Home/Home';
 import ManageAcount from './components/User/ManageAcount/ManageAcount';
@@ -27,7 +29,6 @@ import ListAllPost from './components/User/Post/ListAllPost';
 import PostDetail from './components/User/Post/PostDetail';
 import SearchPosts from './components/User/Search/searchPosts';
 import SearchResultsPage from './components/User/Search/searchResultPage';
-import ChangePassword from './components/User/ChangePassword/ChangePassword';
 
 function App() {
   return (
@@ -73,11 +74,11 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path='/chang-pass' element={
               <>
-              <AdminHeader/>
-              <ChangePassword />
+                <AdminHeader />
+                <ChangePassword />
               </>
-              } 
-              />
+            }
+            />
             <Route path="/AddPost" element={
               <>
                 <Header />
@@ -133,6 +134,12 @@ function App() {
               <>
                 <AdminHeader />
                 <ManagePostAdmin />
+              </>
+            } />
+            <Route path="/user-posts/:userId" element={
+              <>
+                <AdminHeader />
+                <UserPosts />
               </>
             } />
           </Routes>

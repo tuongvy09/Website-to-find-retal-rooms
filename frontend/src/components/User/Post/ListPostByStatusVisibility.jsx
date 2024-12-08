@@ -119,7 +119,7 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
             ) : (
                 <div className='container-nocontent'>
                     <Typography>Bạn chưa có tin đăng nào</Typography>
-                    <button onClick={handleCreatePost} style={{ marginTop: '20px' }}>
+                    <button onClick={handleCreatePost} style={{ marginTop: '20px' }} className='manage-post-add-post'>
                         Đăng tin ngay
                     </button>
                 </div>

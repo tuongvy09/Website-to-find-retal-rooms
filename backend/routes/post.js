@@ -18,6 +18,8 @@ router.put("/posts/:id", middlewareControllers.verifyToken, postController.updat
 
 // Xóa bài đăng (cần xác thực)
 router.delete("/posts/:id", middlewareControllers.verifyToken, postController.deletePost);
+//
+router.get('/user-posts/:userId', middlewareControllers.verifyTokenAndAdminAuth, postController.getUserPostsByUserId);
 
 //Lấy bài đăng theo status
 router.get('/posts-by-status', postController.getPostsByStatus);

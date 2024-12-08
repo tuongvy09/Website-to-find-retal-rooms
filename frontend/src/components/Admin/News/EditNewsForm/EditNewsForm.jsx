@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Quill from "quill";
+import "quill/dist/quill.snow.css"; // Đảm bảo rằng bạn đã import các style của Quill
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./EditNewsForm.css";
-import Quill from "quill";
-import "quill/dist/quill.snow.css"; // Đảm bảo rằng bạn đã import các style của Quill
 
 const EditNewsForm = () => {
   const { id } = useParams();
@@ -90,29 +90,7 @@ const EditNewsForm = () => {
   return (
     <div className="news-management">
       <ToastContainer position="top-right" autoClose={5000} />
-
-      {/* Sidebar */}
-      <div className="sidebar">
-        <ul>
-          <li
-            className={
-              window.location.pathname === "/manage-news/list" ? "active" : ""
-            }
-            onClick={() => navigate("/manage-news/list")}
-          >
-            Danh sách tin tức
-          </li>
-          <li
-            className={
-              window.location.pathname === "/manage-news/add" ? "active" : ""
-            }
-            onClick={() => navigate("/manage-news/add")}
-          >
-            Thêm tin tức
-          </li>
-        </ul>
-      </div>
-
+      {/*<Sidebar/>*/}
       <div className="content">
         <div className="news-form-container">
           <div className="form-content">
