@@ -66,6 +66,7 @@ const Home = () => {
       phoneNumber: post.contactInfo?.phoneNumber || "",
     },
     rentalPrice: post.rentalPrice,
+    typePrice: post.typePrice,
     area: post.area,
     images: post.images ? post.images.slice(0, 2) : [],
   });

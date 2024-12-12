@@ -46,6 +46,9 @@ const postsSchema = new mongoose.Schema({
       required: false,
     },
   },
+  typePrice: {
+    type: String
+  },
   rentalPrice: {
     type: String,
     required: true,

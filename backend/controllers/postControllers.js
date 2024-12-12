@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 exports.createPost = async (req, res) => {
     try {
-        const { title, content, address, category, rentalPrice, area, rentalTarget, maxOccupants, youtubeLink, contactInfo } = req.body;
+        const { title, content, address, category, rentalPrice, typePrice, area, rentalTarget, maxOccupants, youtubeLink, contactInfo } = req.body;
 
         if (!title || !content || !address || !category || !rentalPrice || !area || !rentalTarget || !contactInfo) {
             return res.status(400).json({ message: "All fields are required" });
@@ -24,6 +24,7 @@ exports.createPost = async (req, res) => {
             address: JSON.parse(address),  
             category,
             rentalPrice,
+            typePrice,
             area,
             rentalTarget,
             maxOccupants,

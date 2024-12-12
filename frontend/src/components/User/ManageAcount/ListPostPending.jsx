@@ -1,20 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import ListPostByStatusVisibility from "../Post/ListPostByStatusVisibility";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import ListPost from '../Post/ListPostPendingInManage';
 
 const ListPostPending = () => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const token = currentUser?.accessToken;
-  const status = "pending";
-  const visibility = "hidden";
+  const statusPending = 'pending';
+  const statusUpdate = 'update';
+  const visibility = 'hidden'; 
 
   return (
     <div>
-      <ListPostByStatusVisibility
-        status={status}
-        visibility={visibility}
-        token={token}
-      />
+      <ListPost statusPending={statusPending} statusUpdate={statusUpdate}  visibility={visibility} token={token} />
     </div>
   );
 };
