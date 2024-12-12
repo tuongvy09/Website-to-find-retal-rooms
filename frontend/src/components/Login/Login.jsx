@@ -113,9 +113,9 @@ const Login = () => {
               <div className="form-group">
                 <div className="form-center">
                   <div className="login-register">
-                    Don't have an account yet? <br />
+                    Chưa có tài khoản? <br />
                     <Link className="login-register-link" to="/register">
-                      Register one for free
+                      Đăng ký ngay
                     </Link>
                   </div>
                 </div>

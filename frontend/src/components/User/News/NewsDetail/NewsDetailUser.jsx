@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import './NewsDetailUser.css';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "./NewsDetailUser.css";
 
 const NewsDetailUser = () => {
   const { id } = useParams(); // Lấy id từ URL
@@ -16,7 +16,7 @@ const NewsDetailUser = () => {
         setNews(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Không thể tải chi tiết tin tức.');
+        setError("Không thể tải chi tiết tin tức.");
         setLoading(false);
       }
     };
@@ -31,7 +31,7 @@ const NewsDetailUser = () => {
       <h2 className="news-detail-title">{news.title}</h2>
       <p className="news-detail-date">{news.date}</p>
       <div className="news-detail-content">
-      <div dangerouslySetInnerHTML={{ __html: news.content }} />
+        <div dangerouslySetInnerHTML={{ __html: news.content }} />
       </div>
     </div>
   );

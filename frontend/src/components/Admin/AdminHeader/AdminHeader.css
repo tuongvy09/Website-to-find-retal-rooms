@@ -4,21 +4,25 @@
   padding: 0 !important;
   box-shadow: none !important;
   border-radius: 8px !important;
-  border: #BBBBBB solid 1px !important;
+  border: #bbbbbb solid 1px !important;
 }
-  
-  .admin-header-title {
-    font-size: 25px !important;
-    font-family: work sans, sans-serif !important;
-    color: black;
-    font-weight: bold !important;
-    flex-grow: 1;
-    text-align: left !important;
-  }
-  
-  .admin-header-buttons button {
-    color: black;
-    font-family: work sans, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-  }  
+
+.admin-header-title {
+  font-size: 25px !important;
+  font-family:
+    work sans,
+    sans-serif !important;
+  color: black;
+  font-weight: bold !important;
+  flex-grow: 1;
+  text-align: left !important;
+}
+
+.admin-header-buttons button {
+  color: black;
+  font-family:
+    work sans,
+    sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}

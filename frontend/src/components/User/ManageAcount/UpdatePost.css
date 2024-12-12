@@ -1,37 +1,36 @@
-
 .container-updatepost {
-    display: flex;
-    flex-direction: column;
-    width: 750px !important; /* Giữ chiều rộng cố định */
-    max-width: 100%; /* Đảm bảo không vượt quá chiều rộng màn hình */
-    gap: 1rem;
-    margin: 0 auto; /* Căn giữa container */
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 750px !important; /* Giữ chiều rộng cố định */
+  max-width: 100%; /* Đảm bảo không vượt quá chiều rộng màn hình */
+  gap: 1rem;
+  margin: 0 auto; /* Căn giữa container */
+  padding: 0;
 }
 
 .manage-update-post-btn-confirm {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    background-color: #7ecc5d !important;
-    color: #2A261A !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    padding: 0.5rem 1rem !important;
-    border-radius: 8px !important;
-    cursor: pointer !important;
-    text-transform: none !important;
-    text-decoration: none !important;
-    margin: 0.5rem !important;
-    margin-left: 45% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background-color: #7ecc5d !important;
+  color: #2a261a !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  margin: 0.5rem !important;
+  margin-left: 45% !important;
 }
 
-.update-post-title{
-    font-family: work-sans, sans-serif !important;
-    font-size: 2rem !important;
-    font-weight: bold !important;
-    color: #3A6D2B !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
+.update-post-title {
+  font-family: work-sans, sans-serif !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  color: #3a6d2b !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
 }

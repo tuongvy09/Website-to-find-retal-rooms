@@ -41,8 +41,6 @@
   border: none;
 }
 
-
-
 .prev-btn {
   left: 10px;
 }
@@ -55,25 +53,25 @@
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  width: 100%; 
+  width: 100%;
 }
 
 .container-left {
   flex: 2;
 }
 
-.container-cost{
+.container-cost {
   display: flex;
   align-items: center;
   margin-top: 10px;
 }
 
-.container-cost .room-post-price{
+.container-cost .room-post-price {
   flex: 1 !important;
   background-color: #7ecc5d;
   font-family: Helvetica;
   font-weight: 200;
-  color: #2A261A;
+  color: #2a261a;
   margin: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -83,20 +81,20 @@
   flex: 6;
   margin: 0;
   padding: 0;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 2rem;
   font-weight: bold;
-  color: #3A6D2B;
+  color: #3a6d2b;
 }
 
-.container-left .post-content{
-  font-family: 'Times New Roman', Times, serif;
+.container-left .post-content {
+  font-family: "Times New Roman", Times, serif;
   font-size: 2 rem;
   color: #555555;
 }
 
-.container-left .address-detail{
-  color: #2A261A;
+.container-left .address-detail {
+  color: #2a261a;
   pointer-events: none;
   text-transform: none;
 }
@@ -113,9 +111,9 @@
   vertical-align: middle;
 }
 
-.container-left .container-table{
+.container-left .container-table {
   background-color: white;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 1rem;
   border-radius: 25px;
   overflow: hidden;
@@ -124,30 +122,30 @@
 }
 
 .container-right .title-cell {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 1.2rem;
   font-weight: 600;
 }
 
-.container-right .card-info{
+.container-right .card-info {
   background-color: #c2f8ab;
   border-radius: 25px;
   width: 300px;
 }
 
-.card-info .container-contactinfo{
+.card-info .container-contactinfo {
   display: flex;
   padding-bottom: 0.5rem;
 }
 
-.card-info .room-post-username{
-  font-family: 'Times New Roman', Times, serif;
+.card-info .room-post-username {
+  font-family: "Times New Roman", Times, serif;
   font-weight: bold;
   font-size: 1.5rem;
-  color: #3A6D2B;
+  color: #3a6d2b;
 }
 
-.card-info .room-post-button{
+.card-info .room-post-button {
   background-color: #7ecc5d;
   border-color: #7ecc5d;
   border-radius: 20px;
@@ -159,7 +157,7 @@
   pointer-events: none;
 }
 
-.post-detail-container-comment{
+.post-detail-container-comment {
   width: 100%;
   height: auto;
   margin-top: 20px;

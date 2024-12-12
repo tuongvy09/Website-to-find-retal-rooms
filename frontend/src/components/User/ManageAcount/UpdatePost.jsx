@@ -1,20 +1,20 @@
-import { Button, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getPostDetail, updatePost } from '../../../redux/postAPI';
-import './UpdatePost.css';
+import { Button, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getPostDetail, updatePost } from "../../../redux/postAPI";
+import "./UpdatePost.css";
 
 const UpdatePost = ({ postId }) => {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [rentalPrice, setRentalPrice] = useState('');
-  const [area, setArea] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [rentalPrice, setRentalPrice] = useState("");
+  const [area, setArea] = useState("");
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const accessToken = currentUser?.accessToken;
 
-  const handleUpdatePostData  = async () => {
+  const handleUpdatePostData = async () => {
     const postData = {
       title,
       content,
@@ -37,7 +37,7 @@ const UpdatePost = ({ postId }) => {
         const postData = await getPostDetail(postId);
         setPost(postData.data);
       } catch (error) {
-        setError('Lỗi khi lấy chi tiết bài đăng');
+        setError("Lỗi khi lấy chi tiết bài đăng");
       }
     };
 
@@ -75,8 +75,8 @@ const UpdatePost = ({ postId }) => {
   };
 
   return (
-    <div className='container-updatepost'>
-      <Typography className='update-post-title'>Chỉnh sửa bài đăng</Typography>
+    <div className="container-updatepost">
+      <Typography className="update-post-title">Chỉnh sửa bài đăng</Typography>
       <div>
         <TextField
           label="Tiêu đề"
@@ -116,7 +116,10 @@ const UpdatePost = ({ postId }) => {
       </div>
 
       <div>
-        <Button className='manage-update-post-btn-confirm' onClick={handleUpdatePostData}>
+        <Button
+          className="manage-update-post-btn-confirm"
+          onClick={handleUpdatePostData}
+        >
           Cập nhật
         </Button>
       </div>

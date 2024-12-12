@@ -35,7 +35,7 @@
   background-color: #7ecc5d;
   font-family: Helvetica;
   font-weight: 200;
-  color: #2A261A;
+  color: #2a261a;
   margin: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -67,7 +67,7 @@
   font-size: 1rem !important;
   color: #333333 !important;
   pointer-events: none;
-  border: 1px solid #CCCCCC !important;
+  border: 1px solid #cccccc !important;
   border-radius: 10px !important;
   text-transform: lowercase !important;
 }
@@ -109,7 +109,7 @@
   justify-content: center !important;
   align-items: center !important;
   background-color: #7ecc5d !important;
-  color: #2A261A !important;
+  color: #2a261a !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
   padding: 0.5rem 1rem !important;

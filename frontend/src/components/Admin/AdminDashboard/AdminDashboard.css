@@ -38,17 +38,19 @@
 
 .buttons-type button {
   padding: 10px 20px;
-  border: 1px solid #63AB45;
-  background-color: #63AB45;
+  border: 1px solid #63ab45;
+  background-color: #63ab45;
   color: white;
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
-  transition: background-color 0.3s, transform 0.2s;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
 }
 
 .buttons-type button:hover {
-  background-color: #63AB45;
+  background-color: #63ab45;
   transform: scale(1.05);
 }
 

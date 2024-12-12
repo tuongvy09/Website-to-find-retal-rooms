@@ -1,13 +1,13 @@
 import { Email } from "@mui/icons-material";
 import axios from "axios";
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import supportPic from '../../../assets/images/supportPic.png';
-import { searchAndCategorizePosts } from '../../../redux/postAPI';
-import ListPostHome from '../Post/ListPostHome';
-import './Home.css';
-import Introduction from './Introduction';
+import supportPic from "../../../assets/images/supportPic.png";
+import { searchAndCategorizePosts } from "../../../redux/postAPI";
+import ListPostHome from "../Post/ListPostHome";
+import "./Home.css";
+import Introduction from "./Introduction";
 import Introduction2 from "./Introduction2";
 import ListNewsHome from "./ListNewsHome";
 
@@ -27,15 +27,26 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const params = {
-          category: ['Nhà trọ, phòng trọ', 'Nhà nguyên căn', 'Cho thuê căn hộ', 'Cho thuê căn hộ mini', 'Cho thuê căn hộ dịch vụ', 'Cho thuê mặt bằng, văn phòng'],
+          category: [
+            "Nhà trọ, phòng trọ",
+            "Nhà nguyên căn",
+            "Cho thuê căn hộ",
+            "Cho thuê căn hộ mini",
+            "Cho thuê căn hộ dịch vụ",
+            "Cho thuê mặt bằng, văn phòng",
+          ],
         };
-        const { category1, category2, category3 } = await searchAndCategorizePosts(params, token);
+        const { category1, category2, category3 } =
+          await searchAndCategorizePosts(params, token);
         setTroPosts(Array.isArray(category1) ? category1.map(formatPost) : []);
-        setCanHoPosts(Array.isArray(category2) ? category2.map(formatPost) : []);
-        setVanPhongPosts(Array.isArray(category3) ? category3.map(formatPost) : []);
-
+        setCanHoPosts(
+          Array.isArray(category2) ? category2.map(formatPost) : [],
+        );
+        setVanPhongPosts(
+          Array.isArray(category3) ? category3.map(formatPost) : [],
+        );
       } catch (error) {
-        console.error('Lỗi khi lấy bài đăng:', error);
+        console.error("Lỗi khi lấy bài đăng:", error);
       }
     };
 
@@ -45,14 +56,14 @@ const Home = () => {
   const formatPost = (post) => ({
     id: post._id,
     address: {
-      province: post.address?.province || '',
-      district: post.address?.district || '',
+      province: post.address?.province || "",
+      district: post.address?.district || "",
     },
-    title: post.title || '',
-    content: post.content || '',
+    title: post.title || "",
+    content: post.content || "",
     contactInfo: {
-      username: post.contactInfo?.username || '',
-      phoneNumber: post.contactInfo?.phoneNumber || '',
+      username: post.contactInfo?.username || "",
+      phoneNumber: post.contactInfo?.phoneNumber || "",
     },
     rentalPrice: post.rentalPrice,
     area: post.area,
@@ -77,11 +88,14 @@ const Home = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/v1/posts/favorites", {
-          headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
+        const response = await axios.get(
+          "http://localhost:8000/v1/posts/favorites",
+          {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
           },
-        });
+        );
         setFavorites(response.data.favorites);
       } catch (error) {
         console.error("Lỗi khi tải danh sách yêu thích:", error);
@@ -97,58 +111,72 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <div style={{ width: '100%', height: 'auto' }}>
-        <ListPostHome post={category1Posts} title='Nhà trọ, phòng trọ'/>
-      <div style={{ width: '100%', height: 'auto' }}>
-        <ListPostHome post={category2Posts} title='Cho thuê căn hộ, nhà ở'  />
-      </div>
-      <div style={{ width: '100%', height: 'auto' }}>
-        <ListPostHome post={category3Posts} title='Văn phòng, mặt bằng' />
-      <div style={{ width: '100%', height: 'auto' }}>
-        <Introduction />
-      </div>
-      <div style={{ width: '100%', height: 'auto' }}>
-        <ListNewsHome />
-      </div>
-      <div style={{ width: '100%', height: 'auto' }}>
-        <Introduction2 />
-      </div>
-      <div className="support-container">
-      {/* Image Section */}
-      <div className="support-image">
-        <img
-          src={supportPic}
-          alt="Support"
-          className="support-image-img"
+      <div style={{ width: "100%", height: "auto" }}>
+        <ListPostHome
+          post={category1Posts}
+          title="Nhà trọ, phòng trọ"
+          favorite={favorites}
         />
-      </div>
-      {/* Info Section */}
-      <div className="support-info">
-        <div className="icon">
-          <i className="fas fa-headset"></i>
+        <div style={{ width: "100%", height: "auto" }}>
+          <ListPostHome
+            post={category2Posts}
+            title="Cho thuê căn hộ, nhà ở"
+            favorite={favorites}
+          />
         </div>
-        <h3>Hỗ trợ chủ nhà đăng tin</h3>
-        <p>
-          Nếu bạn cần hỗ trợ đăng tin, vui lòng liên hệ số điện thoại bên dưới:
-        </p>
-        <div className="contact-buttons">
-          <button className="contact-btn phone-btn">
-            <i className="fas fa-phone-alt"></i> ĐT: (+84) 0313-728-397
-          </button>
-          <button className="contact-btn zalo-btn">
-            <Email style={{marginRight: "10px"}}/> Gmail:  PhongTroXinh@gmail.com
-          </button>
+        <div style={{ width: "100%", height: "auto" }}>
+          <ListPostHome
+            post={category3Posts}
+            title="Văn phòng, mặt bằng"
+            favorite={favorites}
+          />
+          <div style={{ width: "100%", height: "auto" }}>
+            <Introduction />
+          </div>
+          <div style={{ width: "100%", height: "auto" }}>
+            <ListNewsHome />
+          </div>
+          <div style={{ width: "100%", height: "auto" }}>
+            <Introduction2 />
+          </div>
+          <div className="support-container">
+            {/* Image Section */}
+            <div className="support-image">
+              <img
+                src={supportPic}
+                alt="Support"
+                className="support-image-img"
+              />
+            </div>
+            {/* Info Section */}
+            <div className="support-info">
+              <div className="icon">
+                <i className="fas fa-headset"></i>
+              </div>
+              <h3>Hỗ trợ chủ nhà đăng tin</h3>
+              <p>
+                Nếu bạn cần hỗ trợ đăng tin, vui lòng liên hệ số điện thoại bên
+                dưới:
+              </p>
+              <div className="contact-buttons">
+                <button className="contact-btn phone-btn">
+                  <i className="fas fa-phone-alt"></i> ĐT: (+84) 0313-728-397
+                </button>
+                <button className="contact-btn zalo-btn">
+                  <Email style={{ marginRight: "10px" }} /> Gmail:
+                  PhongTroXinh@gmail.com
+                </button>
+              </div>
+            </div>
+          </div>
+          {user ? (
+            <>
+              <p>Hello, {user}</p>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          ) : null}
         </div>
       </div>
-    </div>
-      {user ? (
-        <>
-          <p>Hello, {user}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : null}
-      </div>
-    </div>
     </div>
   );
 };

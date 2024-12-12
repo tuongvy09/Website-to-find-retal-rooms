@@ -1,15 +1,22 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import "./RoomPost.css";
 
 const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
   const handleFavoriteClick = () => {
     console.log("onToggleFavorite in RoomPost:", onToggleFavorite);
-    
+
     if (onToggleFavorite) {
-      onToggleFavorite(post._id, !isFavorite);  
+      onToggleFavorite(post._id, !isFavorite);
     } else {
       console.error("onToggleFavorite không được cung cấp!");
     }

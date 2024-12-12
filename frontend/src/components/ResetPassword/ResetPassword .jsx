@@ -29,7 +29,7 @@ const ResetPassword = () => {
         {
           token,
           newPassword,
-        }
+        },
       );
       setMessage(response.data); // Hiển thị thông báo thành công
       setTimeout(() => navigate("/login"), 2000); // Điều hướng về trang login sau 2 giây

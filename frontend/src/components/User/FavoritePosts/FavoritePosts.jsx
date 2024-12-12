@@ -14,11 +14,14 @@ const FavoritePosts = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/v1/posts/favorites", {
-          headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
+        const response = await axios.get(
+          "http://localhost:8000/v1/posts/favorites",
+          {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
           },
-        });
+        );
         setFavorites(response.data.favorites);
       } catch (error) {
         console.error("Lỗi khi tải danh sách yêu thích:", error);
@@ -40,19 +43,26 @@ const FavoritePosts = () => {
     try {
       if (isCurrentlyFavorite) {
         // Remove from favorites
-        await axios.delete(`http://localhost:8000/v1/posts/${postId}/favorite`, {
-          headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
+        await axios.delete(
+          `http://localhost:8000/v1/posts/${postId}/favorite`,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
           },
-        });
+        );
         setFavorites(favorites.filter((post) => post._id !== postId));
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:8000/v1/posts/${postId}/favorite`, {}, {
-          headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
+        await axios.post(
+          `http://localhost:8000/v1/posts/${postId}/favorite`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
           },
-        });
+        );
         setFavorites((prevFavorites) => [...prevFavorites, { _id: postId }]);
       }
     } catch (error) {
@@ -75,8 +85,8 @@ const FavoritePosts = () => {
               key={post._id}
               post={post}
               onTitleClick={handleTitleClick}
-              onToggleFavorite={handleToggleFavorite}  
-              isFavorite={true} 
+              onToggleFavorite={handleToggleFavorite}
+              isFavorite={true}
             />
           ))}
         </div>

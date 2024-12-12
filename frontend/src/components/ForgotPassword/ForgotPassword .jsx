@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post(
         `http://localhost:8000/v1/auth/forgot-password`,
-        { email }
+        { email },
       );
       setMessage(response.data); // Hiển thị thông báo thành công từ backend
     } catch (err) {
