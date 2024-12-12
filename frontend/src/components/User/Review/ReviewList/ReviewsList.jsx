@@ -31,6 +31,10 @@ const ReviewsList = ({ postId, userId }) => {
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const id = currentUser?._id;
   const accessToken = currentUser?.accessToken;
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalReviews, setTotalReviews] = useState(0);
+  const [ratingsBreakdown, setRatingsBreakdown] = useState({});
+  const [selectedRating, setSelectedRating] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -50,15 +54,23 @@ const ReviewsList = ({ postId, userId }) => {
     fetchReviews();
   }, [dispatch, postId]);
 
-  const averageRating = 4.8;
-  const totalReviews = 5;
-  const ratingsBreakdown = {
-    5: 4,
-    4: 1,
-    3: 0,
-    2: 0,
-    1: 0,
-  };
+  useEffect(() => {
+    if (reviews.length > 0) {
+      const total = reviews.reduce((sum, review) => sum + review.rating, 0);
+      setAverageRating((total / reviews.length).toFixed(1));
+      setTotalReviews(reviews.length);
+  
+      const breakdown = reviews.reduce((acc, review) => {
+        acc[review.rating] = (acc[review.rating] || 0) + 1;
+        return acc;
+      }, {});
+      setRatingsBreakdown(breakdown);
+    } else {
+      setAverageRating(0);
+      setTotalReviews(0);
+      setRatingsBreakdown({});
+    }
+  }, [reviews]);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -81,7 +93,11 @@ const ReviewsList = ({ postId, userId }) => {
     setCurrentPage(0);
   };
 
-  const sortedReviews = [...reviews].sort((a, b) => {
+  const filteredReviews = selectedRating
+    ? reviews.filter((review) => review.rating === selectedRating)
+    : reviews;
+
+  const sortedReviews = [...filteredReviews].sort((a, b) => {
     const dateA = new Date(a.createdAt);
     const dateB = new Date(b.createdAt);
     return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
@@ -119,14 +135,16 @@ const ReviewsList = ({ postId, userId }) => {
     }
   };
 
-  const handleDelete = async (reviewId) => {
-    try {
-      await deleteReviewAPI(reviewId, accessToken);
-      dispatch(deleteReview(reviewId));
-    } catch (error) {
-      console.error("Lỗi khi xóa đánh giá:", error);
-    }
-  };
+  const handleDelete = (reviewId) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa đánh giá này?");
+    if (!confirmDelete) return;
+  
+    deleteReviewAPI(reviewId, accessToken)
+      .then(() => {
+        dispatch(deleteReview(reviewId));
+      })
+      .catch((error) => console.error("Lỗi khi xóa đánh giá:", error));
+  };  
 
   return (
     <div className="review-wrapper">
@@ -200,17 +218,24 @@ const ReviewsList = ({ postId, userId }) => {
           </div>
         </div>
 
-        {/* Hiển thị breakdown */}
-        <div className="product-rating-overview__filters">
-          <div className="product-rating-overview__filter total-reviews-box">
-            Tất cả ({totalReviews.toLocaleString()})
-          </div>
-          {Object.entries(ratingsBreakdown).map(([star, count]) => (
-            <div className="product-rating-overview__filter" key={star}>
-              {star} Sao ({count.toLocaleString()})
-            </div>
-          ))}
+         {/* Bộ lọc theo sao */}
+      <div className="product-rating-overview__filters">
+        <div
+        className={`product-rating-overview__filter ${selectedRating === null ? "selected" : ""}`}
+        onClick={() => setSelectedRating(null)} // Lọc lại tất cả
+        >
+          Tất cả ({totalReviews.toLocaleString()})
         </div>
+        {[5, 4, 3, 2, 1].map((star) => (
+          <div
+            key={star}
+            className={`product-rating-overview__filter ${selectedRating === star ? "selected" : ""}`}
+            onClick={() => setSelectedRating(star)} // Lọc theo sao
+          >
+            {star} Sao ({ratingsBreakdown[star] || 0})
+          </div>
+        ))}
+      </div>
       </div>
 
       {/* Phần cũ */}
@@ -257,13 +282,13 @@ const ReviewsList = ({ postId, userId }) => {
           ))}
 
           <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
+            previousLabel={"Trước"}
+            nextLabel={"Tiếp theo"}
             breakLabel={"..."}
-            pageCount={Math.ceil(reviews.length / reviewsPerPage)}
+            pageCount={Math.ceil(filteredReviews.length / reviewsPerPage)}
             marginPagesDisplayed={2}
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}  
             containerClassName={"pagination"}
             activeClassName={"active"}
           />

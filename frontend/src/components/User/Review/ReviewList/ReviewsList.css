@@ -230,3 +230,9 @@
 .total-reviews-box {
   border: #ff5722 solid 1px;
 }
+
+.product-rating-overview__filter.selected {
+  background-color: #7ecc5d; 
+  color: #000000;
+  font-weight: bold; 
+}
