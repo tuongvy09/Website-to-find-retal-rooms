@@ -34,3 +34,8 @@
   padding: 0 !important;
   text-align: center !important;
 }
+
+.update-post-container-area-price{
+    display: flex;
+    gap: 1rem;
+}
