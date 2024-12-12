@@ -86,7 +86,9 @@
   color: #333;
   cursor: pointer;
   border-radius: 3px;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .pagination-button:hover {
@@ -136,6 +138,6 @@
   background-color: #f0f0f0; /* Change color on hover */
 }
 
-.news-link{
+.news-link {
   text-decoration: none;
 }

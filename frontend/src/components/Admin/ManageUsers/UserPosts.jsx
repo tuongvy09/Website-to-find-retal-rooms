@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getUserPostsByUserId } from '../../../redux/postAPI';
-import RoomPostUser from './RoomPostUser';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { getUserPostsByUserId } from "../../../redux/postAPI";
+import RoomPostUser from "./RoomPostUser";
 
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const token = currentUser?.accessToken;
-  const { userId } = useParams(); 
+  const { userId } = useParams();
   const navigate = useNavigate();
 
   const handleTitleClick = (id) => {
     navigate(`/posts/${id}`);
-};
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const data = await getUserPostsByUserId(token, userId);
         if (Array.isArray(data)) {
-          const formattedPosts = data.map(post => ({
+          const formattedPosts = data.map((post) => ({
             id: post._id,
             address: {
-              province: post.address?.province || '',
-              district: post.address?.district || '',
+              province: post.address?.province || "",
+              district: post.address?.district || "",
             },
-            title: post.title || '',
-            content: post.content || '',
+            title: post.title || "",
+            content: post.content || "",
             contactInfo: {
-              username: post.contactInfo?.username || '',
-              phoneNumber: post.contactInfo?.phoneNumber || '',
+              username: post.contactInfo?.username || "",
+              phoneNumber: post.contactInfo?.phoneNumber || "",
             },
             rentalPrice: post.rentalPrice,
             area: post.area,
@@ -40,7 +40,7 @@ const UserPosts = () => {
           }));
           setPosts(formattedPosts);
         } else {
-          console.error('Dữ liệu trả về không phải là mảng.');
+          console.error("Dữ liệu trả về không phải là mảng.");
         }
       } catch (error) {
         setError(error.response?.data?.message || error.message);
@@ -52,14 +52,14 @@ const UserPosts = () => {
 
   return (
     <div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <ul>
-        {posts.map(post => (
+        {posts.map((post) => (
           <RoomPostUser
             key={post.id}
             post={post}
             onTitleClick={handleTitleClick}
-            />
+          />
         ))}
       </ul>
     </div>

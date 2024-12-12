@@ -1,7 +1,7 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import RoomPost from '../Post/RoomPost';
-import './searchPosts.css';
+import React from "react";
+import { useLocation } from "react-router-dom";
+import RoomPost from "../Post/RoomPost";
+import "./searchPosts.css";
 
 const SearchResultsPage = () => {
   const location = useLocation();

@@ -56,8 +56,8 @@ const ManageUsers = () => {
 
   // Open profile modal
   const handleOpenProfile = (user) => {
-    console.log('Selected User:', user);
-    console.log('Picture URL:', user?.profile?.picture);
+    console.log("Selected User:", user);
+    console.log("Picture URL:", user?.profile?.picture);
     setSelectedUserProfile(user); // Set the selected user for profile modal
     setOpenProfile(true); // Open the profile modal
   };
@@ -74,7 +74,6 @@ const ManageUsers = () => {
     setSelectedUserProfile(null);
   };
 
-
   // Block/unblock user account
   const handleBlockUser = async () => {
     if (!selectedUser) return;
@@ -85,7 +84,7 @@ const ManageUsers = () => {
         {},
         {
           headers: { Authorization: `Bearer ${user?.accessToken}` },
-        }
+        },
       );
 
       if (response.status === 200) {
@@ -103,7 +102,7 @@ const ManageUsers = () => {
 
   // Navigate to user's posts
   const handleViewPosts = (userId) => {
-    dispatch(setSelectedMenu('userPost'));
+    dispatch(setSelectedMenu("userPost"));
     navigate(`/user-posts/${userId}`);
   };
 
@@ -130,7 +129,14 @@ const ManageUsers = () => {
             <TableBody>
               {filteredUsers?.map((user) => (
                 <TableRow key={user._id}>
-                  <TableCell><p className="user_name" onClick={() => handleOpenProfile(user)}>{user.username}</p> </TableCell>
+                  <TableCell>
+                    <p
+                      className="user_name"
+                      onClick={() => handleOpenProfile(user)}
+                    >
+                      {user.username}
+                    </p>{" "}
+                  </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     {user.profile?.isBlocked ? "Đã khóa" : "Hoạt động"}
@@ -176,10 +182,19 @@ const ManageUsers = () => {
         </DialogContent>
         <DialogActions>
           <div className="user-btn">
-            <Button className="btn btn-cancel" onClick={handleCloseDialog} color="primary">
+            <Button
+              className="btn btn-cancel"
+              onClick={handleCloseDialog}
+              color="primary"
+            >
               Hủy
             </Button>
-            <Button className="btn btn-accept" onClick={handleBlockUser} color="secondary" autoFocus>
+            <Button
+              className="btn btn-accept"
+              onClick={handleBlockUser}
+              color="secondary"
+              autoFocus
+            >
               Xác nhận
             </Button>
           </div>
@@ -198,7 +213,11 @@ const ManageUsers = () => {
         <DialogContent>
           <div className="user-detail user-image">
             <img
-              src={selectedUserProfile?.profile?.picture ? selectedUserProfile?.profile?.picture : require('../../../assets/images/user.png')}
+              src={
+                selectedUserProfile?.profile?.picture
+                  ? selectedUserProfile?.profile?.picture
+                  : require("../../../assets/images/user.png")
+              }
               alt="Profile"
             />
           </div>
@@ -210,42 +229,60 @@ const ManageUsers = () => {
       <strong>📍: </strong>{selectedUserProfile?.profile?.address}<br />
       <strong>💬: </strong>{selectedUserProfile?.profile?.}<br /> */}
             <div className="user-information">
-              {
-                selectedUserProfile?.username && <dl>
-                  <dt><i className="fa-solid fa-user"></i> :</dt>
+              {selectedUserProfile?.username && (
+                <dl>
+                  <dt>
+                    <i className="fa-solid fa-user"></i> :
+                  </dt>
                   <dd>{selectedUserProfile?.username}</dd>
                 </dl>
-              }
-              {
-                selectedUserProfile?.email && <dl>
-                <dt><i className="fa-solid fa-envelope"></i> :</dt>
-                <dd>{selectedUserProfile?.email}</dd>
-              </dl>
-              }
-              {
-                selectedUserProfile?.profile?.phone &&  <dl>
-                <dt><i className="fa-solid fa-phone"></i> :</dt>
-                <dd><a href={`tel:${selectedUserProfile?.profile?.phone}`}>{selectedUserProfile?.profile?.phone}</a></dd>
-              </dl>
-              }
-              {
-                selectedUserProfile?.profile?.address &&  <dl>
-                <dt><i className="fa-solid fa-location-dot"></i> :</dt>
-                <dd>{selectedUserProfile?.profile?.address}</dd>
-              </dl>
-              }
-              {
-                selectedUserProfile?.profile?.bio &&  <dl>
-                <dt><i className="fa-solid fa-book-atlas"></i> :</dt>
-                <dd>{selectedUserProfile?.profile?.bio}</dd>
-              </dl>
-              }
+              )}
+              {selectedUserProfile?.email && (
+                <dl>
+                  <dt>
+                    <i className="fa-solid fa-envelope"></i> :
+                  </dt>
+                  <dd>{selectedUserProfile?.email}</dd>
+                </dl>
+              )}
+              {selectedUserProfile?.profile?.phone && (
+                <dl>
+                  <dt>
+                    <i className="fa-solid fa-phone"></i> :
+                  </dt>
+                  <dd>
+                    <a href={`tel:${selectedUserProfile?.profile?.phone}`}>
+                      {selectedUserProfile?.profile?.phone}
+                    </a>
+                  </dd>
+                </dl>
+              )}
+              {selectedUserProfile?.profile?.address && (
+                <dl>
+                  <dt>
+                    <i className="fa-solid fa-location-dot"></i> :
+                  </dt>
+                  <dd>{selectedUserProfile?.profile?.address}</dd>
+                </dl>
+              )}
+              {selectedUserProfile?.profile?.bio && (
+                <dl>
+                  <dt>
+                    <i className="fa-solid fa-book-atlas"></i> :
+                  </dt>
+                  <dd>{selectedUserProfile?.profile?.bio}</dd>
+                </dl>
+              )}
             </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <div className="user-btn">
-            <Button className="btn btn-accept" onClick={handleCloseProfile} color="primary">
+            <Button
+              className="btn btn-accept"
+              onClick={handleCloseProfile}
+              color="primary"
+            >
               Đóng
             </Button>
           </div>

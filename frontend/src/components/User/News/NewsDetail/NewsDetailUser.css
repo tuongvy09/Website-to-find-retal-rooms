@@ -7,21 +7,21 @@
   margin-left: auto;
   margin-right: auto;
 }
-  
-  .news-detail-title {
-    font-size: 30px;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .news-detail-date {
-    font-size: 16px;
-    color: #888;
-    margin-bottom: 20px;
-  }
-  
-  .news-detail-content p {
-    font-size: 18px;
-    color: #333;
-    line-height: 1.6;
-  }  
+
+.news-detail-title {
+  font-size: 30px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.news-detail-date {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.news-detail-content p {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+}

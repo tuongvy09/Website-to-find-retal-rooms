@@ -1,21 +1,21 @@
-import { Box, Divider } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
-import categoryIcon from '../../../assets/images/categoryIcon.png';
-import filterIcon from '../../../assets/images/filterIcon.png';
-import locationIcon from '../../../assets/images/locationIcon.png';
-import searchIcon from '../../../assets/images/searchIcon.png';
-import slide1 from '../../../assets/images/slide1.jpg';
-import slide2 from '../../../assets/images/slide2.jpg';
-import slide3 from '../../../assets/images/slide3.jpg';
-import { searchPosts } from '../../../redux/postAPI';
-import { setError, setLoading, setPosts } from '../../../redux/postSlice';
-import './searchPosts.css';
+import { Box, Divider } from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import categoryIcon from "../../../assets/images/categoryIcon.png";
+import filterIcon from "../../../assets/images/filterIcon.png";
+import locationIcon from "../../../assets/images/locationIcon.png";
+import searchIcon from "../../../assets/images/searchIcon.png";
+import slide1 from "../../../assets/images/slide1.jpg";
+import slide2 from "../../../assets/images/slide2.jpg";
+import slide3 from "../../../assets/images/slide3.jpg";
+import { searchPosts } from "../../../redux/postAPI";
+import { setError, setLoading, setPosts } from "../../../redux/postSlice";
+import "./searchPosts.css";
 
 const SearchPosts = () => {
   const dispatch = useDispatch();
@@ -40,22 +40,24 @@ const SearchPosts = () => {
   };
 
   const [filters, setFilters] = useState({
-    keyword: '',
-    province: '',
-    category: '',
-    minPrice: '',
-    maxPrice: '',
-    minArea: '',
-    maxArea: '',
+    keyword: "",
+    province: "",
+    category: "",
+    minPrice: "",
+    maxPrice: "",
+    minArea: "",
+    maxArea: "",
   });
 
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
-        const response = await axios.get('https://provinces.open-api.vn/api/?depth=3');
+        const response = await axios.get(
+          "https://provinces.open-api.vn/api/?depth=3",
+        );
         setProvinces(response.data);
       } catch (error) {
-        console.error('Error fetching provinces:', error);
+        console.error("Error fetching provinces:", error);
       }
     };
 
@@ -64,7 +66,7 @@ const SearchPosts = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'minPrice' || name === 'maxPrice') {
+    if (name === "minPrice" || name === "maxPrice") {
       console.log(`${name}:`, value);
     }
     setFilters({
@@ -90,18 +92,17 @@ const SearchPosts = () => {
   };
 
   const convertValue = (value) => {
-    if (!value) return ''; 
-    const converted = parseFloat(value.replace(/[^\d.-]/g, ''));
-    return isNaN(converted) ? '' : converted;
+    if (!value) return "";
+    const converted = parseFloat(value.replace(/[^\d.-]/g, ""));
+    return isNaN(converted) ? "" : converted;
   };
-  
 
   const handleSearch = async () => {
     dispatch(setLoading(true));
     setSearchPerformed(true);
     try {
-      const token = localStorage.getItem('token');
-  
+      const token = localStorage.getItem("token");
+
       // Chuẩn bị các bộ lọc, đảm bảo các trường trống không được bao gồm
       const preparedFilters = {
         ...filters,
@@ -110,23 +111,25 @@ const SearchPosts = () => {
         minArea: convertValue(filters.minArea),
         maxArea: convertValue(filters.maxArea),
       };
-  
+
       // Loại bỏ các giá trị trống trước khi gửi yêu cầu
       const filtersWithoutEmptyValues = Object.fromEntries(
-        Object.entries(preparedFilters).filter(([key, value]) => value !== '')
+        Object.entries(preparedFilters).filter(([key, value]) => value !== ""),
       );
-  
+
       console.log("Bộ lọc đã chuẩn bị:", filtersWithoutEmptyValues);
-  
+
       const results = await searchPosts(filtersWithoutEmptyValues, token);
       dispatch(setPosts(results));
-      navigate('/search', { state: { results, filters: filtersWithoutEmptyValues } });
+      navigate("/search", {
+        state: { results, filters: filtersWithoutEmptyValues },
+      });
     } catch (error) {
       dispatch(setError(error.message));
     } finally {
       dispatch(setLoading(false));
     }
-  };  
+  };
 
   const handlePostClick = (postId) => {
     navigate(`/posts/${postId}`);
@@ -156,22 +159,28 @@ const SearchPosts = () => {
           </div>
         </Slider>
         <input
-          className='search-by-category'
+          className="search-by-category"
           placeholder="Tìm kiếm..."
           name="keyword"
           fullWidth
           value={filters.keyword}
           onChange={handleInputChange}
         />
-        <div className='search-container-info'>
-          <Box className='contianer-location1'>
-            <div className='container-icon'>
-              <img src={locationIcon} alt="icon" className='search-style-icon' />
+        <div className="search-container-info">
+          <Box className="contianer-location1">
+            <div className="container-icon">
+              <img
+                src={locationIcon}
+                alt="icon"
+                className="search-style-icon"
+              />
             </div>
-            <div className='container-dropdown-title'>
+            <div className="container-dropdown-title">
               <div className="container-box-title">Địa điểm</div>
               <div className="dropdown" onClick={handleToggleDropdown}>
-                <span className={`dropdown-text ${filters.province ? "active" : ""}`}>
+                <span
+                  className={`dropdown-text ${filters.province ? "active" : ""}`}
+                >
                   {filters.province || "Chọn địa điểm"}
                 </span>
                 <i className="fas fa-chevron-down dropdown-icon"></i>
@@ -190,55 +199,113 @@ const SearchPosts = () => {
                 </ul>
               )}
             </div>
-          </Box >
-          <Divider className='search-info-divider' orientation="vertical" flexItem />
-          <Box className='contianer-location1'>
-            <div className='container-icon'> <img src={categoryIcon} alt='categoryicon' className='search-style-icon' /></div>
+          </Box>
+          <Divider
+            className="search-info-divider"
+            orientation="vertical"
+            flexItem
+          />
+          <Box className="contianer-location1">
+            <div className="container-icon">
+              {" "}
+              <img
+                src={categoryIcon}
+                alt="categoryicon"
+                className="search-style-icon"
+              />
+            </div>
             <div className="container-dropdown-title">
               <div className="container-box-title">Danh mục</div>
               <div className="dropdown" onClick={handleToggleDropdownCategory}>
-                <span className={`dropdown-text ${filters.province ? "active" : ""}`}>
+                <span
+                  className={`dropdown-text ${filters.province ? "active" : ""}`}
+                >
                   {filters.category || "Chọn danh mục"}
                 </span>
                 <i className="fas fa-chevron-down dropdown-icon"></i>
               </div>
               {isDropdowncategoryOpen && (
                 <ul className="dropdown-menu">
-                  <li className="dropdown-menu-item" data-id="0" onClick={() => handleCategoryChange('')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="0"
+                    onClick={() => handleCategoryChange("")}
+                  >
                     Chọn danh mục
                   </li>
-                  <li className="dropdown-menu-item" data-id="1" onClick={() => handleCategoryChange('Nhà trọ, phòng trọ')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="1"
+                    onClick={() => handleCategoryChange("Nhà trọ, phòng trọ")}
+                  >
                     Nhà trọ, phòng trọ
                   </li>
-                  <li className="dropdown-menu-item" data-id="2" onClick={() => handleCategoryChange('Nhà nguyên căn')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="2"
+                    onClick={() => handleCategoryChange("Nhà nguyên căn")}
+                  >
                     Nhà nguyên căn
                   </li>
-                  <li className="dropdown-menu-item" data-id="3" onClick={() => handleCategoryChange('Cho thuê căn hộ')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="3"
+                    onClick={() => handleCategoryChange("Cho thuê căn hộ")}
+                  >
                     Cho thuê căn hộ
                   </li>
-                  <li className="dropdown-menu-item" data-id="4" onClick={() => handleCategoryChange('Cho thuê căn hộ mini')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="4"
+                    onClick={() => handleCategoryChange("Cho thuê căn hộ mini")}
+                  >
                     Cho thuê căn hộ mini
                   </li>
-                  <li className="dropdown-menu-item" data-id="5" onClick={() => handleCategoryChange('Cho thuê căn hộ dịch vụ')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="5"
+                    onClick={() =>
+                      handleCategoryChange("Cho thuê căn hộ dịch vụ")
+                    }
+                  >
                     Cho thuê căn hộ dịch vụ
                   </li>
-                  <li className="dropdown-menu-item" data-id="6" onClick={() => handleCategoryChange('Cho thuê mặt bằng, văn phòng')}>
+                  <li
+                    className="dropdown-menu-item"
+                    data-id="6"
+                    onClick={() =>
+                      handleCategoryChange("Cho thuê mặt bằng, văn phòng")
+                    }
+                  >
                     Cho thuê mặt bằng, văn phòng
                   </li>
                 </ul>
               )}
-              <input type="hidden" name="add_ids_ba_category" value={filters.category} />
+              <input
+                type="hidden"
+                name="add_ids_ba_category"
+                value={filters.category}
+              />
             </div>
           </Box>
-          <Divider className='search-info-divider' orientation="vertical" flexItem />
-          <Box className='contianer-location'>
-            <div className='container-icon'>
-              <img src={filterIcon} alt="icon" className='search-style-icon' />
+          <Divider
+            className="search-info-divider"
+            orientation="vertical"
+            flexItem
+          />
+          <Box className="contianer-location">
+            <div className="container-icon">
+              <img src={filterIcon} alt="icon" className="search-style-icon" />
             </div>
-            <div className='container-dropdown-title'>
+            <div className="container-dropdown-title">
               <div className="container-box-title">Địa điểm</div>
-              <div className="dropdown-filter" onClick={handleToggleDropdownCost}>
-                <span className={`dropdown-text ${filters.province ? "active" : ""}`}>
+              <div
+                className="dropdown-filter"
+                onClick={handleToggleDropdownCost}
+              >
+                <span
+                  className={`dropdown-text ${filters.province ? "active" : ""}`}
+                >
                   Lọc theo giá và diện tích
                 </span>
                 <i className="fas fa-chevron-down dropdown-icon"></i>
@@ -250,7 +317,7 @@ const SearchPosts = () => {
                       <div className="title-field">Giá</div>
                       <div className="price-range-inputs">
                         <input
-                          className='search-range-input'
+                          className="search-range-input"
                           type="number"
                           name="minPrice"
                           placeholder="Giá tối thiểu"
@@ -259,7 +326,7 @@ const SearchPosts = () => {
                         />
                         <span>-</span>
                         <input
-                          className='search-range-input'
+                          className="search-range-input"
                           type="number"
                           name="maxPrice"
                           placeholder="Giá tối đa"
@@ -283,7 +350,9 @@ const SearchPosts = () => {
                           onChange={handleInputChange}
                           className="min-range"
                         />
-                        <span className='search-value-area'>Diện tích tối thiểu: {filters.minArea} m²</span>
+                        <span className="search-value-area">
+                          Diện tích tối thiểu: {filters.minArea} m²
+                        </span>
                         <input
                           type="range"
                           name="maxArea"
@@ -294,7 +363,9 @@ const SearchPosts = () => {
                           onChange={handleInputChange}
                           className="max-range"
                         />
-                        <span className='search-value-area'>Diện tích tối đa: {filters.maxArea} m²</span>
+                        <span className="search-value-area">
+                          Diện tích tối đa: {filters.maxArea} m²
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -302,11 +373,23 @@ const SearchPosts = () => {
               )}
             </div>
           </Box>
-          <Divider className='search-info-divider' orientation="vertical" flexItem />
-          <Box className='contianer-location'>
-            <button className='search-btn' onClick={handleSearch} disabled={loading}>
-              <img src={searchIcon} alt='searchIcon' className='style-icon-btn-search'></img>
-              {loading ? 'Đang tìm kiếm...' : 'Tìm kiếm'}
+          <Divider
+            className="search-info-divider"
+            orientation="vertical"
+            flexItem
+          />
+          <Box className="contianer-location">
+            <button
+              className="search-btn"
+              onClick={handleSearch}
+              disabled={loading}
+            >
+              <img
+                src={searchIcon}
+                alt="searchIcon"
+                className="style-icon-btn-search"
+              ></img>
+              {loading ? "Đang tìm kiếm..." : "Tìm kiếm"}
             </button>
           </Box>
         </div>

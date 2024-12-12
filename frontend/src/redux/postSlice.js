@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  posts: [], 
+  posts: [],
   selectedPost: null,
   loading: false,
-  error: null, 
+  error: null,
 };
 
 const postSlice = createSlice({
-  name: 'posts',
+  name: "posts",
   initialState,
   reducers: {
     setPosts: (state, action) => {
@@ -21,13 +21,15 @@ const postSlice = createSlice({
       state.posts.push(action.payload);
     },
     updatePost: (state, action) => {
-      const index = state.posts.findIndex(post => post.id === action.payload.id);
+      const index = state.posts.findIndex(
+        (post) => post.id === action.payload.id,
+      );
       if (index !== -1) {
         state.posts[index] = action.payload;
       }
     },
     deletePost: (state, action) => {
-      state.posts = state.posts.filter(post => post.id !== action.payload);
+      state.posts = state.posts.filter((post) => post.id !== action.payload);
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -38,11 +40,11 @@ const postSlice = createSlice({
     toggleFavoritePost: (state, action) => {
       const postId = action.payload;
       if (state.favoritePosts.includes(postId)) {
-        state.favoritePosts = state.favoritePosts.filter(id => id !== postId);
+        state.favoritePosts = state.favoritePosts.filter((id) => id !== postId);
       } else {
         state.favoritePosts.push(postId);
       }
-    }
+    },
   },
 });
 
@@ -54,7 +56,7 @@ export const {
   deletePost,
   setLoading,
   setError,
-  toggleFavoritePost
+  toggleFavoritePost,
 } = postSlice.actions;
 
 export default postSlice.reducer;

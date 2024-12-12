@@ -11,10 +11,13 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  
+  min-height: 100vh;
 }
 
-.footer-logo-description, .footer-links, .footer-newsletter, .footer-contact {
+.footer-logo-description,
+.footer-links,
+.footer-newsletter,
+.footer-contact {
   padding: 10px;
 }
 
@@ -35,13 +38,15 @@
 .social-button {
   color: white;
   margin-right: 4px !important;
-  font-size: 200rem !important; 
-  transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 200rem !important;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .social-button:hover {
-  color: #0e8a37 !important;  
-  transform: scale(1.5);  
+  color: #0e8a37 !important;
+  transform: scale(1.5);
 }
 
 .footer-links {
@@ -79,7 +84,7 @@
 }
 
 .footer-newsletter .newsletter-button {
-  color: #4caf50 !important; 
+  color: #4caf50 !important;
   font-weight: bold !important;
   margin-top: 10px !important;
 }
@@ -100,15 +105,18 @@
 
 @media (max-width: 768px) {
   .footer {
-      grid-template-columns: 1fr;
-      padding: 20px;
+    grid-template-columns: 1fr;
+    padding: 20px;
   }
 
-  .footer-logo-description, .footer-links, .footer-newsletter, .footer-contact {
-      margin-bottom: 20px;
+  .footer-logo-description,
+  .footer-links,
+  .footer-newsletter,
+  .footer-contact {
+    margin-bottom: 20px;
   }
 
   .footer-social {
-      margin-top: 15px;
+    margin-top: 15px;
   }
 }

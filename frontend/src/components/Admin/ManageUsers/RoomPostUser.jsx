@@ -1,6 +1,13 @@
-import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import React from 'react';
-import './RoomPostUser.css';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import "./RoomPostUser.css";
 
 const RoomPostUser = ({ post, onTitleClick }) => {
   return (
@@ -10,7 +17,7 @@ const RoomPostUser = ({ post, onTitleClick }) => {
         {post.images[0] && (
           <CardMedia
             component="img"
-            image={post.images[0]} 
+            image={post.images[0]}
             alt="Room image"
             className="room-post-image"
           />
@@ -19,7 +26,10 @@ const RoomPostUser = ({ post, onTitleClick }) => {
       </Box>
       <CardContent className="room-post-content">
         <Box>
-          <Typography className="room-post-title" onClick={() => onTitleClick(post.id)}>
+          <Typography
+            className="room-post-title"
+            onClick={() => onTitleClick(post.id)}
+          >
             {post.title}
           </Typography>
           <Typography variant="body2" className="room-post-location">

@@ -3,11 +3,13 @@
   flex-direction: column;
   align-items: center; /* Căn giữa theo chiều ngang */
   margin-bottom: 20px; /* Tạo khoảng cách dưới tiêu đề */
-  text-align: center;;
+  text-align: center;
 }
 
-.add-review-post-title{
-  font-family: work sans, sans-serif;
+.add-review-post-title {
+  font-family:
+    work sans,
+    sans-serif;
   font-size: 16px;
   color: black;
   font-weight: bold !important;
@@ -38,7 +40,7 @@
   max-width: 600px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center; /* Đảm bảo nội dung canh giữa */
@@ -131,7 +133,9 @@
 
 .addreview-star {
   margin: 0 5px;
-  transition: fill 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transition:
+    fill 0.2s ease-in-out,
+    transform 0.2s ease-in-out;
   cursor: pointer;
 }
 

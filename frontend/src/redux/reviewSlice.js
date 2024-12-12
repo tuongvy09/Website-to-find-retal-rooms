@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const reviewSlice = createSlice({
-  name: 'reviews',
+  name: "reviews",
   initialState: {
     reviews: [], // Mặc định là mảng rỗng
     loading: false,
@@ -21,12 +21,12 @@ const reviewSlice = createSlice({
     },
     deleteReview: (state, action) => {
       state.reviews = state.reviews.filter(
-        (review) => review._id !== action.payload
+        (review) => review._id !== action.payload,
       );
     },
     updateReview: (state, action) => {
       const index = state.reviews.findIndex(
-        (review) => review._id === action.payload._id
+        (review) => review._id === action.payload._id,
       );
       if (index !== -1) {
         state.reviews[index] = action.payload;
@@ -35,5 +35,6 @@ const reviewSlice = createSlice({
   },
 });
 
-export const { setReviews, setLoading, setError, deleteReview, updateReview } = reviewSlice.actions;
+export const { setReviews, setLoading, setError, deleteReview, updateReview } =
+  reviewSlice.actions;
 export default reviewSlice.reducer;

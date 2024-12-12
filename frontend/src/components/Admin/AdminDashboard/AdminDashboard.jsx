@@ -56,7 +56,7 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
-import AdminHeader from '../AdminHeader/AdminHeader';
+import AdminHeader from "../AdminHeader/AdminHeader";
 import { useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -68,10 +68,10 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  BarElement, 
+  BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const AdminDashboard = () => {
@@ -148,46 +148,49 @@ const AdminDashboard = () => {
     }
 
     const labels = data.map((item) =>
-      type === "date" ? item._id : item._id || "Không rõ"
+      type === "date" ? item._id : item._id || "Không rõ",
     );
     const counts = data.map((item) => item.count);
 
-      // Kiểm tra loại thống kê để chọn biểu đồ thích hợp
-      if (type === "date") {
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: "Số lượng bài đăng",
-              data: counts,
-              fill: false, // Không tô màu vùng dưới đường
-              borderColor: "#A3D9A5", // Màu đường
-              tension: 0.1, // Độ cong của đường
-              borderWidth: 2, // Độ dày của đường
-            },
-          ],
-        });
-      } else {
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: "Số lượng bài đăng",
-              data: counts,
-              fill: true,
-              backgroundColor: "#B7E4C7", 
-              borderColor: "#2D6A4F", 
-              tension: 0.1, // Độ cong của đường
-              borderWidth: 2,
-            },
-          ],
-        });
-      }
-    };
+    // Kiểm tra loại thống kê để chọn biểu đồ thích hợp
+    if (type === "date") {
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: "Số lượng bài đăng",
+            data: counts,
+            fill: false, // Không tô màu vùng dưới đường
+            borderColor: "#A3D9A5", // Màu đường
+            tension: 0.1, // Độ cong của đường
+            borderWidth: 2, // Độ dày của đường
+          },
+        ],
+      });
+    } else {
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: "Số lượng bài đăng",
+            data: counts,
+            fill: true,
+            backgroundColor: "#B7E4C7",
+            borderColor: "#2D6A4F",
+            tension: 0.1, // Độ cong của đường
+            borderWidth: 2,
+          },
+        ],
+      });
+    }
+  };
 
   // Hàm tạo dữ liệu biểu đồ trống
   const getEmptyChartData = (type) => ({
-    labels: type === "date" ? ["Ngày 1", "Ngày 2", "Ngày 3"] : ["Danh mục 1", "Danh mục 2", "Danh mục 3"],
+    labels:
+      type === "date"
+        ? ["Ngày 1", "Ngày 2", "Ngày 3"]
+        : ["Danh mục 1", "Danh mục 2", "Danh mục 3"],
     datasets: [
       {
         label: "Dữ liệu trống",
@@ -242,13 +245,12 @@ const AdminDashboard = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div className="chart-container">
           <h3>{chartTitle}</h3>
-          {chartData && (
-            activeStat === "date" ? (
+          {chartData &&
+            (activeStat === "date" ? (
               <Line data={chartData} />
             ) : (
               <Bar data={chartData} />
-            )
-          )}
+            ))}
         </div>
       </div>
     </>

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteReview as deleteReviewAPI, editReview, getReviewsByPostId } from "../../../../redux/postAPI";
+import {
+  deleteReview as deleteReviewAPI,
+  editReview,
+  getReviewsByPostId,
+} from "../../../../redux/postAPI";
 import {
   deleteReview,
   setReviews,
@@ -46,14 +50,14 @@ const ReviewsList = ({ postId, userId }) => {
     fetchReviews();
   }, [dispatch, postId]);
 
-  const averageRating = 4.9;
-  const totalReviews = 4163;
+  const averageRating = 4.8;
+  const totalReviews = 5;
   const ratingsBreakdown = {
-    "5": 4000,
-    "4": 106,
-    "3": 25,
-    "2": 6,
-    "1": 26,
+    5: 4,
+    4: 1,
+    3: 0,
+    2: 0,
+    1: 0,
   };
 
   const renderStars = (rating) => {
@@ -62,7 +66,7 @@ const ReviewsList = ({ postId, userId }) => {
       stars.push(
         <span key={i} className={`star ${i <= rating ? "filled" : ""}`}>
           ★
-        </span>
+        </span>,
       );
     }
     return stars;
@@ -135,19 +139,26 @@ const ReviewsList = ({ postId, userId }) => {
             <span className="product-rating-overview__rating-score">
               {averageRating}
             </span>
-            <span className="product-rating-overview__rating-score-out-of"> trên 5 </span>
+            <span className="product-rating-overview__rating-score-out-of">
+              {" "}
+              trên 5{" "}
+            </span>
           </div>
           <div className="shopee-rating-stars product-rating-overview__stars">
             <div className="shopee-rating-stars__stars">
               {Array.from({ length: 5 }, (_, index) => {
-                const starPercentage = index < Math.floor(averageRating)
-                  ? 100
-                  : index < averageRating
-                    ? (averageRating % 1) * 100
-                    : 0;
+                const starPercentage =
+                  index < Math.floor(averageRating)
+                    ? 100
+                    : index < averageRating
+                      ? (averageRating % 1) * 100
+                      : 0;
 
                 return (
-                  <div className="shopee-rating-stars__star-wrapper" key={index}>
+                  <div
+                    className="shopee-rating-stars__star-wrapper"
+                    key={index}
+                  >
                     <div
                       className="shopee-rating-stars__lit"
                       style={{ width: `${starPercentage}%` }}
@@ -201,7 +212,6 @@ const ReviewsList = ({ postId, userId }) => {
           ))}
         </div>
       </div>
-
 
       {/* Phần cũ */}
       <div className="filter-buttons">
@@ -328,6 +338,6 @@ const ReviewsList = ({ postId, userId }) => {
       )}
     </div>
   );
-}
+};
 
 export default ReviewsList;

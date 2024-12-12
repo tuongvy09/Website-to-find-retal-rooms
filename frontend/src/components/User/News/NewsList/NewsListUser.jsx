@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import './NewsListUser.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import "./NewsListUser.css";
 
 const NewsListUser = () => {
   const [newsList, setNewsList] = useState([]);
@@ -11,11 +11,11 @@ const NewsListUser = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/v1/news');
+        const response = await axios.get("http://localhost:8000/v1/news");
         setNewsList(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Không thể tải tin tức.');
+        setError("Không thể tải tin tức.");
         setLoading(false);
       }
     };
@@ -33,7 +33,11 @@ const NewsListUser = () => {
           <li key={news._id} className="news-item">
             <Link to={`/news/${news._id}`} className="news-link">
               {news.imageUrl && (
-                <img src={`http://localhost:8000${news.imageUrl || '/placeholder.jpg'}`} alt={news.title} className="news-image" />
+                <img
+                  src={`http://localhost:8000${news.imageUrl || "/placeholder.jpg"}`}
+                  alt={news.title}
+                  className="news-image"
+                />
               )}
               <div className="news-content">
                 <h3>{news.title}</h3>

@@ -36,7 +36,7 @@
 }
 
 .star.filled {
-  color: #FFD700;
+  color: #ffd700;
   /* Màu vàng cho ngôi sao đã chọn */
 }
 
@@ -56,7 +56,7 @@
 
 .review-item p span.review-item_time {
   font-size: 14px;
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .review-item p .star {
@@ -114,7 +114,6 @@
 }
 
 .review-wrapper {
-
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -132,8 +131,7 @@
   border: 1px solid #f9ede5;
   border-radius: 2px;
   box-sizing: border-box;
-  display: flex
-;
+  display: flex;
   margin-bottom: 1rem;
   min-height: 5rem;
   padding: 1.875rem;
@@ -229,6 +227,6 @@
   background-color: #ffeb3b;
 }
 
-.total-reviews-box{
+.total-reviews-box {
   border: #ff5722 solid 1px;
 }

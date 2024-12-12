@@ -20,7 +20,7 @@
 
 /* Phần tải ảnh bìa (chiếm 1 phần) */
 .cover-upload {
- margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 /* Tiêu đề phần tải ảnh */
@@ -28,7 +28,7 @@
   font-size: 14px;
   color: #555;
   margin-bottom: 10px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 /* Nút tải ảnh bìa */
@@ -67,10 +67,10 @@
   width: 100%;
   height: 100%;
 }
-.image-preview .image-waiting img{
+.image-preview .image-waiting img {
   width: 64px;
   height: auto;
-  opacity: .3;
+  opacity: 0.3;
 }
 
 .image-preview img {
@@ -93,12 +93,12 @@
 }
 
 /* Tiêu đề form tin tức */
-.news-details-form>h2 {
+.news-details-form > h2 {
   font-size: 20px;
   color: #333;
   margin-bottom: 15px;
   font-weight: bold;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 /* Các label và input */
@@ -124,7 +124,7 @@
 /* Các trường nhập liệu textarea */
 .news-details-form textarea {
   resize: vertical;
-  min-height: 150   px;
+  min-height: 150 px;
 }
 
 .error-message {
@@ -158,7 +158,6 @@
 
 .submit-button:hover {
   background-color: #0056b3;
-
 }
 
 /* Quill Editor Container */
@@ -196,6 +195,4 @@
   border-radius: 4px;
   background-color: #f4f4f9; /* Light background for the toolbar */
   padding: 5px;
-
 }
-

@@ -1,10 +1,10 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './NewsDetail.css'; // Import file CSS
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./NewsDetail.css"; // Import file CSS
 
 const NewsDetail = () => {
   const { id } = useParams();
@@ -30,7 +30,7 @@ const NewsDetail = () => {
         setLoading(false);
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu tin tức:", err);
-        setError('Không thể tải chi tiết tin tức.');
+        setError("Không thể tải chi tiết tin tức.");
         setLoading(false);
       }
     };
@@ -54,22 +54,29 @@ const NewsDetail = () => {
     }
   };
 
-  const formattedDate = new Date(news.createdAt).toLocaleDateString('vi-VN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const formattedDate = new Date(news.createdAt).toLocaleDateString("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
     <div className="news-detail-page">
-      <ToastContainer position="top-right" autoClose={5000} /> {/* Only one ToastContainer */}
+      <ToastContainer position="top-right" autoClose={5000} />{" "}
+      {/* Only one ToastContainer */}
       {/* Main Content */}
       <div className="news-detail-content">
         <div className="button-group">
-          <button onClick={handleBack} className="back-button">← Quay lại</button>
+          <button onClick={handleBack} className="back-button">
+            ← Quay lại
+          </button>
           <div className="action-buttons">
-            <button onClick={handleEdit} className="edit-button">Sửa</button>
-            <button onClick={() => handleDelete(id)} className="delete-button">Xóa</button>
+            <button onClick={handleEdit} className="edit-button">
+              Sửa
+            </button>
+            <button onClick={() => handleDelete(id)} className="delete-button">
+              Xóa
+            </button>
           </div>
         </div>
         <div className="news-content">

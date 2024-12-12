@@ -44,12 +44,10 @@
 }
 
 .content-wrapper {
-  flex: 1 !important; 
+  flex: 1 !important;
 }
 
-
-
-footer {  
+footer {
   background-color: #27415b !important;
   padding: 1rem !important;
   text-align: center !important;

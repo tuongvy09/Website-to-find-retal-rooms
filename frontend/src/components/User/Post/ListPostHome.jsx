@@ -1,16 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Slider from 'react-slick';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import arrowsIcon from '../../../assets/images/arrowIcon.png';
-import { useFavoriteToggle } from '../../../redux/postAPI';
-import './ListPostHome.css';
-import RoomPost from './RoomPost';
+import arrowsIcon from "../../../assets/images/arrowIcon.png";
+import { useFavoriteToggle } from "../../../redux/postAPI";
+import "./ListPostHome.css";
+import RoomPost from "./RoomPost";
 
-const ListPostHome = ({post=[], title}) => {
+const ListPostHome = ({ post = [], title, favorite }) => {
   const navigate = useNavigate();
+  console.log(favorite)
+  console.log("post", post)
 
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const token = currentUser?.accessToken;
@@ -22,7 +24,7 @@ const ListPostHome = ({post=[], title}) => {
     if (id) {
       navigate(`/posts/${id}`);
     } else {
-      console.error('ID bài đăng không hợp lệ');
+      console.error("ID bài đăng không hợp lệ");
     }
   };
 
@@ -40,35 +42,39 @@ const ListPostHome = ({post=[], title}) => {
 
   return (
     <div className="approved-posts-slider">
-      <div className='approved-post-in-home-title'>{title}</div>
-      {
-        isPostArray ? (
-          <Slider {...sliderSettings}>
-            {post.slice(0, 5).map((postItem, index) => (
-              <div key={index} className="approved-posts-item">
-                <RoomPost
-                  post={postItem}
-                  onTitleClick={() => handleTitleClick(postItem.id)}
-                  onToggleFavorite={(id, isFavorite) => toggleFavorite(id, isFavorite)}
-                  isFavorite={favorites.some((fav) => fav._id === post._id)}
-                />
-                {index === Math.min(post.length, 5) - 1 && (
-                  <button
-                    className="see-more-button"
-                    onClick={() => navigate('/posts')}
-                  >
-                    See More
-                    <img src={arrowsIcon} alt="arrows" className="style-icon-btn-see-more" />
-                  </button>
-                )}
-              </div>
-            ))}
-          </Slider>
-        ) : (
-          <p>Dữ liệu bài đăng không hợp lệ hoặc đang tải...</p>
-        )
-      }
-    </div >
+      <div className="approved-post-in-home-title">{title}</div>
+      {isPostArray ? (
+        <Slider {...sliderSettings}>
+          {post.slice(0, 5).map((postItem, index) => (
+            <div key={index} className="approved-posts-item">
+              <RoomPost
+                post={postItem}
+                onTitleClick={() => handleTitleClick(postItem.id)}
+                onToggleFavorite={(id, isFavorite) =>
+                  toggleFavorite(id, isFavorite)
+                }
+                isFavorite={favorites.some((fav) => fav._id === post._id)}
+              />
+              {index === Math.min(post.length, 5) - 1 && (
+                <button
+                  className="see-more-button"
+                  onClick={() => navigate("/posts")}
+                >
+                  See More
+                  <img
+                    src={arrowsIcon}
+                    alt="arrows"
+                    className="style-icon-btn-see-more"
+                  />
+                </button>
+              )}
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <p>Dữ liệu bài đăng không hợp lệ hoặc đang tải...</p>
+      )}
+    </div>
   );
 };
 

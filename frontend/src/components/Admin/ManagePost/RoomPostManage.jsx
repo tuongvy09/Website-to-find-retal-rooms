@@ -1,7 +1,14 @@
 // Component RoomPost (Không chứa fetch dữ liệu)
-import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import React from 'react';
-import './RoomPostManage.css';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import "./RoomPostManage.css";
 
 const RoomPostManage = ({ post, onTitleClick }) => {
   return (
@@ -20,7 +27,10 @@ const RoomPostManage = ({ post, onTitleClick }) => {
       </Box>
       <CardContent className="room-post-content">
         <Box>
-          <Typography className="room-post-title" onClick={() => onTitleClick(post.id)}>
+          <Typography
+            className="room-post-title"
+            onClick={() => onTitleClick(post.id)}
+          >
             {post.title}
           </Typography>
           <Typography variant="body2" className="room-post-location">
