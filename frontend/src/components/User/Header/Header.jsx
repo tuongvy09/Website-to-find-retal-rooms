@@ -69,9 +69,14 @@ const Header = () => {
     return (
         <AppBar position="static" className="user-header-app-bar">
             <Toolbar className="user-header-tool-bar">
-                <Typography variant="h6" className="header-title">
-                    PhongTroXinh.com
-                </Typography>
+            <Typography
+            variant="h6"
+            className="header-title"
+            onClick={() => navigate("/")}
+            style={{ cursor: "pointer" }} 
+            >
+            PhongTroXinh.com
+            </Typography>
                 <Box className="header-container-btn">
                     <Button className="user-header-btn" onClick={() => navigate('/')}>
                         Trang Chủ

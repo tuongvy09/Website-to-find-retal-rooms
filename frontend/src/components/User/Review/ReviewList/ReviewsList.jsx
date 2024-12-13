@@ -13,6 +13,7 @@ import {
   updateReview,
 } from "../../../../redux/reviewSlice";
 import "./ReviewsList.css";
+import Swal from "sweetalert2";
 
 const ReviewsList = ({ postId, userId }) => {
   const dispatch = useDispatch();
@@ -136,15 +137,39 @@ const ReviewsList = ({ postId, userId }) => {
   };
 
   const handleDelete = (reviewId) => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa đánh giá này?");
-    if (!confirmDelete) return;
-  
-    deleteReviewAPI(reviewId, accessToken)
-      .then(() => {
-        dispatch(deleteReview(reviewId));
-      })
-      .catch((error) => console.error("Lỗi khi xóa đánh giá:", error));
-  };  
+    Swal.fire({
+      title: "Xác nhận xóa",
+      text: "Bạn có chắc chắn muốn xóa đánh giá này?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteReviewAPI(reviewId, accessToken)
+          .then(() => {
+            dispatch(deleteReview(reviewId));
+            Swal.fire({
+              title: "Đã xóa!",
+              text: "Đánh giá đã được xóa thành công.",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          })
+          .catch((error) => {
+            console.error("Lỗi khi xóa đánh giá:", error);
+            Swal.fire({
+              title: "Lỗi",
+              text: "Đã xảy ra lỗi khi xóa đánh giá. Vui lòng thử lại.",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          });
+      }
+    });
+  }; 
 
   return (
     <div className="review-wrapper">
@@ -255,8 +280,31 @@ const ReviewsList = ({ postId, userId }) => {
       </div>
 
       {reviews.length === 0 ? (
-        <p>No reviews yet.</p>
-      ) : (
+      <div style={{
+        textAlign: 'center', 
+        padding: '20px', 
+        border: '1px dashed #ccc', 
+        borderRadius: '8px', 
+        backgroundColor: '#ffffff'
+      }}>
+        <img 
+          src="https://i.pinimg.com/originals/b0/7c/0f/b07c0fc116d1868db07a8bbc2d79aab9.gif" 
+          alt="No reviews" 
+          style={{ marginBottom: '10px', width: '300px', opacity: 0.7 }}
+        />
+        <p style={{
+          color: '#555', 
+          fontSize: '16px', 
+          fontWeight: '500', 
+          marginBottom: '8px'
+        }}>
+          Chưa có đánh giá
+        </p>
+        <p style={{ color: '#777', fontSize: '14px' }}>
+          Hãy là người đầu tiên để lại đánh giá và chia sẻ suy nghĩ của bạn!
+        </p>
+      </div>
+    ) : (
         <>
           {currentReviews.map((review) => (
             <div key={review._id} className="review-item">
