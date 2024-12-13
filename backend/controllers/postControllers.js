@@ -220,6 +220,8 @@ exports.toggleVisibility = async (req, res) => {
         status: "approved",
       };
   
+      const filtersExpr = [];
+  
       // Lọc theo tỉnh
       if (province) filter["address.province"] = province;
   
@@ -239,38 +241,57 @@ exports.toggleVisibility = async (req, res) => {
       if (minPrice || maxPrice) {
         const numericMinPrice = convertToNumber(minPrice);
         const numericMaxPrice = convertToNumber(maxPrice);
-      
-        const rentalPriceFilter = {};
-      
-        if (numericMinPrice !== null) rentalPriceFilter.$gte = numericMinPrice;
-        if (numericMaxPrice !== null) rentalPriceFilter.$lte = numericMaxPrice;
-      
-        filter.$expr = {
-          $and: [
-            // Normalize and filter rentalPrice
+  
+        if (numericMinPrice !== null || numericMaxPrice !== null) {
+          const rentalPriceFilter = {};
+  
+          if (numericMinPrice !== null) rentalPriceFilter.$gte = numericMinPrice;
+          if (numericMaxPrice !== null) rentalPriceFilter.$lte = numericMaxPrice;
+  
+          filtersExpr.push(
             numericMinPrice !== null
-              ? { $gte: [{ $toDouble: { $replaceAll: { input: { $arrayElemAt: [{ $split: ["$rentalPrice", " "] }, 0] }, find: ",", replacement: "." } } }, numericMinPrice] }
-              : true,
+              ? {
+                  $gte: [
+                    {
+                      $toDouble: {
+                        $replaceAll: {
+                          input: { $arrayElemAt: [{ $split: ["$rentalPrice", " "] }, 0] },
+                          find: ",",
+                          replacement: ".",
+                        },
+                      },
+                    },
+                    numericMinPrice,
+                  ],
+                }
+              : null,
             numericMaxPrice !== null
-              ? { $lte: [{ $toDouble: { $replaceAll: { input: { $arrayElemAt: [{ $split: ["$rentalPrice", " "] }, 0] }, find: ",", replacement: "." } } }, numericMaxPrice] }
-              : true,
-          ],
-        };
+              ? {
+                  $lte: [
+                    {
+                      $toDouble: {
+                        $replaceAll: {
+                          input: { $arrayElemAt: [{ $split: ["$rentalPrice", " "] }, 0] },
+                          find: ",",
+                          replacement: ".",
+                        },
+                      },
+                    },
+                    numericMaxPrice,
+                  ],
+                }
+              : null
+          );
+        }
       }
-      
   
       // Lọc theo area
       if (minArea || maxArea) {
         const numericMinArea = convertToNumber(minArea);
         const numericMaxArea = convertToNumber(maxArea);
-      
-        const rentalAreaFilter = {};
-      
-        if (numericMinArea !== null) rentalAreaFilter.$gte = numericMinArea;
-        if (numericMaxArea !== null) rentalAreaFilter.$lte = numericMaxArea;
-      
-        filter.$expr = {
-          $and: [
+  
+        if (numericMinArea !== null || numericMaxArea !== null) {
+          filtersExpr.push(
             numericMinArea !== null
               ? {
                   $gte: [
@@ -286,7 +307,7 @@ exports.toggleVisibility = async (req, res) => {
                     numericMinArea,
                   ],
                 }
-              : true,
+              : null,
             numericMaxArea !== null
               ? {
                   $lte: [
@@ -302,11 +323,14 @@ exports.toggleVisibility = async (req, res) => {
                     numericMaxArea,
                   ],
                 }
-              : true,
-          ],
-        };
+              : null
+          );
+        }
       }
-      
+  
+      if (filtersExpr.length > 0) {
+        filter.$expr = { $and: filtersExpr.filter(Boolean) };
+      }
   
       const posts = await Post.find(filter);
       res.status(200).json(posts);

@@ -1,10 +1,10 @@
-import { Pagination } from '@mui/material';
-import React from 'react';
-import RoomPost from './RoomPost';
-import './RoomPost.css';
+import { Pagination } from "@mui/material";
+import React from "react";
+import RoomPost from "./RoomPost";
+import "./RoomPost.css";
 
 const ListAllPost = ({ posts, handleTitleClick }) => {
-  const [sortOption, setSortOption] = React.useState('default');
+  const [sortOption, setSortOption] = React.useState("default");
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
@@ -13,16 +13,16 @@ const ListAllPost = ({ posts, handleTitleClick }) => {
   const sortedPosts = React.useMemo(() => {
     let sorted = [...posts];
     switch (sortOption) {
-      case 'priceAsc':
+      case "priceAsc":
         sorted.sort((a, b) => a.rentalPrice - b.rentalPrice);
         break;
-      case 'priceDesc':
+      case "priceDesc":
         sorted.sort((a, b) => b.rentalPrice - a.rentalPrice);
         break;
-      case 'areaAsc':
+      case "areaAsc":
         sorted.sort((a, b) => a.area - b.area);
         break;
-      case 'areaDesc':
+      case "areaDesc":
         sorted.sort((a, b) => b.area - a.area);
         break;
       default:
@@ -46,7 +46,7 @@ const ListAllPost = ({ posts, handleTitleClick }) => {
 
   return (
     <>
-      <div className="sort-options" style={{ marginBottom: '20px' }}>
+      <div className="sort-options" style={{ marginBottom: "20px" }}>
         <select value={sortOption} onChange={handleSortChange}>
           <option value="default">Mặc định</option>
           <option value="priceAsc">Giá thuê (Tăng dần)</option>
@@ -60,7 +60,7 @@ const ListAllPost = ({ posts, handleTitleClick }) => {
           <RoomPost key={index} post={post} onTitleClick={handleTitleClick} />
         ))}
       </div>
-      <div className='approved-post-list-container-pagination'>
+      <div className="approved-post-list-container-pagination">
         <Pagination
           count={Math.ceil(sortedPosts.length / postsPerPage)}
           page={currentPage}

@@ -11,8 +11,8 @@ import RoomPost from "./RoomPost";
 
 const ListPostHome = ({ post = [], title, favorite }) => {
   const navigate = useNavigate();
-  console.log(favorite)
-  console.log("post", post)
+  console.log(favorite);
+  console.log("post", post);
 
   const user = useSelector((state) => state.auth.login.currentUser);
   const { favorites, toggleFavorite } = useFavoriteToggle(user);
@@ -40,43 +40,47 @@ const ListPostHome = ({ post = [], title, favorite }) => {
 
   return (
     <div className="approved-posts-slider">
-      <div className='approved-post-in-home-title'>{title}</div>
-      {
-        isPostArray ? (
-          <Slider {...sliderSettings}>
-            {post.slice(0, 5).map((postItem, index) => (
-              <div key={index} className="approved-posts-item">
-                <RoomPost
-                  post={postItem}
-                  onTitleClick={() => handleTitleClick(postItem.id)}
-                  onToggleFavorite={(id, isFavorite) => toggleFavorite(id, isFavorite)}
-                  isFavorite={favorites.some((fav) => fav._id === post._id)}
-                />
-                {index === Math.min(post.length, 5) - 1 && (
-                  <button
-                    className="see-more-button"
-                    onClick={() => {
-                      if (title === 'Nhà trọ, phòng trọ') {
-                        navigate('/posts');
-                      } else if (title === 'Cho thuê căn hộ, nhà ở') {
-                        navigate('/CanHoPost');
-                      } else if (title === 'Văn phòng, mặt bằng') {
-                        navigate('/VanPhongPost');
-                      }
-                    }}
-                  >
-                See More
-                <img src={arrowsIcon} alt="arrows" className="style-icon-btn-see-more" />
-              </button>
-            )}
-          </div>
-        ))}
-    </Slider>
-  ) : (
-    <p>Dữ liệu bài đăng không hợp lệ hoặc đang tải...</p>
-  )
-}
-    </div >
+      <div className="approved-post-in-home-title">{title}</div>
+      {isPostArray ? (
+        <Slider {...sliderSettings}>
+          {post.slice(0, 5).map((postItem, index) => (
+            <div key={index} className="approved-posts-item">
+              <RoomPost
+                post={postItem}
+                onTitleClick={() => handleTitleClick(postItem.id)}
+                onToggleFavorite={(id, isFavorite) =>
+                  toggleFavorite(id, isFavorite)
+                }
+                isFavorite={favorites.some((fav) => fav._id === post._id)}
+              />
+              {index === Math.min(post.length, 5) - 1 && (
+                <button
+                  className="see-more-button"
+                  onClick={() => {
+                    if (title === "Nhà trọ, phòng trọ") {
+                      navigate("/posts");
+                    } else if (title === "Cho thuê căn hộ, nhà ở") {
+                      navigate("/CanHoPost");
+                    } else if (title === "Văn phòng, mặt bằng") {
+                      navigate("/VanPhongPost");
+                    }
+                  }}
+                >
+                  See More
+                  <img
+                    src={arrowsIcon}
+                    alt="arrows"
+                    className="style-icon-btn-see-more"
+                  />
+                </button>
+              )}
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <p>Dữ liệu bài đăng không hợp lệ hoặc đang tải...</p>
+      )}
+    </div>
   );
 };
 

@@ -60,7 +60,8 @@
 .news-info h3 {
   margin: 0;
   font-size: 18px;
-  color: #0073e6;
+  color: #00a318;
+  text-align: center;
 }
 
 .news-info p {
@@ -92,12 +93,12 @@
 }
 
 .pagination-button:hover {
-  background-color: #007bff;
+  background-color: #13ad23;
   color: white;
 }
 
 .pagination-button.active {
-  background-color: #007bff;
+  background-color: #136e1c;
   color: white;
   font-weight: bold;
 }

@@ -96,10 +96,15 @@ const PostDetail = ({ onToggleFavorite }) => {
       <Box className="container-content-detail">
         <Box className="container-left">
           <Box className="container-cost">
-            <Typography className='post-title'>{post.title}</Typography>
+            <Typography className="post-title">{post.title}</Typography>
             <Button className="room-post-price">
               {post.rentalPrice}
-              {post.typePrice === "1" ? " Triệu/Tháng" : post.typePrice === "2" ? " Triệu/m²/tháng" : ""}</Button>
+              {post.typePrice === "1"
+                ? " Triệu/Tháng"
+                : post.typePrice === "2"
+                  ? " Triệu/m²/tháng"
+                  : ""}
+            </Button>
           </Box>
           <Button startIcon={<RoomOutlinedIcon />} className="address-detail">
             {post.address.exactaddress} {post.address.ward}{" "}

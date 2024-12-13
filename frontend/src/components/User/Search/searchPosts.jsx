@@ -86,10 +86,10 @@ const SearchPosts = () => {
   const handleProvinceChange = (provinceName) => {
     setFilters({
       ...filters,
-      province: provinceName,
+      province: provinceName,  // Nếu là "" thì không lọc theo tỉnh
     });
     setDropdownOpen(false);
-  };
+  };  
 
   const convertValue = (value) => {
     if (!value) return "";
@@ -176,29 +176,37 @@ const SearchPosts = () => {
               />
             </div>
             <div className="container-dropdown-title">
-              <div className="container-box-title">Địa điểm</div>
-              <div className="dropdown" onClick={handleToggleDropdown}>
-                <span
-                  className={`dropdown-text ${filters.province ? "active" : ""}`}
-                >
-                  {filters.province || "Chọn địa điểm"}
-                </span>
-                <i className="fas fa-chevron-down dropdown-icon"></i>
-              </div>
-              {isDropdownOpen && (
-                <ul className="dropdown-menu">
-                  {provinces.map((province) => (
-                    <li
-                      key={province.code}
-                      className="dropdown-menu-item"
-                      onClick={() => handleProvinceChange(province.name)}
-                    >
-                      {province.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <div className="container-box-title">Địa điểm</div>
+            <div className="dropdown" onClick={handleToggleDropdown}>
+              <span
+                className={`dropdown-text ${filters.province ? "active" : ""}`}
+              >
+                {filters.province || "Chọn địa điểm"}
+              </span>
+              <i className="fas fa-chevron-down dropdown-icon"></i>
             </div>
+            {isDropdownOpen && (
+              <ul className="dropdown-menu">
+                {/* Mục "Tất cả các tỉnh" */}
+                <li
+                  className="dropdown-menu-item"
+                  onClick={() => handleProvinceChange("")} // "" đại diện cho tất cả các tỉnh
+                >
+                  Tất cả các tỉnh
+                </li>
+                {/* Các tỉnh cụ thể */}
+                {provinces.map((province) => (
+                  <li
+                    key={province.code}
+                    className="dropdown-menu-item"
+                    onClick={() => handleProvinceChange(province.name)}
+                  >
+                    {province.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           </Box>
           <Divider
             className="search-info-divider"
@@ -231,7 +239,7 @@ const SearchPosts = () => {
                     data-id="0"
                     onClick={() => handleCategoryChange("")}
                   >
-                    Chọn danh mục
+                    Tất cả danh mục
                   </li>
                   <li
                     className="dropdown-menu-item"
@@ -357,7 +365,7 @@ const SearchPosts = () => {
                           type="range"
                           name="maxArea"
                           min="0"
-                          max="500"
+                          max="1000"
                           step="1"
                           value={filters.maxArea}
                           onChange={handleInputChange}

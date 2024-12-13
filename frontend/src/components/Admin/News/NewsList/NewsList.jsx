@@ -19,7 +19,7 @@ const NewsList = () => {
   const [selectedNews, setSelectedNews] = useState(null);
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [currentPage, setCurrentPage] = useState(1);
-  const newsPerPage = 5;
+  const newsPerPage = 6;
 
   const accessToken = localStorage.getItem("accessToken");
   const axiosJWT = axios.create({
@@ -63,11 +63,13 @@ const NewsList = () => {
     }
   };
 
+  const sortedNewsList = [...newsList].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   // Tính toán phân trang
   const indexOfLastNews = currentPage * newsPerPage;
   const indexOfFirstNews = indexOfLastNews - newsPerPage;
-  const currentNews = newsList.slice(indexOfFirstNews, indexOfLastNews);
-  const totalPages = Math.ceil(newsList.length / newsPerPage);
+  const currentNews = sortedNewsList .slice(indexOfFirstNews, indexOfLastNews);
+  const totalPages = Math.ceil(sortedNewsList .length / newsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const nextPage = () => {
