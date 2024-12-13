@@ -1,5 +1,6 @@
 const Review = require('../models/Review');
 const Post = require('../models/Post');
+const User = require('../models/User');
 
 // Tạo đánh giá mới
 exports.createReview = async (req, res) => {
@@ -7,11 +8,13 @@ exports.createReview = async (req, res) => {
     const { postId } = req.params;
 
     try {
+        // Tìm bài đăng
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: 'Bài đăng không tồn tại' });
         }
 
+        // Tạo đánh giá
         const review = new Review({
             post_id: postId,
             user_id: req.user.id, 
@@ -20,6 +23,25 @@ exports.createReview = async (req, res) => {
         });
 
         await review.save();
+
+        // Tìm chủ bài đăng
+        const owner = await User.findById(post.contactInfo.user);
+        if (owner) {
+            // Tạo thông báo
+            const notification = {
+                message: `Bài viết "${post.title}" của bạn nhận được một đánh giá mới.`,
+                type: 'review',
+                post_id: postId,
+                review_id: review._id,
+                status: 'unread',
+            };
+
+            // Thêm thông báo vào mảng notifications của chủ bài đăng
+            owner.notifications.push(notification);
+            await owner.save(); // Lưu lại người dùng với thông báo mới
+        }
+
+        // Gửi phản hồi
         res.status(201).json({ review });
     } catch (error) {
         res.status(500).json({ message: 'Lỗi server', error: error.message });

@@ -63,7 +63,7 @@ const EditNewsForm = () => {
       quill.root.innerHTML = content;
 
       return () => {
-       quillRef.current = null;
+        quillRef.current = null;
       };
     }
   }, [content]); // Chạy lại khi content thay đổi
