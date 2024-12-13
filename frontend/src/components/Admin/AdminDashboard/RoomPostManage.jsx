@@ -28,7 +28,9 @@ const RoomPostManage = ({
             className="room-post-image"
           />
         )}
-        <button className="room-post-price">{post.rentalPrice}</button>
+        <button className="room-post-price">
+          {post.rentalPrice}
+          {post.typePrice === "1" ? " Triệu/Tháng" : post.typePrice === "2" ? " Triệu/m²/tháng" : ""}</button>
       </Box>
       <CardContent className="room-post-content">
         <Box>
@@ -43,7 +45,7 @@ const RoomPostManage = ({
           </Typography>
         </Box>
         <Box>
-          <Button className="post-area">{post.area}</Button>
+          <Button className="post-area">{post.area}m²</Button>
         </Box>
         {post.status === "pending" && (
           <Box className="manage-post-admin-btn-container">

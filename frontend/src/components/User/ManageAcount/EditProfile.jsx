@@ -22,7 +22,7 @@ import { updateUserProfile } from "../../../redux/apiRequest";
 import "./EditProfile.css";
 
 const EditProfile = ({ user }) => {
-  const [avatar, setAvatar] = useState(user?.profile?.picture || "");
+  const [picture, setAvatar] = useState(user?.profile?.picture || "");
   const [open, setOpen] = useState(false);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -117,31 +117,33 @@ const EditProfile = ({ user }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAvatar(reader.result);
+        setAvatar({ file, preview: reader.result });
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleUpdateProfile = async () => {
-    const updatedProfile = {
-      username,
-      phone,
-      address: selectedAddress,
-      avatar,
-      bio,
-    };
+    const formData = new FormData();
+    formData.append('name', username);
+    formData.append('phone', phone);
+    formData.append('address', selectedAddress);
+    formData.append('bio', bio);
+    if (picture) {
+      formData.append('picture', picture.file);
+    }
 
+    console.log('Form Data:', formData);
     try {
       await updateUserProfile(
         user._id,
-        updatedProfile,
+        formData,
         user.accessToken,
         dispatch,
       );
       toast.success("Cập nhật hồ sơ thành công!", {
         position: "top-right",
-        autoClose: 5000, // Đóng thông báo sau 3 giây
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -167,9 +169,9 @@ const EditProfile = ({ user }) => {
   return (
     <div className="container-edit-profile">
       <div className="user-info" style={{ position: "relative" }}>
-        {avatar ? (
+        {picture ? (
           <img
-            src={avatar}
+            src={picture.preview || picture}
             alt="User Avatar"
             className="avatar"
             style={{ width: 100, height: 100, borderRadius: "50%" }}

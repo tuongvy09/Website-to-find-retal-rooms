@@ -72,7 +72,7 @@ const ManagePostAdmin = () => {
       toast.success("Cập nhật số ngày hiển thị mặc định thành công!");
       setOpenUpdateDate(false);
     } catch (error) {
-      console.error("Lỗi khi cập nhật số ngày hiển thị mặc định:", error);
+      toast.error("Cập nhật số ngày hiển thị mặc định thất bai!");
     }
   };
 
@@ -103,6 +103,7 @@ const ManagePostAdmin = () => {
             phoneNumber: post.contactInfo?.phoneNumber || "",
           },
           rentalPrice: post.rentalPrice,
+          typePrice: post.typePrice,
           area: post.area,
           status: post.status,
           visibility: post.visibility,
