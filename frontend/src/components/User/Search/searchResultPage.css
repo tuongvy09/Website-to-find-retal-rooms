@@ -1,44 +1,44 @@
 /* Container chính cho kết quả tìm kiếm */
 .search-results-page {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Tiêu đề kết quả tìm kiếm */
-  .search-results-page__title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 2px solid #00a51b;
-    padding-bottom: 10px;
-  }
-  
-  /* Danh sách các bài đăng */
-  .search-results-page__post-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  /* Khi không có kết quả tìm kiếm */
-  .search-results-page__no-result {
-    font-size: 1.2rem;
-    color: #555;
-    text-align: center;
-    margin-top: 40px;
-    font-style: italic;
-  }
-  
-  /* Phân trang */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Tiêu đề kết quả tìm kiếm */
+.search-results-page__title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #00a51b;
+  padding-bottom: 10px;
+}
+
+/* Danh sách các bài đăng */
+.search-results-page__post-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Khi không có kết quả tìm kiếm */
+.search-results-page__no-result {
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
+  margin-top: 40px;
+  font-style: italic;
+}
+
+/* Phân trang */
 .pagination {
   display: flex;
   justify-content: center;

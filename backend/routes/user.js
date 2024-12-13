@@ -17,4 +17,10 @@ router.put("/update-profile/:id", uploadCloud.array('profile.avatar', 1), userCo
 //khóa/mở khóa tài khoản
 router.put("/block/:id", middlewareControllers.verifyTokenAndAdminAuth, userController.toggleBlockUser);
 
+//lấy all noti
+// router.get("/notifications", middlewareControllers.verifyToken, userController.getNotifications);
+
+//đánh dấu thông báo là đã đọc
+router.put('/notifications/:notificationId', middlewareControllers.verifyToken, userController.markNotificationAsRead);
+
 module.exports = router;

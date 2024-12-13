@@ -137,8 +137,57 @@ toggleBlockUser: async (req, res) => {
               error: error.message,
           });
       }
+  },
+
+//   // Lấy tất cả thông báo của người dùng
+// getNotifications: async (req, res) => {
+//   try {
+//       const userId = req.user.id;
+      
+//       // Tìm người dùng
+//       const user = await User.findById(userId);
+//       if (!user) {
+//           return res.status(404).json({ message: 'Người dùng không tồn tại' });
+//       }
+
+//       // Trả về tất cả thông báo
+//       res.status(200).json({
+//           notifications: user.notifications,
+//       });
+//   } catch (error) {
+//       res.status(500).json({ message: 'Lỗi server', error: error.message });
+//   }
+// },
+
+markNotificationAsRead : async (req, res) => {
+  try {
+      const { notificationId } = req.params;
+      const userId = req.user.id;
+
+      // Tìm người dùng
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: 'Người dùng không tồn tại' });
+      }
+
+      // Tìm thông báo trong mảng notifications
+      const notification = user.notifications.find(notification => notification._id.toString() === notificationId);
+      if (!notification) {
+          return res.status(404).json({ message: 'Thông báo không tồn tại' });
+      }
+
+      // Đánh dấu thông báo là đã đọc
+      notification.status = 'read';
+      await user.save();
+
+      res.status(200).json({
+          message: 'Thông báo đã được đánh dấu là đã đọc',
+          notification,
+      });
+  } catch (error) {
+      res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
 }
-
+}
   
 module.exports = userController;

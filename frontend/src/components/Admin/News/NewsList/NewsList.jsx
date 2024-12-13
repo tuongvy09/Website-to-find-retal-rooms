@@ -63,13 +63,15 @@ const NewsList = () => {
     }
   };
 
-  const sortedNewsList = [...newsList].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const sortedNewsList = [...newsList].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
 
   // Tính toán phân trang
   const indexOfLastNews = currentPage * newsPerPage;
   const indexOfFirstNews = indexOfLastNews - newsPerPage;
-  const currentNews = sortedNewsList .slice(indexOfFirstNews, indexOfLastNews);
-  const totalPages = Math.ceil(sortedNewsList .length / newsPerPage);
+  const currentNews = sortedNewsList.slice(indexOfFirstNews, indexOfLastNews);
+  const totalPages = Math.ceil(sortedNewsList.length / newsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const nextPage = () => {

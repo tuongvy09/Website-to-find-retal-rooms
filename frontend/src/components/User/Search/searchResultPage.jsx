@@ -6,11 +6,13 @@ import "./searchResultPage.css";
 const SearchResultsPage = () => {
   const location = useLocation();
   const { results, filters } = location.state || { results: [], filters: {} };
-  
-  const [currentPage, setCurrentPage] = useState(1);
-  const newsPerPage = 9; 
 
-  const sortedResults = [...results].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const [currentPage, setCurrentPage] = useState(1);
+  const newsPerPage = 9;
+
+  const sortedResults = [...results].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
 
   // Logic phân trang
   const indexOfLastPost = currentPage * newsPerPage;
@@ -56,7 +58,9 @@ const SearchResultsPage = () => {
           ))}
         </div>
       ) : (
-        <p className="search-results-page__no-result">Không tìm thấy bài đăng nào.</p>
+        <p className="search-results-page__no-result">
+          Không tìm thấy bài đăng nào.
+        </p>
       )}
 
       {/* Phân trang */}
@@ -73,7 +77,7 @@ const SearchResultsPage = () => {
           {getPageNumbers().map((number) => (
             <button
               key={number}
-              className={`pagination__button ${currentPage === number ? 'active' : ''}`}
+              className={`pagination__button ${currentPage === number ? "active" : ""}`}
               onClick={() => paginate(number)}
             >
               {number}

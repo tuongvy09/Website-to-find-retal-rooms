@@ -29,7 +29,9 @@ const NewsListUser = () => {
   if (error) return <p>{error}</p>;
 
   // Sort news by newest first
-  const sortedNewsList = [...newsList].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const sortedNewsList = [...newsList].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
 
   // Pagination logic
   const indexOfLastNews = currentPage * newsPerPage;

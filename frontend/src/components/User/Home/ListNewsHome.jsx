@@ -15,7 +15,9 @@ const ListNewsHome = () => {
     const fetchNews = async () => {
       try {
         const response = await axios.get("http://localhost:8000/v1/news");
-        const sortedNews = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sortedNews = response.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
         setNewsList(sortedNews);
         setLoading(false);
       } catch (err) {
