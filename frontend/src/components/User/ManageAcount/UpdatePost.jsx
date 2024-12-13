@@ -1,8 +1,18 @@
-import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getPostDetail, updatePost } from '../../../redux/postAPI';
-import './UpdatePost.css';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getPostDetail, updatePost } from "../../../redux/postAPI";
+import "./UpdatePost.css";
 
 const UpdatePost = ({ postId }) => {
   const [post, setPost] = useState(null);
@@ -13,8 +23,8 @@ const UpdatePost = ({ postId }) => {
   const [area, setArea] = useState("");
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const accessToken = currentUser?.accessToken;
-  const [typePrice, setTypePrice] = useState('1');
-  const [areaError, setAreaError] = useState('');
+  const [typePrice, setTypePrice] = useState("1");
+  const [areaError, setAreaError] = useState("");
 
   const handleUpdatePostData = async () => {
     const postData = {
@@ -74,11 +84,11 @@ const UpdatePost = ({ postId }) => {
     const value = e.target.value;
     const regex = /^[0-9]*\.?[0-9]*$/;
 
-    if (value === '' || regex.test(value)) {
+    if (value === "" || regex.test(value)) {
       setArea(value);
-      setAreaError('');
+      setAreaError("");
     } else {
-      setAreaError('Diện tích phải là số thực không âm');
+      setAreaError("Diện tích phải là số thực không âm");
     }
   };
 
@@ -86,11 +96,11 @@ const UpdatePost = ({ postId }) => {
     const value = e.target.value;
     const regex = /^[0-9]*\.?[0-9]*$/;
 
-    if (value === '' || regex.test(value)) {
+    if (value === "" || regex.test(value)) {
       setRentalPrice(value);
-      setError('');
+      setError("");
     } else {
-      setError('Giá cho thuê phải là số thực không âm');
+      setError("Giá cho thuê phải là số thực không âm");
     }
   };
 
@@ -117,12 +127,12 @@ const UpdatePost = ({ postId }) => {
         />
       </div>
 
-      <div className='update-post-container-area-price'>
+      <div className="update-post-container-area-price">
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '48%',
+            display: "flex",
+            alignItems: "center",
+            width: "48%",
           }}
         >
           <TextField
@@ -133,13 +143,16 @@ const UpdatePost = ({ postId }) => {
             value={rentalPrice}
             onChange={handleRentalPriceChange}
             inputProps={{
-              inputMode: 'decimal',
-              pattern: '\\d+(\\.\\d{1,2})?',
-              step: '0.01',
+              inputMode: "decimal",
+              pattern: "\\d+(\\.\\d{1,2})?",
+              step: "0.01",
             }}
             error={!!error}
           />
-          <FormControl variant="outlined" sx={{ minWidth: '120px', marginLeft: 1 }}>
+          <FormControl
+            variant="outlined"
+            sx={{ minWidth: "120px", marginLeft: 1 }}
+          >
             <InputLabel id="currency-label"></InputLabel>
             <Select
               labelId="currency-label"
@@ -160,9 +173,9 @@ const UpdatePost = ({ postId }) => {
         </Box>
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '48%',
+            display: "flex",
+            alignItems: "center",
+            width: "48%",
           }}
         >
           <TextField
@@ -175,8 +188,8 @@ const UpdatePost = ({ postId }) => {
             onChange={handleAreaChange}
             inputProps={{
               min: 0,
-              pattern: '\\d+(\\.\\d{1,2})?',
-              step: '0.01',
+              pattern: "\\d+(\\.\\d{1,2})?",
+              step: "0.01",
             }}
             error={!!areaError}
           />
@@ -186,9 +199,13 @@ const UpdatePost = ({ postId }) => {
             size="small"
             value="m²"
             InputProps={{ readOnly: true }}
-            sx={{ backgroundColor: '#f0f0f0', marginLeft: 1, maxWidth: '80px' }}
+            sx={{ backgroundColor: "#f0f0f0", marginLeft: 1, maxWidth: "80px" }}
           />
-          {areaError && <FormHelperText error sx={{ marginLeft: 1 }}>{areaError}</FormHelperText>}
+          {areaError && (
+            <FormHelperText error sx={{ marginLeft: 1 }}>
+              {areaError}
+            </FormHelperText>
+          )}
         </Box>
       </div>
       <div>

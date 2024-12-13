@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { searchAndCategorizePosts } from '../../../redux/postAPI';
-import Header from '../Header/Header';
-import SearchPosts from '../Search/searchPosts';
-import ListAllPost from './ListAllPost';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { searchAndCategorizePosts } from "../../../redux/postAPI";
+import Header from "../Header/Header";
+import SearchPosts from "../Search/searchPosts";
+import ListAllPost from "./ListAllPost";
 
 const PostsPage = () => {
   const location = useLocation();
@@ -20,14 +20,22 @@ const PostsPage = () => {
     const fetchPosts = async () => {
       try {
         const params = {
-          category: ['Nhà trọ, phòng trọ', 'Nhà nguyên căn', 'Cho thuê căn hộ', 'Cho thuê căn hộ mini', 'Cho thuê căn hộ dịch vụ', 'Cho thuê mặt bằng, văn phòng'],
+          category: [
+            "Nhà trọ, phòng trọ",
+            "Nhà nguyên căn",
+            "Cho thuê căn hộ",
+            "Cho thuê căn hộ mini",
+            "Cho thuê căn hộ dịch vụ",
+            "Cho thuê mặt bằng, văn phòng",
+          ],
         };
-        const { category1, category2, category3 } = await searchAndCategorizePosts(params, token);
+        const { category1, category2, category3 } =
+          await searchAndCategorizePosts(params, token);
         setCategory1Posts(category1);
         setCategory2Posts(category2);
         setCategory3Posts(category3);
       } catch (error) {
-        console.error('Lỗi khi lấy bài đăng:', error);
+        console.error("Lỗi khi lấy bài đăng:", error);
       } finally {
         setLoading(false);
       }
@@ -39,11 +47,11 @@ const PostsPage = () => {
   if (loading) return <div>Loading...</div>;
 
   let posts = [];
-  if (location.pathname === '/posts') {
+  if (location.pathname === "/posts") {
     posts = category1Posts;
-  } else if (location.pathname === '/CanHoPost') {
+  } else if (location.pathname === "/CanHoPost") {
     posts = category2Posts;
-  } else if (location.pathname === '/VanPhongPost') {
+  } else if (location.pathname === "/VanPhongPost") {
     posts = category3Posts;
   }
 
@@ -52,7 +60,7 @@ const PostsPage = () => {
     if (id) {
       navigate(`/posts/${id}`);
     } else {
-      console.error('ID bài đăng không hợp lệ');
+      console.error("ID bài đăng không hợp lệ");
     }
   };
 

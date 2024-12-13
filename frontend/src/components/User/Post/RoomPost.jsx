@@ -35,7 +35,11 @@ const RoomPost = ({ post, onTitleClick, onToggleFavorite, isFavorite }) => {
         )}
         <Button className="room-post-price" variant="contained" color="primary">
           {post.rentalPrice}
-          {post.typePrice === "1" ? " Triệu/Tháng" : post.typePrice === "2" ? " Triệu/m²/tháng" : ""}
+          {post.typePrice === "1"
+            ? " Triệu/Tháng"
+            : post.typePrice === "2"
+              ? " Triệu/m²/tháng"
+              : ""}
         </Button>
       </Box>
       <CardContent className="room-post-content">

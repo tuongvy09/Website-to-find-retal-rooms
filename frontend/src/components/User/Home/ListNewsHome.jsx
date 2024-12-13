@@ -15,7 +15,8 @@ const ListNewsHome = () => {
     const fetchNews = async () => {
       try {
         const response = await axios.get("http://localhost:8000/v1/news");
-        setNewsList(response.data);
+        const sortedNews = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setNewsList(sortedNews);
         setLoading(false);
       } catch (err) {
         setError("Không thể tải tin tức.");
@@ -101,7 +102,7 @@ const ListNewsHome = () => {
                   </li>
                 ))}
                 <li className="view-more">
-                  <Link to={`/news`}>Xem thêm</Link>
+                  <Link to={`/TinTuc`}>Xem thêm</Link>
                 </li>
               </ul>
             </div>

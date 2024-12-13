@@ -1,13 +1,29 @@
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Box, Button, Card, CardContent, CardMedia, Menu, MenuItem, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import './RoomPostManage.css'; // Import CSS tùy chỉnh
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import "./RoomPostManage.css"; // Import CSS tùy chỉnh
 
-const RoomPostManage = ({ post, onTitleClick, onEditPost, onHidePost, onDeletePost, onVisiblePost }) => {
-    const [menuVisible, setMenuVisible] = useState(null);
+const RoomPostManage = ({
+  post,
+  onTitleClick,
+  onEditPost,
+  onHidePost,
+  onDeletePost,
+  onVisiblePost,
+}) => {
+  const [menuVisible, setMenuVisible] = useState(null);
 
   const toggleMenu = (event) => {
     setMenuVisible(menuVisible ? null : event.currentTarget);
@@ -27,9 +43,13 @@ const RoomPostManage = ({ post, onTitleClick, onEditPost, onHidePost, onDeletePo
           />
         )}
         <button className="room-post-price">
-                    {post.rentalPrice}
-                    {post.typePrice === "1" ? " Triệu/Tháng" : post.typePrice === "2" ? " Triệu/m²/tháng" : ""}
-                </button>
+          {post.rentalPrice}
+          {post.typePrice === "1"
+            ? " Triệu/Tháng"
+            : post.typePrice === "2"
+              ? " Triệu/m²/tháng"
+              : ""}
+        </button>
       </Box>
       <CardContent className="room-post-content">
         <Box>
@@ -89,28 +109,37 @@ const RoomPostManage = ({ post, onTitleClick, onEditPost, onHidePost, onDeletePo
               </>
             )}
 
-                        {post.status === 'pending' && post.visibility === 'hidden' && (
-                            <MenuItem className="custom-menu-item" onClick={() => onDeletePost(post.id)}>
-                                Xóa yêu cầu đăng bài
-                            </MenuItem>
-                        )}
+            {post.status === "pending" && post.visibility === "hidden" && (
+              <MenuItem
+                className="custom-menu-item"
+                onClick={() => onDeletePost(post.id)}
+              >
+                Xóa yêu cầu đăng bài
+              </MenuItem>
+            )}
 
-                        {post.status === 'update' && post.visibility === 'hidden' && (
-                            <MenuItem className="custom-menu-item" onClick={() => onDeletePost(post.id)}>
-                                Xóa yêu cầu chỉnh sửa bài đăng
-                            </MenuItem>
-                        )}
+            {post.status === "update" && post.visibility === "hidden" && (
+              <MenuItem
+                className="custom-menu-item"
+                onClick={() => onDeletePost(post.id)}
+              >
+                Xóa yêu cầu chỉnh sửa bài đăng
+              </MenuItem>
+            )}
 
-                        {post.visibility === 'hidden' && post.status === 'approved' && (
-                            <MenuItem className="custom-menu-item" onClick={() => onVisiblePost(post.id)}>
-                                <VisibilityIcon /> Hiển thị lại bài viết
-                            </MenuItem>
-                        )}
-                    </Menu>
-                </Box>
-            </CardContent>
-        </Card>
-    );
+            {post.visibility === "hidden" && post.status === "approved" && (
+              <MenuItem
+                className="custom-menu-item"
+                onClick={() => onVisiblePost(post.id)}
+              >
+                <VisibilityIcon /> Hiển thị lại bài viết
+              </MenuItem>
+            )}
+          </Menu>
+        </Box>
+      </CardContent>
+    </Card>
+  );
 };
 
 export default RoomPostManage;

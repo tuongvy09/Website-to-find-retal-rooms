@@ -60,7 +60,7 @@ const ReviewsList = ({ postId, userId }) => {
       const total = reviews.reduce((sum, review) => sum + review.rating, 0);
       setAverageRating((total / reviews.length).toFixed(1));
       setTotalReviews(reviews.length);
-  
+
       const breakdown = reviews.reduce((acc, review) => {
         acc[review.rating] = (acc[review.rating] || 0) + 1;
         return acc;
@@ -169,7 +169,7 @@ const ReviewsList = ({ postId, userId }) => {
           });
       }
     });
-  }; 
+  };
 
   return (
     <div className="review-wrapper">
@@ -243,24 +243,24 @@ const ReviewsList = ({ postId, userId }) => {
           </div>
         </div>
 
-         {/* Bộ lọc theo sao */}
-      <div className="product-rating-overview__filters">
-        <div
-        className={`product-rating-overview__filter ${selectedRating === null ? "selected" : ""}`}
-        onClick={() => setSelectedRating(null)} // Lọc lại tất cả
-        >
-          Tất cả ({totalReviews.toLocaleString()})
-        </div>
-        {[5, 4, 3, 2, 1].map((star) => (
+        {/* Bộ lọc theo sao */}
+        <div className="product-rating-overview__filters">
           <div
-            key={star}
-            className={`product-rating-overview__filter ${selectedRating === star ? "selected" : ""}`}
-            onClick={() => setSelectedRating(star)} // Lọc theo sao
+            className={`product-rating-overview__filter ${selectedRating === null ? "selected" : ""}`}
+            onClick={() => setSelectedRating(null)} // Lọc lại tất cả
           >
-            {star} Sao ({ratingsBreakdown[star] || 0})
+            Tất cả ({totalReviews.toLocaleString()})
           </div>
-        ))}
-      </div>
+          {[5, 4, 3, 2, 1].map((star) => (
+            <div
+              key={star}
+              className={`product-rating-overview__filter ${selectedRating === star ? "selected" : ""}`}
+              onClick={() => setSelectedRating(star)} // Lọc theo sao
+            >
+              {star} Sao ({ratingsBreakdown[star] || 0})
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Phần cũ */}
@@ -280,31 +280,35 @@ const ReviewsList = ({ postId, userId }) => {
       </div>
 
       {reviews.length === 0 ? (
-      <div style={{
-        textAlign: 'center', 
-        padding: '20px', 
-        border: '1px dashed #ccc', 
-        borderRadius: '8px', 
-        backgroundColor: '#ffffff'
-      }}>
-        <img 
-          src="https://i.pinimg.com/originals/b0/7c/0f/b07c0fc116d1868db07a8bbc2d79aab9.gif" 
-          alt="No reviews" 
-          style={{ marginBottom: '10px', width: '300px', opacity: 0.7 }}
-        />
-        <p style={{
-          color: '#555', 
-          fontSize: '16px', 
-          fontWeight: '500', 
-          marginBottom: '8px'
-        }}>
-          Chưa có đánh giá
-        </p>
-        <p style={{ color: '#777', fontSize: '14px' }}>
-          Hãy là người đầu tiên để lại đánh giá và chia sẻ suy nghĩ của bạn!
-        </p>
-      </div>
-    ) : (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            border: "1px dashed #ccc",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff",
+          }}
+        >
+          <img
+            src="https://i.pinimg.com/originals/b0/7c/0f/b07c0fc116d1868db07a8bbc2d79aab9.gif"
+            alt="No reviews"
+            style={{ marginBottom: "10px", width: "300px", opacity: 0.7 }}
+          />
+          <p
+            style={{
+              color: "#555",
+              fontSize: "16px",
+              fontWeight: "500",
+              marginBottom: "8px",
+            }}
+          >
+            Chưa có đánh giá
+          </p>
+          <p style={{ color: "#777", fontSize: "14px" }}>
+            Hãy là người đầu tiên để lại đánh giá và chia sẻ suy nghĩ của bạn!
+          </p>
+        </div>
+      ) : (
         <>
           {currentReviews.map((review) => (
             <div key={review._id} className="review-item">
@@ -336,7 +340,7 @@ const ReviewsList = ({ postId, userId }) => {
             pageCount={Math.ceil(filteredReviews.length / reviewsPerPage)}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
-            onPageChange={handlePageClick}  
+            onPageChange={handlePageClick}
             containerClassName={"pagination"}
             activeClassName={"active"}
           />

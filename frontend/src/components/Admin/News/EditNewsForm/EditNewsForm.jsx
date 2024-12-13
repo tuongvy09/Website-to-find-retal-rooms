@@ -63,8 +63,7 @@ const EditNewsForm = () => {
       quill.root.innerHTML = content;
 
       return () => {
-        // Giải phóng tài nguyên Quill khi component bị unmount
-        quillRef.current = null;
+       quillRef.current = null;
       };
     }
   }, [content]); // Chạy lại khi content thay đổi
@@ -131,7 +130,7 @@ const EditNewsForm = () => {
                 </div>
                 <div className="news-btn">
                   <button type="submit" className="submit-button">
-                    Cập nhật tin tức
+                    Cập nhật
                   </button>
                 </div>
               </form>

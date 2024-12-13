@@ -1,9 +1,12 @@
-import { Pagination, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { deletePost, getUserPostsByStateAndVisibility } from '../../../redux/postAPI';
-import RoomPostManage from '../Post/RoomPostManage';
+import { Pagination, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  deletePost,
+  getUserPostsByStateAndVisibility,
+} from "../../../redux/postAPI";
+import RoomPostManage from "../Post/RoomPostManage";
 
 const ListPost = ({ statusPending, statusUpdate, visibility, token }) => {
   const [posts, setPosts] = useState([]);
@@ -18,21 +21,21 @@ const ListPost = ({ statusPending, statusUpdate, visibility, token }) => {
     if (id) {
       navigate(`/posts/${id}`);
     } else {
-      console.error('ID bài đăng không hợp lệ');
+      console.error("ID bài đăng không hợp lệ");
     }
   };
 
   const formatPost = (post) => ({
     id: post._id,
     address: {
-      province: post.address?.province || '',
-      district: post.address?.district || '',
+      province: post.address?.province || "",
+      district: post.address?.district || "",
     },
-    title: post.title || '',
-    content: post.content || '',
+    title: post.title || "",
+    content: post.content || "",
     contactInfo: {
-      username: post.contactInfo?.username || '',
-      phoneNumber: post.contactInfo?.phoneNumber || '',
+      username: post.contactInfo?.username || "",
+      phoneNumber: post.contactInfo?.phoneNumber || "",
     },
     rentalPrice: post.rentalPrice,
     typePrice: post.typePrice,
@@ -45,14 +48,22 @@ const ListPost = ({ statusPending, statusUpdate, visibility, token }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const responsePending = await getUserPostsByStateAndVisibility(statusPending, visibility, token);
-        const responseUpdate = await getUserPostsByStateAndVisibility(statusUpdate, visibility, token);
+        const responsePending = await getUserPostsByStateAndVisibility(
+          statusPending,
+          visibility,
+          token,
+        );
+        const responseUpdate = await getUserPostsByStateAndVisibility(
+          statusUpdate,
+          visibility,
+          token,
+        );
         const combinedPosts = [...responsePending.data, ...responseUpdate.data];
         const data = combinedPosts.map(formatPost);
         setPosts(data);
         dispatch(setPosts(data));
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
       } finally {
         setLoading(false);
       }
@@ -70,7 +81,7 @@ const ListPost = ({ statusPending, statusUpdate, visibility, token }) => {
   const handleDeletePost = async (postId) => {
     try {
       const result = await deletePost(postId, token);
-      console.log('Post deleted:', result);
+      console.log("Post deleted:", result);
     } catch (error) {
       console.error(error);
     }
@@ -90,18 +101,18 @@ const ListPost = ({ statusPending, statusUpdate, visibility, token }) => {
             key={index}
             post={post}
             onTitleClick={handleTitleClick}
-            onEditPost={() => { }}
-            onHidePost={() => { }}
+            onEditPost={() => {}}
+            onHidePost={() => {}}
             onDeletePost={handleDeletePost}
-            onVisiblePost={() => { }}
+            onVisiblePost={() => {}}
           />
         ))
       ) : (
-        <div className='container-nocontent'>
+        <div className="container-nocontent">
           <Typography>Bạn chưa có tin đăng nào</Typography>
         </div>
       )}
-      <div className='approved-post-list-container-pagination'>
+      <div className="approved-post-list-container-pagination">
         <Pagination
           count={Math.ceil(posts.length / postsPerPage)}
           page={currentPage}

@@ -10,7 +10,7 @@ import "./ReviewForm.css";
 
 const ReviewForm = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [postId, setPostId] = useState(id);
   const [rating, setRating] = useState(0); // Default rating
   const [hoveredRating, setHoveredRating] = useState(null); // Hover state
@@ -26,22 +26,22 @@ const ReviewForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-  
+
     if (!postId || !user_id || !rating) {
       setError("Post ID, User ID, and Rating are required.");
       return;
     }
-  
+
     setLoading(true);
     try {
       const reviewData = { rating, comment, user_id };
       await createReview(postId, reviewData, token);
-  
+
       // Reset form fields
       setRating(0);
       setComment("");
       setShowForm(false);
-  
+
       // Hiển thị thông báo thành công
       toast.success("Đánh giá thành công! Cảm ơn bạn.", {
         position: "top-right",
@@ -56,7 +56,7 @@ const ReviewForm = () => {
       });
     } catch (err) {
       setError(err.response?.data?.error || "Failed to add review.");
-  
+
       // Hiển thị thông báo lỗi
       toast.error("Đánh giá thất bại. Vui lòng thử lại.", {
         position: "top-right",
@@ -91,7 +91,7 @@ const ReviewForm = () => {
         reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/login"); 
+          navigate("/login");
         }
       });
       return;
