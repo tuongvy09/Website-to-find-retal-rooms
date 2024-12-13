@@ -125,22 +125,17 @@ const EditProfile = ({ user }) => {
 
   const handleUpdateProfile = async () => {
     const formData = new FormData();
-    formData.append('name', username);
-    formData.append('phone', phone);
-    formData.append('address', selectedAddress);
-    formData.append('bio', bio);
+    formData.append("name", username);
+    formData.append("phone", phone);
+    formData.append("address", selectedAddress);
+    formData.append("bio", bio);
     if (picture) {
-      formData.append('picture', picture.file);
+      formData.append("picture", picture.file);
     }
 
-    console.log('Form Data:', formData);
+    console.log("Form Data:", formData);
     try {
-      await updateUserProfile(
-        user._id,
-        formData,
-        user.accessToken,
-        dispatch,
-      );
+      await updateUserProfile(user._id, formData, user.accessToken, dispatch);
       toast.success("Cập nhật hồ sơ thành công!", {
         position: "top-right",
         autoClose: 5000,

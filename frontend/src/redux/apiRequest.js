@@ -32,14 +32,6 @@ import {
   markAsReadSuccess,
   markAsReadFailed,
 } from "./notificationSlice";
-import {
-  googleLoginStart,
-  googleLoginSuccess,
-  googleLoginFailed,
-  forgotPasswordSuccess,
-  forgotPasswordFailed,
-} from "./authSlice"; // Nếu bạn muốn tạo slice cho Google Login
-import { toast } from "react-toastify";
 
 export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
   axios.defaults.baseURL = "http://localhost:8000";
@@ -72,7 +64,7 @@ export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
       } else {
         setErrorMessage(
           err.response.data.message ||
-          "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.",
+            "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.",
         );
       }
     } else if (err.request) {
@@ -296,7 +288,7 @@ export const updateUserProfile = async (
       profileData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       },

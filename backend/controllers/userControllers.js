@@ -141,8 +141,7 @@ const userController = {
         error: error.message,
       });
     }
-  }
-};  },
+  }, 
 
 markNotificationAsRead : async (req, res) => {
   try {
