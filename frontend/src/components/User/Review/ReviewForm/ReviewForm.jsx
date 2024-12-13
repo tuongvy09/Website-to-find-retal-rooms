@@ -1,12 +1,16 @@
 import { Typography } from "@mui/material";
+import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { createReview } from "../../../../redux/postAPI";
 import "./ReviewForm.css";
 
 const ReviewForm = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); 
   const [postId, setPostId] = useState(id);
   const [rating, setRating] = useState(0); // Default rating
   const [hoveredRating, setHoveredRating] = useState(null); // Hover state
@@ -22,24 +26,42 @@ const ReviewForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
+  
     if (!postId || !user_id || !rating) {
       setError("Post ID, User ID, and Rating are required.");
       return;
     }
-
+  
     setLoading(true);
     try {
       const reviewData = { rating, comment, user_id };
       await createReview(postId, reviewData, token);
-
+  
+      // Reset form fields
       setRating(0);
       setComment("");
-      alert("Review added successfully!");
       setShowForm(false);
-      window.location.reload();
+  
+      // Hiển thị thông báo thành công
+      toast.success("Đánh giá thành công! Cảm ơn bạn.", {
+        position: "top-right",
+        autoClose: 2000, // Thời gian hiển thị thông báo
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        onClose: () => {
+          window.location.reload();
+        },
+      });
     } catch (err) {
       setError(err.response?.data?.error || "Failed to add review.");
+  
+      // Hiển thị thông báo lỗi
+      toast.error("Đánh giá thất bại. Vui lòng thử lại.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -57,12 +79,32 @@ const ReviewForm = () => {
     setHoveredRating(null);
   };
 
+  const handleAddReviewClick = () => {
+    if (!currentUser) {
+      Swal.fire({
+        title: "Yêu cầu đăng nhập",
+        text: "Bạn cần đăng nhập trước khi đánh giá.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Đăng nhập",
+        cancelButtonText: "Hủy",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login"); 
+        }
+      });
+      return;
+    }
+    setShowForm(true);
+  };
+
   return (
     <div className="addreview-review-header">
       <Typography className="add-review-post-title">
         Đánh giá & bình luận
       </Typography>
-      <button onClick={() => setShowForm(true)} className="addreview-button">
+      <button onClick={handleAddReviewClick} className="addreview-button">
         Đánh giá ngay
       </button>
       {showForm && (
@@ -130,6 +172,7 @@ const ReviewForm = () => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };
