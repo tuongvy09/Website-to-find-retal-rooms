@@ -1,5 +1,11 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import {
+  forgotPasswordFailed,
+  forgotPasswordSuccess,
+  googleLoginFailed,
+  googleLoginStart,
+  googleLoginSuccess,
   loginFailed,
   loginStart,
   loginSuccess,
@@ -18,14 +24,6 @@ import {
   getUsersSuccess,
   getUserStart,
 } from "./userSlice";
-import {
-  googleLoginStart,
-  googleLoginSuccess,
-  googleLoginFailed,
-  forgotPasswordSuccess,
-  forgotPasswordFailed,
-} from "./authSlice"; // Nếu bạn muốn tạo slice cho Google Login
-import { toast } from "react-toastify";
 
 export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
   axios.defaults.baseURL = "http://localhost:8000";
@@ -58,7 +56,7 @@ export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
       } else {
         setErrorMessage(
           err.response.data.message ||
-            "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.",
+          "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.",
         );
       }
     } else if (err.request) {
@@ -282,13 +280,12 @@ export const updateUserProfile = async (
       profileData,
       {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${accessToken}`,
         },
       },
     );
     console.log("token", accessToken);
-
-    // Cập nhật thành công
     const updatedUser = res.data.user; // Thông tin người dùng mới từ API
     dispatch(loginSuccess(updatedUser)); // Dispatch action để cập nhật store
     toast.success("Cập nhật thông tin người dùng thành công!");
