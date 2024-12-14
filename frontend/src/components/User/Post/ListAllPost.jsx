@@ -2,9 +2,57 @@ import { Pagination } from "@mui/material";
 import React from "react";
 import RoomPost from "./RoomPost";
 import "./RoomPost.css";
+import { useFavoriteToggle } from "../../../redux/postAPI";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-const ListAllPost = ({ posts, handleTitleClick }) => {
+const ListAllPost = ({ posts, handleTitleClick}) => {
+  const [favorites, setFavorites] = React.useState([]);
   const [sortOption, setSortOption] = React.useState("default");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const postsPerPage = 9;
+
+  const { toggleFavorite } = useFavoriteToggle(user);
+
+  React.useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/v1/posts/favorites",
+          {
+            headers: { Authorization: `Bearer ${user?.accessToken}` },
+          }
+        );
+        setFavorites(response.data.favorites);
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách yêu thích:", error);
+      }
+    };
+
+    if (user?.accessToken) {
+      fetchFavorites();
+    }
+  }, [user]);
+
+  const handleToggleFavorite = (id, isFavorite) => {
+    if (!id) {
+      console.error("ID của bài đăng không hợp lệ:", id);
+      return;
+    }
+
+    toggleFavorite(id, isFavorite)
+      .then(() => {
+        setFavorites(
+          isFavorite
+            ? favorites.filter((fav) => fav._id !== id)
+            : [...favorites, { _id: id }]
+        );
+      })
+      .catch((error) =>
+        console.error("Lỗi khi bật/tắt trạng thái yêu thích:", error)
+      );
+  };
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
@@ -31,18 +79,15 @@ const ListAllPost = ({ posts, handleTitleClick }) => {
     return sorted;
   }, [posts, sortOption]);
 
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const postsPerPage = 9;
-
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-  };
-
   const paginatedPosts = React.useMemo(() => {
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = startIndex + postsPerPage;
     return sortedPosts.slice(startIndex, endIndex);
   }, [sortedPosts, currentPage]);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   return (
     <>
@@ -57,7 +102,18 @@ const ListAllPost = ({ posts, handleTitleClick }) => {
       </div>
       <div className="approved-posts-list">
         {paginatedPosts.map((post, index) => (
-          <RoomPost key={index} post={post} onTitleClick={handleTitleClick} />
+          <RoomPost
+            key={index}
+            post={post}
+            onTitleClick={handleTitleClick}
+            isFavorite={favorites.some((fav) => fav._id === post._id)} // Dùng đúng trường ID
+            onToggleFavorite={() =>
+              handleToggleFavorite(
+                post._id, // Sử dụng đúng trường ID (_id từ API)
+                favorites.some((fav) => fav._id === post._id)
+              )
+            }
+          />
         ))}
       </div>
       <div className="approved-post-list-container-pagination">
