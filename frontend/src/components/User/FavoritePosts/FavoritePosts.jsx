@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import RoomPost from "../Post/RoomPost";
+import Swal from "sweetalert2"; 
 import "./FavoritePosts.css";
 
 const FavoritePosts = () => {
@@ -20,7 +21,7 @@ const FavoritePosts = () => {
             headers: {
               Authorization: `Bearer ${user?.accessToken}`,
             },
-          },
+          }
         );
         setFavorites(response.data.favorites);
       } catch (error) {
@@ -41,38 +42,47 @@ const FavoritePosts = () => {
 
   const handleToggleFavorite = async (postId, isCurrentlyFavorite) => {
     try {
-      if (isCurrentlyFavorite) {
-        // Remove from favorites
+      const result = await Swal.fire({
+        title: 'Bạn có chắc chắn muốn xóa bài viết này khỏi danh sách yêu thích?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy',
+      });
+
+      if (result.isConfirmed) {
+        // Xóa bài viết khỏi danh sách yêu thích nếu người dùng xác nhận
         await axios.delete(
           `http://localhost:8000/v1/posts/${postId}/favorite`,
           {
             headers: {
               Authorization: `Bearer ${user?.accessToken}`,
             },
-          },
+          }
         );
-        setFavorites(favorites.filter((post) => post._id !== postId));
+        // Cập nhật danh sách yêu thích sau khi xóa
+        setFavorites(favorites.filter((post) => post._id !== postId)); // Xóa bài viết khỏi danh sách
+        Swal.fire(
+          'Đã xóa!',
+          'Bài viết đã được xóa khỏi danh sách yêu thích.',
+          'success'
+        );
       } else {
-        // Add to favorites
-        await axios.post(
-          `http://localhost:8000/v1/posts/${postId}/favorite`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
-          },
+        Swal.fire(
+          'Đã hủy!',
+          'Bài viết vẫn ở lại danh sách yêu thích.',
+          'info'
         );
-        setFavorites((prevFavorites) => [...prevFavorites, { _id: postId }]);
       }
     } catch (error) {
-      console.error("Lỗi khi toggle trạng thái yêu thích:", error);
+      console.error("Lỗi khi thay đổi trạng thái yêu thích:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Có lỗi xảy ra khi xóa bài viết khỏi danh sách yêu thích.',
+        'error'
+      );
     }
   };
-
-  if (loading) {
-    return <div className="loading">Đang tải danh sách yêu thích...</div>;
-  }
 
   return (
     <div className="favorite-posts">

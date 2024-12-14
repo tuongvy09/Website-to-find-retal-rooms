@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
@@ -8,15 +8,38 @@ import arrowsIcon from "../../../assets/images/arrowIcon.png";
 import { useFavoriteToggle } from "../../../redux/postAPI";
 import "./ListPostHome.css";
 import RoomPost from "./RoomPost";
+import axios from "axios";
 
 const ListPostHome = ({ post = [], title, favorite }) => {
   const navigate = useNavigate();
-  console.log(favorite);
-  console.log("post", post);
-
+  const [favorites, setFavorites] = React.useState([]);
+  const [change, setChange] = React.useState(false);
   const user = useSelector((state) => state.auth.login.currentUser);
-  const { favorites, toggleFavorite } = useFavoriteToggle(user);
+  const { toggleFavorite } = useFavoriteToggle(user);
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/v1/posts/favorites",
+          {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
+          },
+        );
+        await setFavorites(response.data.favorites);
+        console.log("Favorites:", response.data.favorites);
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách yêu thích:", error);
+      } finally {
+      }
+    };
 
+    if (user?.accessToken) {
+      fetchFavorites();
+    }
+  }, [user]);
+  console.log("Favorites:", favorites);
   const handleTitleClick = (id) => {
     console.log("Navigating to post with ID:", id);
     if (id) {
@@ -48,10 +71,18 @@ const ListPostHome = ({ post = [], title, favorite }) => {
               <RoomPost
                 post={postItem}
                 onTitleClick={() => handleTitleClick(postItem.id)}
-                onToggleFavorite={(id, isFavorite) =>
-                  toggleFavorite(id, isFavorite)
-                }
-                isFavorite={favorites.some((fav) => fav._id === post._id)}
+                isFavorite={favorites.some((fav) => fav._id === postItem.id)}
+                onToggleFavorite={(id, isFavorite) => {
+                  toggleFavorite(
+                    postItem.id,
+                    favorites.some((fav) => fav._id === postItem.id),
+                  );
+                  setFavorites(
+                    favorites.some((fav) => fav._id === postItem.id)
+                      ? favorites.filter((fav) => fav._id !== postItem.id)
+                      : [...favorites, { _id: postItem.id }],
+                  );
+                }}
               />
               {index === Math.min(post.length, 5) - 1 && (
                 <button

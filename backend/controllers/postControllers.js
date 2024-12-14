@@ -631,6 +631,7 @@ exports.addToFavorites = async (req, res) => {
   }
 };
 
+//xóa yêu thích
 exports.removeFromFavorites = async (req, res) => {
   const postId = req.params.id;
 
