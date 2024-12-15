@@ -110,7 +110,7 @@ const PostDetail = ({ onToggleFavorite }) => {
             {post.address.exactaddress} {post.address.ward}{" "}
             {post.address.district} {post.address.province}
           </Button>
-          <Typography className="post-content">{post.content}</Typography>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
           <TableContainer component={Paper} className="container-table">
             <Table className="table-category">
               <TableBody>

@@ -9,7 +9,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import Quill from "quill";
+import 'quill/dist/quill.snow.css';
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getPostDetail, updatePost } from "../../../redux/postAPI";
 import "./UpdatePost.css";
@@ -42,6 +44,32 @@ const UpdatePost = ({ postId }) => {
       setError("Cập nhật bài đăng thất bại");
     }
   };
+
+  const quillRef = useRef(null);
+
+  useEffect(() => {
+    if (quillRef.current) {
+      const quill = new Quill(quillRef.current, {
+        theme: "snow",
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, 4, false] }],
+            ["bold", "italic", "underline"],
+            ["image", "video"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ font: [] }, { size: ["small", "medium", "large", "huge"] }],
+            [{ align: [] }],
+            [{ color: [] }, { background: [] }],
+            ["link", "blockquote", "code-block"],
+            ["clean"],
+          ],
+        },
+      });
+      quill.on("text-change", () => {
+        setContent(quill.root.innerHTML);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -116,17 +144,8 @@ const UpdatePost = ({ postId }) => {
         />
       </div>
 
-      <div>
-        <TextField
-          label="Nội dung"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          fullWidth
-          multiline
-          rows={7}
-        />
-      </div>
-
+      <Typography className="title3">Nội dung miêu tả</Typography>
+      <div ref={quillRef} style={{ height: "300px" }} />
       <div className="update-post-container-area-price">
         <Box
           sx={{
