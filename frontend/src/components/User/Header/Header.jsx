@@ -38,13 +38,14 @@ const Header = () => {
   const totalNotifications = notificationsList.length;
 
   useEffect(() => {
-    if (currentUser) {
-      const sortedNotifications = (currentUser.notifications || []).sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    if (currentUser && Array.isArray(currentUser.notifications)) {
+      // Tạo bản sao và sắp xếp
+      const sortedNotifications = [...currentUser.notifications].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
       setNotifications(sortedNotifications);
     }
-  }, [currentUser]);
+  }, [currentUser]);  
 
   const handleLogout = () => {
     logout(dispatch, id, navigate, accessToken, axiosJWT);
