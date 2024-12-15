@@ -44,7 +44,12 @@ const PostsPage = () => {
     fetchPosts();
   }, [token]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   let posts = [];
   if (location.pathname === "/posts") {

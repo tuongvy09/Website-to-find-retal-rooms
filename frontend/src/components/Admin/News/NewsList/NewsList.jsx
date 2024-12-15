@@ -100,7 +100,13 @@ const NewsList = () => {
     return pageNumbers;
   };
 
-  if (isFetching) return <p>Loading...</p>;
+  if (isFetching)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+
   if (error) return <p>Error fetching news.</p>;
 
   return (

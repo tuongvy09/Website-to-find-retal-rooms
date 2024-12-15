@@ -107,7 +107,13 @@ const ReviewsList = ({ postId, userId }) => {
   const offset = currentPage * reviewsPerPage;
   const currentReviews = sortedReviews.slice(offset, offset + reviewsPerPage);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+
   if (error) return <p>Error: {error.message || "Không thể tải đánh giá."}</p>;
 
   const handleEdit = (review) => {
