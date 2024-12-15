@@ -217,3 +217,41 @@
     opacity: 1;
   }
 }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.pagination-button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  background-color: #e0e0e0;
+  color: #333;
+  cursor: pointer;
+  border-radius: 3px;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #13ad23;
+  color: white;
+}
+
+.pagination-button.active {
+  background-color: #136e1c;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

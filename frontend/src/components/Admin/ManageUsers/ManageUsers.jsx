@@ -33,6 +33,8 @@ const ManageUsers = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [openProfile, setOpenProfile] = useState(false);
   const [selectedUserProfile, setSelectedUserProfile] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 8;
 
   // Create axiosJWT instance
   let axiosJWT = createAxios(user, dispatch, loginSuccess);
@@ -56,10 +58,8 @@ const ManageUsers = () => {
 
   // Open profile modal
   const handleOpenProfile = (user) => {
-    console.log("Selected User:", user);
-    console.log("Picture URL:", user?.profile?.picture);
-    setSelectedUserProfile(user); // Set the selected user for profile modal
-    setOpenProfile(true); // Open the profile modal
+    setSelectedUserProfile(user);
+    setOpenProfile(true);
   };
 
   // Close confirmation dialog
@@ -84,13 +84,12 @@ const ManageUsers = () => {
         {},
         {
           headers: { Authorization: `Bearer ${user?.accessToken}` },
-        },
+        }
       );
 
       if (response.status === 200) {
         alert(response.data.message);
-        // Refresh the user list
-        getAllUsers(user?.accessToken, dispatch, axiosJWT);
+        getAllUsers(user?.accessToken, dispatch, axiosJWT); // Refresh the user list
       }
     } catch (error) {
       console.error("Error blocking/unblocking user:", error);
@@ -108,6 +107,38 @@ const ManageUsers = () => {
 
   // Filter out admin accounts
   const filteredUsers = userList?.filter((item) => !item.admin);
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers?.length / usersPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  // Function to get page numbers to display
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPageNumbers = 5; // Max page buttons to show
+    let startPage = Math.max(currentPage - Math.floor(maxPageNumbers / 2), 1);
+    let endPage = startPage + maxPageNumbers - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxPageNumbers + 1, 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
 
   return (
     <Box className="manage-users">
@@ -127,7 +158,7 @@ const ManageUsers = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers?.map((user) => (
+              {currentUsers?.map((user) => (
                 <TableRow key={user._id}>
                   <TableCell>
                     <p
@@ -135,7 +166,7 @@ const ManageUsers = () => {
                       onClick={() => handleOpenProfile(user)}
                     >
                       {user.username}
-                    </p>{" "}
+                    </p>
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
@@ -166,50 +197,29 @@ const ManageUsers = () => {
         </TableContainer>
       </Box>
 
-      <Dialog
-        open={open}
-        onClose={() => handleOpenDialog(user)}
-        aria-labelledby="confirm-dialog-title"
-        aria-describedby="confirm-dialog-description"
-      >
-        <DialogTitle id="confirm-dialog-title">Xác Nhận</DialogTitle>
+      {/* Confirmation Dialog */}
+      <Dialog open={open} onClose={handleCloseDialog}>
+        <DialogTitle>Xác Nhận</DialogTitle>
         <DialogContent>
-          <DialogContentText id="confirm-dialog-description">
+          <DialogContentText>
             {selectedUser?.profile?.isBlocked
               ? `Bạn có chắc muốn mở khóa tài khoản của ${selectedUser?.username}?`
               : `Bạn có chắc muốn khóa tài khoản của ${selectedUser?.username}?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <div className="user-btn">
-            <Button
-              className="btn btn-cancel"
-              onClick={handleCloseDialog}
-              color="primary"
-            >
-              Hủy
-            </Button>
-            <Button
-              className="btn btn-accept"
-              onClick={handleBlockUser}
-              color="secondary"
-              autoFocus
-            >
-              Xác nhận
-            </Button>
-          </div>
+          <Button onClick={handleCloseDialog} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleBlockUser} color="secondary">
+            Xác nhận
+          </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog
-        open={openProfile}
-        onClose={handleCloseProfile}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle id="profile-dialog-title">
-          Thông Tin Người Dùng
-        </DialogTitle>
+      {/* Profile Dialog */}
+      <Dialog open={openProfile} onClose={handleCloseProfile} maxWidth="sm" fullWidth>
+        <DialogTitle>Thông Tin Người Dùng</DialogTitle>
         <DialogContent>
           <div className="user-detail user-image">
             <img
@@ -221,55 +231,35 @@ const ManageUsers = () => {
               alt="Profile"
             />
           </div>
-
           <DialogContentText>
-            {/* <strong>👤: </strong>{selectedUserProfile?.username}<br />
-      <strong>📧: </strong>{selectedUserProfile?.email}<br />
-      <strong>📞: </strong>{selectedUserProfile?.profile?.phone}<br />
-      <strong>📍: </strong>{selectedUserProfile?.profile?.address}<br />
-      <strong>💬: </strong>{selectedUserProfile?.profile?.}<br /> */}
             <div className="user-information">
               {selectedUserProfile?.username && (
                 <dl>
-                  <dt>
-                    <i className="fa-solid fa-user"></i> :
-                  </dt>
+                  <dt><i className="fa-solid fa-user"></i> :</dt>
                   <dd>{selectedUserProfile?.username}</dd>
                 </dl>
               )}
               {selectedUserProfile?.email && (
                 <dl>
-                  <dt>
-                    <i className="fa-solid fa-envelope"></i> :
-                  </dt>
+                  <dt><i className="fa-solid fa-envelope"></i> :</dt>
                   <dd>{selectedUserProfile?.email}</dd>
                 </dl>
               )}
               {selectedUserProfile?.profile?.phone && (
                 <dl>
-                  <dt>
-                    <i className="fa-solid fa-phone"></i> :
-                  </dt>
-                  <dd>
-                    <a href={`tel:${selectedUserProfile?.profile?.phone}`}>
-                      {selectedUserProfile?.profile?.phone}
-                    </a>
-                  </dd>
+                  <dt><i className="fa-solid fa-phone"></i> :</dt>
+                  <dd><a href={`tel:${selectedUserProfile?.profile?.phone}`}>{selectedUserProfile?.profile?.phone}</a></dd>
                 </dl>
               )}
               {selectedUserProfile?.profile?.address && (
                 <dl>
-                  <dt>
-                    <i className="fa-solid fa-location-dot"></i> :
-                  </dt>
+                  <dt><i className="fa-solid fa-location-dot"></i> :</dt>
                   <dd>{selectedUserProfile?.profile?.address}</dd>
                 </dl>
               )}
               {selectedUserProfile?.profile?.bio && (
                 <dl>
-                  <dt>
-                    <i className="fa-solid fa-book-atlas"></i> :
-                  </dt>
+                  <dt><i className="fa-solid fa-book-atlas"></i> :</dt>
                   <dd>{selectedUserProfile?.profile?.bio}</dd>
                 </dl>
               )}
@@ -277,17 +267,36 @@ const ManageUsers = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <div className="user-btn">
-            <Button
-              className="btn btn-accept"
-              onClick={handleCloseProfile}
-              color="primary"
-            >
-              Đóng
-            </Button>
-          </div>
+          <Button onClick={handleCloseProfile} color="primary">
+            Đóng
+          </Button>
         </DialogActions>
       </Dialog>
+      <div className="pagination">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="pagination-button"
+            >
+              &laquo; Trước
+            </button>
+            {getPageNumbers().map((number) => (
+              <button
+                key={number}
+                onClick={() => paginate(number)}
+                className={`pagination-button ${currentPage === number ? "active" : ""}`}
+              >
+                {number}
+              </button>
+            ))}
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className="pagination-button"
+            >
+              Tiếp &raquo;
+            </button>
+          </div>
     </Box>
   );
 };
