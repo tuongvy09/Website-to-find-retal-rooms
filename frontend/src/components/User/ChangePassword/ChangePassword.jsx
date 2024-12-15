@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { changePassword } from "../../../redux/apiRequest"; 
+import { changePassword } from "../../../redux/apiRequest";
 import "./ChangePassword.css";
 import { useSelector } from "react-redux";
 
@@ -105,7 +105,11 @@ const ChangePassword = () => {
 
         {message && (
           <Typography
-            className={message.includes("thành công") ? "success-message" : "error-message"}
+            className={
+              message.includes("thành công")
+                ? "success-message"
+                : "error-message"
+            }
           >
             {message}
           </Typography>

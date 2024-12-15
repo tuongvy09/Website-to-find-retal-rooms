@@ -19,7 +19,7 @@ const SearchResultsPage = () => {
   const { toggleFavorite } = useFavoriteToggle(user);
 
   const sortedResults = [...results].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
   );
 
   // Fetch favorites
@@ -30,7 +30,7 @@ const SearchResultsPage = () => {
           "http://localhost:8000/v1/posts/favorites",
           {
             headers: { Authorization: `Bearer ${user?.accessToken}` },
-          }
+          },
         );
         setFavorites(response.data.favorites);
       } catch (error) {
@@ -54,12 +54,10 @@ const SearchResultsPage = () => {
         setFavorites(
           isFavorite
             ? favorites.filter((fav) => fav._id !== id)
-            : [...favorites, { _id: id }]
+            : [...favorites, { _id: id }],
         );
       })
-      .catch((error) =>
-        console.error("Error toggling favorite:", error)
-      );
+      .catch((error) => console.error("Error toggling favorite:", error));
   };
 
   // Pagination logic
@@ -108,7 +106,7 @@ const SearchResultsPage = () => {
               onToggleFavorite={() =>
                 handleToggleFavorite(
                   post._id,
-                  favorites.some((fav) => fav._id === post._id)
+                  favorites.some((fav) => fav._id === post._id),
                 )
               }
             />

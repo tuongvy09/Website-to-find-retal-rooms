@@ -366,7 +366,12 @@ export const markNotificationAsRead = async (
   }
 };
 
-export const changePassword = async (passwordData, accessToken, dispatch, setMessage) => {
+export const changePassword = async (
+  passwordData,
+  accessToken,
+  dispatch,
+  setMessage,
+) => {
   axios.defaults.baseURL = "http://localhost:8000";
 
   try {

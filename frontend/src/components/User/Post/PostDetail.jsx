@@ -1,7 +1,6 @@
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import EmailIcon from "@mui/icons-material/Email";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
@@ -26,11 +25,12 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { getPostDetail } from "../../../redux/postAPI";
+import { getPostDetail, useFavoriteToggle } from "../../../redux/postAPI";
 import Header from "../Header/Header";
 import AddReviewForm from "../Review/ReviewForm/ReviewForm";
 import ReviewsList from "../Review/ReviewList/ReviewsList";
 import "./PostDetail.css";
+import axios from "axios";
 
 const PostDetail = ({ onToggleFavorite }) => {
   const { id } = useParams();
@@ -38,6 +38,9 @@ const PostDetail = ({ onToggleFavorite }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviewContent, setReviewContent] = useState("");
   const [rating, setRating] = useState(0);
+  const [favorites, setFavorites] = useState([]);
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const { toggleFavorite } = useFavoriteToggle(user);
   const { reviews, loading, error } = useSelector((state) => state.reviews);
 
   useEffect(() => {
@@ -54,6 +57,29 @@ const PostDetail = ({ onToggleFavorite }) => {
     fetchPostDetail();
   }, [id]);
 
+  // Lấy danh sách yêu thích
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/v1/posts/favorites",
+          {
+            headers: {
+              Authorization: `Bearer ${user?.accessToken}`,
+            },
+          },
+        );
+        setFavorites(response.data.favorites);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách yêu thích:", error);
+      }
+    };
+
+    if (user?.accessToken) {
+      fetchFavorites();
+    }
+  }, [user]);
+
   useEffect(() => {
     console.log("Dữ liệu reviews hiện tại:", reviews);
   }, [reviews]);
@@ -68,11 +94,24 @@ const PostDetail = ({ onToggleFavorite }) => {
     );
   };
 
-  const handleFavoriteClick = () => {
-    onToggleFavorite(post.id);
+  const handleToggleFavorite = async () => {
+    const isFavorite = favorites.some((fav) => fav._id === id);
+
+    try {
+      await toggleFavorite(id, isFavorite);
+      setFavorites(
+        isFavorite
+          ? favorites.filter((fav) => fav._id !== id)
+          : [...favorites, { _id: id }],
+      );
+    } catch (error) {
+      console.error("Lỗi khi thay đổi trạng thái yêu thích:", error);
+    }
   };
 
   if (!post) return <div>Loading...</div>;
+
+  const isFavorite = favorites.some((fav) => fav._id === id);
 
   return (
     <div className="post-detail-container">
@@ -169,13 +208,9 @@ const PostDetail = ({ onToggleFavorite }) => {
             </Button>
           </Card>
         </Box>
-        <Box className="favorite-icon" onClick={handleFavoriteClick}>
-          {post.isFavorite ? (
-            <FavoriteIcon color="error" />
-          ) : (
-            <FavoriteBorderIcon />
-          )}
-        </Box>
+        <Button className="favorite-icon" onClick={handleToggleFavorite}>
+          {isFavorite ? <Favorite color="error" /> : <FavoriteBorder />}
+        </Button>
       </Box>
       <div className="post-detail-container-comment">
         <AddReviewForm />

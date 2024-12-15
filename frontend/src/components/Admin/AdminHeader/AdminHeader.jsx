@@ -28,7 +28,13 @@ const AdminHeader = () => {
   return (
     <AppBar position="static" className="admin-header">
       <Toolbar>
-        <Typography className="admin-header-title">Phòng Trọ Xinh</Typography>
+        <Typography
+          className="admin-header-title"
+          onClick={() => navigate("/admin-dashboard")}
+          style={{ cursor: "pointer" }}
+        >
+          Phòng Trọ Xinh
+        </Typography>
         <Box className="admin-header-buttons">
           <Button
             onClick={() => navigate("/chang-pass")}
