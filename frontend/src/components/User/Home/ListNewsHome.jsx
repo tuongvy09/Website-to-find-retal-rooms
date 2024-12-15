@@ -28,7 +28,12 @@ const ListNewsHome = () => {
     fetchNews();
   }, []);
 
-  if (loading) return <p>Đang tải...</p>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   if (error) return <p>{error}</p>;
 
   return (

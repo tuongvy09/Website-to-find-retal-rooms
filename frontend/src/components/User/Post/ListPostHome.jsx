@@ -109,7 +109,9 @@ const ListPostHome = ({ post = [], title, favorite }) => {
           ))}
         </Slider>
       ) : (
-        <p>Dữ liệu bài đăng không hợp lệ hoặc đang tải...</p>
+        <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
       )}
     </div>
   );

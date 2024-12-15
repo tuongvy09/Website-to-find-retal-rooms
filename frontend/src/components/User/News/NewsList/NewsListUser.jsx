@@ -25,7 +25,12 @@ const NewsListUser = () => {
     fetchNews();
   }, []);
 
-  if (loading) return <p>Đang tải tin tức...</p>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   if (error) return <p>{error}</p>;
 
   // Sort news by newest first
