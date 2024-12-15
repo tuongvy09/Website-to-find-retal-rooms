@@ -365,3 +365,32 @@ export const markNotificationAsRead = async (
     dispatch(markAsReadFailed());
   }
 };
+
+export const changePassword = async (passwordData, accessToken, dispatch, setMessage) => {
+  axios.defaults.baseURL = "http://localhost:8000";
+
+  try {
+    // Gửi yêu cầu thay đổi mật khẩu đến backend
+    const res = await axios.post("/v1/auth/change-password", passwordData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // Gửi token để xác thực
+      },
+    });
+
+    // Xử lý phản hồi từ server nếu thành công
+    setMessage("Mật khẩu đã được thay đổi thành công!");
+    console.log("Password change success:", res.data.message);
+  } catch (err) {
+    // Xử lý lỗi trả về từ server
+    if (err.response) {
+      console.error("Change password error:", err.response.data);
+      const errorMessage =
+        err.response.data.message || "Đã xảy ra lỗi, vui lòng thử lại.";
+      setMessage(errorMessage);
+    } else {
+      // Xử lý lỗi mạng hoặc không phản hồi
+      console.error("Change password error:", err.message);
+      setMessage("Lỗi kết nối, vui lòng kiểm tra mạng.");
+    }
+  }
+};

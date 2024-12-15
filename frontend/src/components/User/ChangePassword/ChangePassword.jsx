@@ -1,24 +1,42 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { changePassword } from "../../../redux/apiRequest"; 
 import "./ChangePassword.css";
+import { useSelector } from "react-redux";
 
-const ChangePassword = ({ onChangePassword }) => {
+const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const currentUser = useSelector((state) => state.auth.login.currentUser);
+  const accessToken = currentUser?.accessToken;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (newPassword !== confirmPassword) {
-      setError("Mật khẩu mới và xác nhận mật khẩu không khớp!");
+      setMessage("Mật khẩu mới và xác nhận mật khẩu không khớp!");
       return;
     }
-    setError("");
-    onChangePassword(currentPassword, newPassword);
+
+    const passwordData = {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    };
+
+    await changePassword(passwordData, accessToken, null, setMessage);
+
+    // Reset form nếu thành công
+    if (message === "Mật khẩu đã được thay đổi thành công!") {
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
   };
 
   return (
@@ -27,6 +45,7 @@ const ChangePassword = ({ onChangePassword }) => {
         <Typography variant="h5" className="change-password-title">
           Đổi Mật Khẩu
         </Typography>
+
         <div className="input-container">
           <TextField
             label="Mật khẩu hiện tại"
@@ -84,7 +103,14 @@ const ChangePassword = ({ onChangePassword }) => {
           </span>
         </div>
 
-        {error && <Typography className="error-message">{error}</Typography>}
+        {message && (
+          <Typography
+            className={message.includes("thành công") ? "success-message" : "error-message"}
+          >
+            {message}
+          </Typography>
+        )}
+
         <Button
           type="submit"
           variant="contained"

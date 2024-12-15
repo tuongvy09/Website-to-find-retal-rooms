@@ -242,6 +242,49 @@ const authController = {
         }
     },    
 
+    // Đổi Mật Khẩu
+    changePassword: async (req, res) => {
+        try {
+            const { currentPassword, newPassword, confirmPassword } = req.body;
+            const userId = req.user.id; 
+    
+            // if (newPassword !== confirmPassword) {
+            //     console.log("new", newPassword);
+            //     console.log("confirm", confirmPassword);
+            //     return res.status(400).json({ message: "Mật khẩu mới và mật khẩu xác nhận không trùng khớp!" });
+            // }
+    
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/; 
+            if (!passwordRegex.test(newPassword)) {
+                return res.status(400).json({ message: "Mật khẩu mới phải có ít nhất 6 ký tự, gồm chữ cái và số." });
+            }
+    
+            // Lấy thông tin người dùng từ cơ sở dữ liệu theo ID người dùng
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "Người dùng không tồn tại!" });
+            }
+    
+            // Kiểm tra mật khẩu hiện tại có đúng không
+            const validPassword = await bcrypt.compare(currentPassword, user.password);
+            if (!validPassword) {
+                return res.status(400).json({ message: "Mật khẩu hiện tại không đúng!" });
+            }
+    
+            // Mã hóa mật khẩu mới
+            const salt = await bcrypt.genSalt(10);
+            const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+    
+            // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+            await User.findByIdAndUpdate(userId, { password: hashedNewPassword });
+    
+            res.status(200).json({ message: "Mật khẩu đã được thay đổi thành công!" });
+    
+        } catch (error) {
+            console.error("Error details: ", error);
+            res.status(500).json({ error: "Có lỗi xảy ra khi thay đổi mật khẩu", details: error.message });
+        }
+    }    
 };
 
 //store token:
