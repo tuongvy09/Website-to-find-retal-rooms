@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import Quill from "quill";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -44,24 +45,6 @@ const SelectWithLabel = ({ label, options, value, onChange }) => {
   );
 };
 
-const TextFieldWithoutLabel = ({ value, onChange, placeholder }) => {
-  return (
-    <TextField
-      value={value}
-      onChange={onChange}
-      variant="outlined"
-      size="small"
-      placeholder={placeholder}
-      fullWidth
-      InputLabelProps={{
-        style: { display: "none" },
-      }}
-      inputProps={{
-        style: { fontSize: "14px" },
-      }}
-    />
-  );
-};
 
 const AddPost = () => {
   const [provinces, setProvinces] = useState([]);
@@ -206,6 +189,34 @@ const AddPost = () => {
       alert("Bạn chỉ có thể tải lên tối đa 8 hình ảnh.");
     }
   };
+
+  const quillRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const quill = new Quill(quillRef.current, {
+      theme: "snow",
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          ["image", "video"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ font: [] }, { size: ["small", "medium", "large", "huge"] }],
+          [{ align: [] }],
+          [{ color: [] }, { background: [] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          ["link", "blockquote", "code-block"],
+          ["clean"],
+        ],
+      },
+    });
+
+    quill.on("text-change", () => {
+      setContent(quill.root.innerHTML);
+    });
+  }, []);
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -409,17 +420,10 @@ const AddPost = () => {
               />
               <Typography className="title3">Nội dung miêu tả</Typography>
               <div style={{ width: "100%" }}>
-                <textarea
-                  value={content}
-                  onChange={handleContentChange}
-                  rows={4}
-                  style={{
-                    width: "100%",
-                    borderColor: errorContent ? "red" : "gray",
-                    borderRadius: "4px",
-                    padding: "8px",
-                    fontSize: "16px",
-                  }}
+                <div
+                  className="quill-content"
+                  ref={quillRef}
+                  style={{ height: "300px" }}
                 />
                 {errorContent && (
                   <div style={{ color: "red", marginTop: "4px" }}>
@@ -430,8 +434,8 @@ const AddPost = () => {
               <Box
                 sx={{
                   display: "flex",
-                  gap: "16px", // Khoảng cách giữa các thành phần
-                  alignItems: "center", // Căn chỉnh theo trục dọc
+                  gap: "16px",
+                  alignItems: "center",
                   marginTop: "1rem",
                 }}
               >
@@ -461,10 +465,10 @@ const AddPost = () => {
               <Box
                 sx={{
                   display: "flex",
-                  gap: 2, // Khoảng cách giữa hai box
-                  alignItems: "flex-start", // Căn trên
-                  flexWrap: "nowrap", // Không cho phép xuống dòng
-                  width: "100%", // Chiều rộng tối đa của container
+                  gap: 2,
+                  alignItems: "flex-start",
+                  flexWrap: "nowrap",
+                  width: "100%",
                   marginTop: "0.5rem",
                 }}
               >
@@ -472,7 +476,7 @@ const AddPost = () => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    width: "48%", // Thu hẹp chiều rộng để 2 Box nằm trên một hàng
+                    width: "48%",
                     marginBottom: 2,
                   }}
                 >
@@ -517,7 +521,7 @@ const AddPost = () => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    width: "48%", // Thu hẹp chiều rộng
+                    width: "48%",
                   }}
                 >
                   <TextField
@@ -557,15 +561,15 @@ const AddPost = () => {
               <Box
                 sx={{
                   display: "flex",
-                  gap: 2, // Khoảng cách giữa các thành phần
-                  alignItems: "center", // Căn giữa theo trục dọc
-                  flexWrap: "nowrap", // Ngăn không cho xuống dòng
-                  width: "100%", // Chiều rộng tối đa của container
+                  gap: 2,
+                  alignItems: "center",
+                  flexWrap: "nowrap",
+                  width: "100%",
                 }}
               >
                 <FormControl
                   size="small"
-                  sx={{ width: "30%" }} // Điều chỉnh chiều rộng của thành phần
+                  sx={{ width: "30%" }}
                 >
                   <InputLabel id="demo-simple-select-helper-label">
                     Đối tượng cho thuê
@@ -600,7 +604,7 @@ const AddPost = () => {
 
                 <TextField
                   id="outlined-basic"
-                  label="Link youtube"
+                  label="Link youtube(Nếu có)"
                   variant="outlined"
                   size="small"
                   value={youtubeLink}

@@ -17,7 +17,7 @@ exports.createPost = async (req, res) => {
       maxOccupants,
       youtubeLink,
       contactInfo,
-      defaultDaysToShow = 7
+      defaultDaysToShow = 7,
     } = req.body;
 
     // Kiểm tra các trường bắt buộc
@@ -50,7 +50,7 @@ exports.createPost = async (req, res) => {
       defaultDaysToShow,
       daysRemaining: defaultDaysToShow,
       hoursRemaining: 0,
-      expiryDate,
+      expiryDate:0,
     });
 
     // Lưu bài đăng
@@ -397,15 +397,14 @@ exports.getUserPostAd = async (req, res) => {
 };
 
 //Duyệt bài viết của admin
-exports.approvePost = async (req, res) => {
+exports.approvePost = async (req, res) => { 
   try {
     const postId = req.params.id;
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ message: 'Bài đăng không tồn tại' });
     }
-
     const daysToShow = post.defaultDaysToShow;
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + daysToShow);
@@ -417,10 +416,21 @@ exports.approvePost = async (req, res) => {
     post.hoursRemaining = 0;
 
     await post.save();
+    const owner = await User.findById(post.contactInfo.user);
+    if (owner) {
+      const notification = {
+        message: `Bài viết "${post.title}" của bạn đã được phê duyệt.`,
+        type: 'post',
+        post_id: postId,
+        status: 'unread',
+      };
+      owner.notifications.push(notification);
+      await owner.save();
+    }
 
-    res.status(200).json({ message: 'Post approved successfully', post });
+    res.status(200).json({ message: 'Bài viết đã được phê duyệt thành công.', post });
   } catch (error) {
-    res.status(500).json({ message: 'Error approving post', error: error.message });
+    res.status(500).json({ message: 'Lỗi khi phê duyệt bài đăng', error: error.message });
   }
 };
 
