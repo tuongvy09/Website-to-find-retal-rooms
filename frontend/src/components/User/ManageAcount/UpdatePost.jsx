@@ -101,7 +101,11 @@ const UpdatePost = ({ postId }) => {
   }
 
   if (!post) {
-    return <div>Đang tải...</div>; // Chờ dữ liệu bài đăng
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   const handleCurrencyChange = (e) => {

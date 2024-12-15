@@ -39,6 +39,10 @@ const Notification = ({
     onNotificationClose();
   };
 
+  const sortedNotifications = [...notifications].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -63,7 +67,11 @@ const Notification = ({
       <hr className="notification-divider" />
       {loading ? (
         <MenuItem sx={{ justifyContent: "center", padding: "15px 0" }}>
-          <Typography variant="body2">Đang tải...</Typography>
+          <Typography variant="body2">
+            <div className="loading-container">
+              <div className="spinner"></div>
+            </div>
+          </Typography>
         </MenuItem>
       ) : error ? (
         <MenuItem sx={{ justifyContent: "center", padding: "15px 0" }}>
@@ -71,8 +79,8 @@ const Notification = ({
             {error}
           </Typography>
         </MenuItem>
-      ) : notifications && notifications.length > 0 ? (
-        notifications.map((notification) => (
+      ) : sortedNotifications && sortedNotifications.length > 0 ? (
+        sortedNotifications.map((notification) => (
           <React.Fragment key={notification._id}>
             <MenuItem
               onClick={() =>
