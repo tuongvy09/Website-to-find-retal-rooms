@@ -84,7 +84,7 @@ const ManageUsers = () => {
         {},
         {
           headers: { Authorization: `Bearer ${user?.accessToken}` },
-        }
+        },
       );
 
       if (response.status === 200) {
@@ -218,7 +218,12 @@ const ManageUsers = () => {
       </Dialog>
 
       {/* Profile Dialog */}
-      <Dialog open={openProfile} onClose={handleCloseProfile} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openProfile}
+        onClose={handleCloseProfile}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Thông Tin Người Dùng</DialogTitle>
         <DialogContent>
           <div className="user-detail user-image">
@@ -235,31 +240,45 @@ const ManageUsers = () => {
             <div className="user-information">
               {selectedUserProfile?.username && (
                 <dl>
-                  <dt><i className="fa-solid fa-user"></i> :</dt>
+                  <dt>
+                    <i className="fa-solid fa-user"></i> :
+                  </dt>
                   <dd>{selectedUserProfile?.username}</dd>
                 </dl>
               )}
               {selectedUserProfile?.email && (
                 <dl>
-                  <dt><i className="fa-solid fa-envelope"></i> :</dt>
+                  <dt>
+                    <i className="fa-solid fa-envelope"></i> :
+                  </dt>
                   <dd>{selectedUserProfile?.email}</dd>
                 </dl>
               )}
               {selectedUserProfile?.profile?.phone && (
                 <dl>
-                  <dt><i className="fa-solid fa-phone"></i> :</dt>
-                  <dd><a href={`tel:${selectedUserProfile?.profile?.phone}`}>{selectedUserProfile?.profile?.phone}</a></dd>
+                  <dt>
+                    <i className="fa-solid fa-phone"></i> :
+                  </dt>
+                  <dd>
+                    <a href={`tel:${selectedUserProfile?.profile?.phone}`}>
+                      {selectedUserProfile?.profile?.phone}
+                    </a>
+                  </dd>
                 </dl>
               )}
               {selectedUserProfile?.profile?.address && (
                 <dl>
-                  <dt><i className="fa-solid fa-location-dot"></i> :</dt>
+                  <dt>
+                    <i className="fa-solid fa-location-dot"></i> :
+                  </dt>
                   <dd>{selectedUserProfile?.profile?.address}</dd>
                 </dl>
               )}
               {selectedUserProfile?.profile?.bio && (
                 <dl>
-                  <dt><i className="fa-solid fa-book-atlas"></i> :</dt>
+                  <dt>
+                    <i className="fa-solid fa-book-atlas"></i> :
+                  </dt>
                   <dd>{selectedUserProfile?.profile?.bio}</dd>
                 </dl>
               )}
@@ -273,30 +292,30 @@ const ManageUsers = () => {
         </DialogActions>
       </Dialog>
       <div className="pagination">
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className="pagination-button"
-            >
-              &laquo; Trước
-            </button>
-            {getPageNumbers().map((number) => (
-              <button
-                key={number}
-                onClick={() => paginate(number)}
-                className={`pagination-button ${currentPage === number ? "active" : ""}`}
-              >
-                {number}
-              </button>
-            ))}
-            <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className="pagination-button"
-            >
-              Tiếp &raquo;
-            </button>
-          </div>
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          &laquo; Trước
+        </button>
+        {getPageNumbers().map((number) => (
+          <button
+            key={number}
+            onClick={() => paginate(number)}
+            className={`pagination-button ${currentPage === number ? "active" : ""}`}
+          >
+            {number}
+          </button>
+        ))}
+        <button
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+          className="pagination-button"
+        >
+          Tiếp &raquo;
+        </button>
+      </div>
     </Box>
   );
 };

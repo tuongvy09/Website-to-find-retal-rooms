@@ -109,7 +109,12 @@ const PostDetail = ({ onToggleFavorite }) => {
     }
   };
 
-  if (!post) return <div>Loading...</div>;
+  if (!post)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   const isFavorite = favorites.some((fav) => fav._id === id);
 

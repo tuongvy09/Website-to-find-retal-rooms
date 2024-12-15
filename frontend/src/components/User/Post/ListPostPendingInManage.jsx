@@ -72,7 +72,12 @@ const ListPost = ({ statusPending, statusUpdate, visibility, token }) => {
     fetchPosts();
   }, [statusPending, statusUpdate, visibility, token, dispatch]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);

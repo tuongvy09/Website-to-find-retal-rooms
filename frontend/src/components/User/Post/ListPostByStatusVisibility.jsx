@@ -11,6 +11,7 @@ import {
 import { setPosts, setSelectedPost } from "../../../redux/postSlice";
 import "./RoomPost.css";
 import RoomPostManage from "./RoomPostManage";
+
 const ListPostByStatusVisibility = ({ status, visibility, token }) => {
   const [userPosts, setUserPosts] = useState([]);
   const posts = useSelector((state) => state.posts.posts);
@@ -112,7 +113,13 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
 
     fetchUserPosts();
   }, [status, visibility, token]);
-  if (loading) return <div>Loading...</div>;
+
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
