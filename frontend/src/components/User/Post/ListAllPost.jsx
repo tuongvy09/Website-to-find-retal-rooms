@@ -6,7 +6,7 @@ import { useFavoriteToggle } from "../../../redux/postAPI";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const ListAllPost = ({ posts, handleTitleClick}) => {
+const ListAllPost = ({ posts, handleTitleClick }) => {
   const [favorites, setFavorites] = React.useState([]);
   const [sortOption, setSortOption] = React.useState("default");
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -22,7 +22,7 @@ const ListAllPost = ({ posts, handleTitleClick}) => {
           "http://localhost:8000/v1/posts/favorites",
           {
             headers: { Authorization: `Bearer ${user?.accessToken}` },
-          }
+          },
         );
         setFavorites(response.data.favorites);
       } catch (error) {
@@ -46,11 +46,11 @@ const ListAllPost = ({ posts, handleTitleClick}) => {
         setFavorites(
           isFavorite
             ? favorites.filter((fav) => fav._id !== id)
-            : [...favorites, { _id: id }]
+            : [...favorites, { _id: id }],
         );
       })
       .catch((error) =>
-        console.error("Lỗi khi bật/tắt trạng thái yêu thích:", error)
+        console.error("Lỗi khi bật/tắt trạng thái yêu thích:", error),
       );
   };
 
@@ -110,7 +110,7 @@ const ListAllPost = ({ posts, handleTitleClick}) => {
             onToggleFavorite={() =>
               handleToggleFavorite(
                 post._id, // Sử dụng đúng trường ID (_id từ API)
-                favorites.some((fav) => fav._id === post._id)
+                favorites.some((fav) => fav._id === post._id),
               )
             }
           />

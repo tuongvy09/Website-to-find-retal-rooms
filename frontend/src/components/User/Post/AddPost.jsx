@@ -45,7 +45,6 @@ const SelectWithLabel = ({ label, options, value, onChange }) => {
   );
 };
 
-
 const AddPost = () => {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -567,10 +566,7 @@ const AddPost = () => {
                   width: "100%",
                 }}
               >
-                <FormControl
-                  size="small"
-                  sx={{ width: "30%" }}
-                >
+                <FormControl size="small" sx={{ width: "30%" }}>
                   <InputLabel id="demo-simple-select-helper-label">
                     Đối tượng cho thuê
                   </InputLabel>
