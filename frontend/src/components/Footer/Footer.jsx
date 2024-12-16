@@ -80,7 +80,7 @@ const Footer = () => {
       <Box className="footer-contact">
         <Typography variant="h6">Liên hệ</Typography>
         <Typography variant="body2">
-          <Phone style={{ color: "#4caf50" }} /> (+84) 0313-728-397
+          <Phone style={{ color: "#4caf50" }} /> <a href="tel:+840313728397" className="home-link-phone">(+84) 0313-728-397</a>
         </Typography>
         <Typography variant="body2">
           <Email style={{ color: "#4caf50" }} /> PhongTroXinh@gmail.com

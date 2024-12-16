@@ -84,3 +84,9 @@
 .contact-btn:hover {
   opacity: 0.9;
 }
+
+
+.home-link-phone{
+  color: white;
+  font-weight: bold;
+}

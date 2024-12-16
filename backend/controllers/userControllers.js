@@ -130,7 +130,7 @@ const userController = {
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
-            res.status(200).json({
+      res.status(200).json({
         message: "User profile updated successfully",
         user: updatedUser,
       });
@@ -141,23 +141,23 @@ const userController = {
         error: error.message,
       });
     }
-  }, 
+  },
 
-markNotificationAsRead : async (req, res) => {
-  try {
+  markNotificationAsRead: async (req, res) => {
+    try {
       const { notificationId } = req.params;
       const userId = req.user.id;
 
       // Tìm người dùng
       const user = await User.findById(userId);
       if (!user) {
-          return res.status(404).json({ message: 'Người dùng không tồn tại' });
+        return res.status(404).json({ message: 'Người dùng không tồn tại' });
       }
 
       // Tìm thông báo trong mảng notifications
       const notification = user.notifications.find(notification => notification._id.toString() === notificationId);
       if (!notification) {
-          return res.status(404).json({ message: 'Thông báo không tồn tại' });
+        return res.status(404).json({ message: 'Thông báo không tồn tại' });
       }
 
       // Đánh dấu thông báo là đã đọc
@@ -165,13 +165,41 @@ markNotificationAsRead : async (req, res) => {
       await user.save();
 
       res.status(200).json({
-          message: 'Thông báo đã được đánh dấu là đã đọc',
-          notification,
+        message: 'Thông báo đã được đánh dấu là đã đọc',
+        notification,
       });
-  } catch (error) {
+    } catch (error) {
       res.status(500).json({ message: 'Lỗi server', error: error.message });
-  }
+    }
+  },
+  getNotificationsByUser: async (req, res) => {
+    const userId = req.user.id; // Lấy user ID từ middleware verifyToken
+
+    try {
+      // Tìm user dựa trên ID
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Lấy danh sách thông báo từ user
+      const notifications = user.notifications || [];
+
+      // Trả danh sách thông báo, sắp xếp theo thời gian (mới nhất trước)
+      const sortedNotifications = notifications.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+
+      res.status(200).json({
+        message: 'Notifications fetched successfully',
+        notifications: sortedNotifications,
+      });
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  },
 }
-}
-  
+
 module.exports = userController;

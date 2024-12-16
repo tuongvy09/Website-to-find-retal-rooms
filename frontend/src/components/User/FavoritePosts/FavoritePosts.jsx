@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import RoomPost from "../Post/RoomPost";
 import Swal from "sweetalert2";
 import { motion } from 'framer-motion';
+import RoomPost from "../Post/RoomPost";
 import "./FavoritePosts.css";
 
 const FavoritePosts = () => {

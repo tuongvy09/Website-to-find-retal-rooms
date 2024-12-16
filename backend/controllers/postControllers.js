@@ -21,7 +21,7 @@ exports.createPost = async (req, res) => {
     } = req.body;
 
     // Kiểm tra các trường bắt buộc
-    if (!title || !content || !address || !category || !rentalPrice || !area || !rentalTarget || !contactInfo) {
+    if (!title || !content || !address || !category || !rentalPrice || !area || !contactInfo) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -353,7 +353,7 @@ exports.toggleVisibility = async (req, res) => {
         filter.$expr = { $and: filtersExpr.filter(Boolean) };
       }
   
-      const posts = await Post.find(filter);
+      const posts = await Post.find(filter).sort({ createdAt: -1 }); // Sắp xếp theo thứ tự từ mới nhất đến cũ nhất
       res.status(200).json(posts);
     } catch (error) {
       res.status(500).json({ error: error.message });

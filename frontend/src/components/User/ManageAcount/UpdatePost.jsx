@@ -28,48 +28,40 @@ const UpdatePost = ({ postId }) => {
   const [typePrice, setTypePrice] = useState("1");
   const [areaError, setAreaError] = useState("");
 
-  const handleUpdatePostData = async () => {
-    const postData = {
-      title,
-      content,
-      rentalPrice,
-      typePrice,
-      area,
-    };
-
-    try {
-      const updatedPost = await updatePost(postId, postData, accessToken);
-      console.log("Cập nhật bài đăng thành công!");
-    } catch (error) {
-      setError("Cập nhật bài đăng thất bại");
-    }
-  };
-
   const quillRef = useRef(null);
 
   useEffect(() => {
-    if (quillRef.current) {
+    if (quillRef.current && content) {
+      // Kiểm tra quillRef và content
       const quill = new Quill(quillRef.current, {
         theme: "snow",
         modules: {
           toolbar: [
             [{ header: [1, 2, 3, 4, false] }],
             ["bold", "italic", "underline"],
-            ["image", "video"],
             [{ list: "ordered" }, { list: "bullet" }],
+            ["image", "video"],
             [{ font: [] }, { size: ["small", "medium", "large", "huge"] }],
             [{ align: [] }],
-            [{ color: [] }, { background: [] }],
             ["link", "blockquote", "code-block"],
             ["clean"],
           ],
         },
       });
+
+      // Cập nhật nội dung khi có sự thay đổi trong editor
       quill.on("text-change", () => {
         setContent(quill.root.innerHTML);
       });
+
+      // Đặt nội dung ban đầu cho editor nếu có sẵn
+      quill.root.innerHTML = content;
+
+      return () => {
+        quillRef.current = null;
+      };
     }
-  }, []);
+  }, [content]);
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -96,17 +88,22 @@ const UpdatePost = ({ postId }) => {
     }
   }, [post]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const handleUpdatePostData = async () => {
+    const postData = {
+      title,
+      content,
+      rentalPrice,
+      typePrice,
+      area,
+    };
 
-  if (!post) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
+    try {
+      const updatedPost = await updatePost(postId, postData, accessToken);
+      console.log("Cập nhật bài đăng thành công!");
+    } catch (error) {
+      setError("Cập nhật bài đăng thất bại");
+    }
+  };
 
   const handleCurrencyChange = (e) => {
     setTypePrice(e.target.value);
@@ -135,6 +132,14 @@ const UpdatePost = ({ postId }) => {
       setError("Giá cho thuê phải là số thực không âm");
     }
   };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!post) {
+    return <div>Đang tải...</div>; // Chờ dữ liệu bài đăng
+  }
 
   return (
     <div className="container-updatepost">

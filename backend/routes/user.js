@@ -18,7 +18,7 @@ router.put("/update-profile/:id", middlewareControllers.verifyToken, uploadCloud
 router.put("/block/:id", middlewareControllers.verifyTokenAndAdminAuth, userController.toggleBlockUser);
 
 //lấy all noti
-// router.get("/notifications", middlewareControllers.verifyToken, userController.getNotifications);
+router.get("/notifications", middlewareControllers.verifyToken, userController.getNotificationsByUser);
 
 //đánh dấu thông báo là đã đọc
 router.put('/notifications/:notificationId', middlewareControllers.verifyToken, userController.markNotificationAsRead);
