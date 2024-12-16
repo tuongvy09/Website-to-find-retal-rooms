@@ -196,3 +196,9 @@
   background-color: #f4f4f9; /* Light background for the toolbar */
   padding: 5px;
 }
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

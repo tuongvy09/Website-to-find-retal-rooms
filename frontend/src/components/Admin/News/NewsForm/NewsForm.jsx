@@ -7,8 +7,9 @@ import "./NewsForm.css";
 import axios from "axios";
 import { createAxios } from "../../../../createInstance";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify"; // Để hiển thị thông báo Toast
-import "react-toastify/dist/ReactToastify.css"; // Thêm CSS cho Toast
+import { setSelectedMenu } from "../../../../redux/menuSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NewsForm = () => {
   const [title, setTitle] = useState("");
@@ -16,8 +17,14 @@ const NewsForm = () => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
-  const [imagePreview, setImagePreview] = useState(""); // To store the preview URL of the image
-  const [errorMessage, setErrorMessage] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+
+  const [errorTitle, setErrorTitle] = useState("");
+  const [errorDescription, setErrorDescription] = useState("");
+  const [errorContent, setErrorContent] = useState("");
+  const [errorAuthor, setErrorAuthor] = useState("");
+  const [errorNull, setErrorNull] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.login.currentUser);
@@ -28,12 +35,68 @@ const NewsForm = () => {
   });
   axiosJWT = createAxios(currentUser, dispatch);
 
+  // Validate title
+  const validateTitle = (value) => {
+    if (!value || value.trim() === "") {
+      return "Tiêu đề không được để trống!";
+    }
+    return "";
+  };
+
+  // Validate description
+  const validateDescription = (value) => {
+    if (!value || value.trim() === "" || value.length < 10) {
+      return "Mô tả phải có ít nhất 10 ký tự!";
+    }
+    return "";
+  };
+
+  // Validate content
+  const validateContent = (value) => {
+    if (!value || value.trim() === "" || value.length < 200) {
+      return "Nội dung phải có ít nhất 200 ký tự!";
+    }
+    return "";
+  };
+
+  // Validate author
+  const validateAuthor = (value) => {
+    if (!value || value.trim() === "") {
+      return "Tác giả không được để trống!";
+    }
+    return "";
+  };
+
+  // Handle change for each field
+  const handleChangeTitle = (e) => {
+    const value = e.target.value;
+    setTitle(value);
+    setErrorTitle(validateTitle(value));
+  };
+
+  const handleChangeDescription = (e) => {
+    const value = e.target.value;
+    setDescription(value);
+    setErrorDescription(validateDescription(value));
+  };
+
+  const handleChangeContent = (e) => {
+    const value = e.target.value;
+    setContent(value);
+    setErrorContent(validateContent(value));
+  };
+
+  const handleChangeAuthor = (e) => {
+    const value = e.target.value;
+    setAuthor(value);
+    setErrorAuthor(validateAuthor(value));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra form: đảm bảo tất cả các trường cần thiết đã được điền đầy đủ
     if (!title || !description || !content || !author) {
-      setErrorMessage("Vui lòng điền đầy đủ thông tin!");
+      setErrorNull("Vui lòng điền đầy đủ thông tin!");
       return;
     }
 
@@ -49,16 +112,15 @@ const NewsForm = () => {
 
     try {
       await dispatch(createNews(formData, accessToken, axiosJWT));
-      setErrorMessage(""); // Xóa thông báo lỗi khi gửi thành công
+      // setErrorNull("");
 
       // Hiển thị thông báo thành công bằng toast
       toast.success("Tin tức đã được thêm thành công!");
-
-      // Chuyển hướng đến danh sách tin tức
-      navigate("/manage-news"); // Đảm bảo '/news-list' là đường dẫn đến trang danh sách tin tức
+      dispatch(setSelectedMenu("newsList"));
     } catch (error) {
-      setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại!");
-      toast.error("Đã có lỗi xảy ra. Vui lòng thử lại!");
+      if (error.response) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -86,7 +148,9 @@ const NewsForm = () => {
     });
 
     quill.on("text-change", () => {
-      setContent(quill.root.innerHTML);
+      const content = quill.root.innerHTML; // Lấy nội dung từ Quill
+      setContent(content);
+      setErrorContent(validateContent(content)); // Kiểm tra lỗi nội dung
     });
   }, []);
 
@@ -132,25 +196,29 @@ const NewsForm = () => {
             </div>
           </div>
           <form onSubmit={handleSubmit}>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {errorNull && <p className="error-message">{errorNull}</p>}
             <div className="form-group">
               <label>Tiêu đề:</label>
               <input
                 type="text"
                 placeholder="Tiêu đề"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={handleChangeTitle}
                 required
               />
+              {errorTitle && <p className="error-message">{errorTitle}</p>}
             </div>
             <div className="form-group">
               <label>Mô tả:</label>
               <textarea
                 placeholder="Mô tả ngắn"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleChangeDescription}
                 required
               />
+              {errorDescription && (
+                <p className="error-message">{errorDescription}</p>
+              )}
             </div>
             <div className="form-group">
               <label>Tác giả:</label>
@@ -158,9 +226,10 @@ const NewsForm = () => {
                 type="text"
                 placeholder="Tác giả"
                 value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                onChange={handleChangeAuthor}
                 required
               />
+              {errorAuthor && <p className="error-message">{errorAuthor}</p>}
             </div>
             <div className="form-group">
               <label>Nội dung:</label>
@@ -169,9 +238,9 @@ const NewsForm = () => {
                 ref={quillRef}
                 style={{ height: "300px" }}
               />
+              {errorContent && <p className="error-message">{errorContent}</p>}
             </div>
             <div className="news-btn">
-              {" "}
               <button type="submit" className="submit-button">
                 Thêm tin
               </button>

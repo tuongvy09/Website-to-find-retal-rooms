@@ -1,11 +1,13 @@
 import axios from "axios";
 import Quill from "quill";
-import "quill/dist/quill.snow.css"; // Đảm bảo rằng bạn đã import các style của Quill
+import "quill/dist/quill.snow.css";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { setSelectedMenu } from "../../../../redux/menuSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./EditNewsForm.css";
+import { useDispatch } from "react-redux";
 
 const EditNewsForm = () => {
   const { id } = useParams();
@@ -15,6 +17,7 @@ const EditNewsForm = () => {
   const [author, setAuthor] = useState("");
   const navigate = useNavigate();
   const quillRef = useRef(null);
+  const dispatch = useDispatch();
 
   // Lấy thông tin tin tức hiện tại
   useEffect(() => {
@@ -79,11 +82,17 @@ const EditNewsForm = () => {
         author,
       });
       toast.success("Cập nhật tin tức thành công!");
-      navigate("/manage-news/list");
+      navigate("/admin-dashboard");
+      dispatch(setSelectedMenu("newsList"));
     } catch (err) {
       console.error("Lỗi khi cập nhật tin tức:", err);
       toast.error("Không thể cập nhật tin tức.");
     }
+  };
+
+  const handleCancel = () => {
+    navigate("/admin-dashboard");
+    dispatch(setSelectedMenu("newsList"));
   };
 
   return (
@@ -129,8 +138,15 @@ const EditNewsForm = () => {
                   </div>
                 </div>
                 <div className="news-btn">
-                  <button type="submit" className="submit-button">
+                  <button type="submit" className="submit-button-edit-news">
                     Cập nhật
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-button-edit-news"
+                    onClick={handleCancel}
+                  >
+                    Hủy
                   </button>
                 </div>
               </form>

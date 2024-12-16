@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { setSelectedMenu } from "../../../../redux/menuSlice";
 import "react-toastify/dist/ReactToastify.css";
-import "./NewsDetail.css"; // Import file CSS
+import "./NewsDetail.css";
 
 const NewsDetail = () => {
   const { id } = useParams();
@@ -19,7 +21,7 @@ const NewsDetail = () => {
   };
 
   const handleBack = () => {
-    navigate("/admin-dashboard"); // Trở về trang trước
+    navigate("/admin-dashboard");
   };
 
   useEffect(() => {
@@ -47,15 +49,30 @@ const NewsDetail = () => {
   if (!news) return <p>Không tìm thấy tin tức.</p>;
 
   const handleDelete = async (newsId) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa tin tức này không?")) {
-      try {
+    try {
+      // Hiển thị hộp thoại xác nhận xóa tin tức bằng SweetAlert
+      const result = await Swal.fire({
+        title: "Bạn có chắc chắn muốn xóa tin tức này không?",
+        text: "Hành động này không thể hoàn tác!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Xóa",
+        cancelButtonText: "Hủy",
+        reverseButtons: true,
+      });
+
+      if (result.isConfirmed) {
+        // Tiến hành xóa tin tức nếu người dùng xác nhận
         await axios.delete(`http://localhost:8000/v1/news/${newsId}`);
+        navigate("/admin-dashboard");
+        dispatch(setSelectedMenu("newsList"));
         toast.success("Xóa tin tức thành công!");
-        navigate("/manage-news");
-      } catch (err) {
-        console.error("Lỗi khi xóa tin tức:", err);
-        toast.error("Không thể xóa tin tức.");
+      } else {
+        toast.info("Đã hủy xóa tin tức.");
       }
+    } catch (err) {
+      console.error("Lỗi khi xóa tin tức:", err);
+      toast.error("Không thể xóa tin tức.");
     }
   };
 
