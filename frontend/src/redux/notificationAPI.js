@@ -3,7 +3,7 @@ import {
   getNotificationsSuccess,
   markAsReadFailed,
   markAsReadStart,
-  markAsReadSuccess
+  markAsReadSuccess,
 } from "./notificationSlice";
 
 const API_URL = "http://localhost:8000/v1/user";
@@ -17,7 +17,10 @@ export const fetchNotifications = async (token) => {
     });
     return response.data.notifications; // Trả về danh sách thông báo
   } catch (error) {
-    console.error('Error fetching notifications:', error.response?.data || error.message);
+    console.error(
+      "Error fetching notifications:",
+      error.response?.data || error.message,
+    );
     throw error; // Ném lỗi để xử lý ở frontend
   }
 };
@@ -30,8 +33,8 @@ export const markNotificationAsRead = async (
   axios.defaults.baseURL = "http://localhost:8000";
   dispatch(markAsReadStart());
   try {
-    console.log('Notification ID:', notificationId);
-    console.log('Access Token:', accessToken); 
+    console.log("Notification ID:", notificationId);
+    console.log("Access Token:", accessToken);
     const response = await axios.put(
       `/v1/user/notifications/${notificationId}`,
       {},

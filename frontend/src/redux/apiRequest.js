@@ -218,7 +218,7 @@ export const googleLogin = async (tokenId, dispatch, navigate) => {
         googleLoginSuccess({
           credential: tokenId, // Lưu credential (tokenId)
           accessToken: userData.accessToken, // Lưu accessToken
-        })
+        }),
       );
       navigate("/"); // Điều hướng về trang chủ
     } else {

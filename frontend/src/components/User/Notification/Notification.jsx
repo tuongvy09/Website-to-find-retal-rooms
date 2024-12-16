@@ -9,7 +9,10 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchNotifications, markNotificationAsRead } from "../../../redux/notificationAPI";
+import {
+  fetchNotifications,
+  markNotificationAsRead,
+} from "../../../redux/notificationAPI";
 import "./Notification.css";
 
 const Notification = ({
@@ -23,9 +26,10 @@ const Notification = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.login.currentUser);
-  const notifications = currentUser && Array.isArray(currentUser.notifications)
-  ? currentUser.notifications
-  : [];
+  const notifications =
+    currentUser && Array.isArray(currentUser.notifications)
+      ? currentUser.notifications
+      : [];
   const token = currentUser?.accessToken;
   const [setNotifications] = React.useState([]);
   const [visibleCount, setVisibleCount] = React.useState(5); // Quản lý số lượng thông báo hiển thị
@@ -35,11 +39,13 @@ const Notification = ({
 
   const getNotifications = async () => {
     try {
-      const data = await fetchNotifications(token); 
-      setNotifications(data); 
+      const data = await fetchNotifications(token);
+      setNotifications(data);
       console.log("Notifications:", data);
       // Cập nhật số thông báo chưa đọc
-      const unreadCount = data.filter(notification => notification.status !== "read").length;
+      const unreadCount = data.filter(
+        (notification) => notification.status !== "read",
+      ).length;
       onUpdateUnreadCount(unreadCount);
     } catch (err) {
       console.error("Error fetching notifications:", err);
@@ -77,10 +83,13 @@ const Notification = ({
     onNotificationClose();
   };
 
-    const sortedNotifications = notifications && notifications.length > 0
-    ? [...notifications].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    : []; 
-  
+  const sortedNotifications =
+    notifications && notifications.length > 0
+      ? [...notifications].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        )
+      : [];
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -96,10 +105,7 @@ const Notification = ({
     >
       <Box className="notification-header">
         <Typography className="notification-title">Thông báo</Typography>
-        <Button
-          className="notification-close-btn"
-          onClick={handleMenuClose}
-        >
+        <Button className="notification-close-btn" onClick={handleMenuClose}>
           Đóng
         </Button>
       </Box>
@@ -124,7 +130,10 @@ const Notification = ({
             <React.Fragment key={notification._id} sx={{ width: "480px" }}>
               <MenuItem
                 onClick={() =>
-                  handleNotificationClick(notification._id, notification.post_id)
+                  handleNotificationClick(
+                    notification._id,
+                    notification.post_id,
+                  )
                 }
                 className={notification.status === "read" ? "read" : "unread"}
                 sx={{
@@ -164,7 +173,9 @@ const Notification = ({
               onClick={handleSeeMore}
               sx={{ justifyContent: "center", padding: "15px 0" }}
             >
-              <Typography variant="body2" fontWeight='bold'>Xem thêm...</Typography>
+              <Typography variant="body2" fontWeight="bold">
+                Xem thêm...
+              </Typography>
             </MenuItem>
           )}
         </>

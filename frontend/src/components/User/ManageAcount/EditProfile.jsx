@@ -16,10 +16,10 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { updateUserProfile } from "../../../redux/apiRequest";
 import "./EditProfile.css";
 
@@ -134,7 +134,7 @@ const EditProfile = ({ user }) => {
     if (picture) {
       formData.append("picture", picture.file);
     }
-  
+
     console.log("Form Data:", formData);
     try {
       await updateUserProfile(user._id, formData, user.accessToken, dispatch);
@@ -163,7 +163,6 @@ const EditProfile = ({ user }) => {
       console.error("Lỗi khi cập nhật hồ sơ:", error);
     }
   };
-  
 
   return (
     <div className="container-edit-profile">
