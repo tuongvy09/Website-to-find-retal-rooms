@@ -76,6 +76,7 @@ const AddPost = () => {
   const [errorContent, setErrorContent] = useState("");
   const [errorPhone, setErrorPhone] = useState("");
   const [typePrice, setTypePrice] = useState("1");
+  const [errorNull, setErrorNull] = useState("");
 
   const validatePhone = (value) => {
     const phoneRegex = /^0[0-9]{8,10}$/;
@@ -252,6 +253,10 @@ const AddPost = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!address || !selectedProvince || !selectedWard || !propertyType|| !title|| !content|| !phone|| !rentalPrice|| !formattedArea) {
+      setErrorNull("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
     const formData = new FormData();
     formData.append(
       "address",
@@ -318,6 +323,7 @@ const AddPost = () => {
             className="form-container-user-add-post"
             onSubmit={handleSubmit}
           >
+            {errorNull && <p className="error-message">{errorNull}</p>}
             <Typography className="title">Đăng tin mới</Typography>
             <Typography className="title2">Địa chỉ cho thuê</Typography>
             <div style={{ display: "flex", gap: "16px", flexGrow: 1 }}>
@@ -327,6 +333,7 @@ const AddPost = () => {
                   options={provinces}
                   value={selectedProvince ? selectedProvince.code : null}
                   onChange={handleProvinceChange}
+                  required
                 />
               </div>
               <div style={{ flex: 1 }}>
@@ -335,6 +342,7 @@ const AddPost = () => {
                   options={districts}
                   value={selectedDistrict ? selectedDistrict.code : null}
                   onChange={handleDistrictChange}
+                  required
                 />
               </div>
               <div style={{ flex: 1 }}>
@@ -343,6 +351,7 @@ const AddPost = () => {
                   options={wards}
                   value={selectedWard ? selectedWard.code : null}
                   onChange={handleWardChange}
+                  required
                 />
               </div>
               <div style={{ flex: 1 }}>
@@ -359,6 +368,7 @@ const AddPost = () => {
                   inputProps={{
                     maxLength: 20,
                   }}
+                  required
                 />
               </div>
             </div>
@@ -374,6 +384,7 @@ const AddPost = () => {
                 }}
                 fullWidth
                 sx={{ marginTop: 1 }}
+                required
               />
             </Box>
             <Box className="container-info-detail">
@@ -386,6 +397,7 @@ const AddPost = () => {
                   native
                   value={propertyType}
                   onChange={(e) => setpropertyType(e.target.value)}
+                  required
                 >
                   <option aria-label="None" value="">
                     --Chọn loại chuyên mục--
@@ -416,6 +428,7 @@ const AddPost = () => {
                 }}
                 error={!!errorTitle}
                 helperText={errorTitle}
+                required
               />
               <Typography className="title3">Nội dung miêu tả</Typography>
               <div style={{ width: "100%" }}>
@@ -423,6 +436,7 @@ const AddPost = () => {
                   className="quill-content"
                   ref={quillRef}
                   style={{ height: "300px" }}
+                  required
                 />
                 {errorContent && (
                   <div style={{ color: "red", marginTop: "4px" }}>
@@ -459,6 +473,8 @@ const AddPost = () => {
                   onChange={handleChangePhone}
                   error={!!errorPhone}
                   helperText={errorPhone}
+                  type="number"
+                  required
                 />
               </Box>
               <Box
@@ -492,6 +508,7 @@ const AddPost = () => {
                       step: "0.01",
                     }}
                     error={!!error}
+                    required
                   />
                   <FormControl
                     variant="outlined"
@@ -537,6 +554,7 @@ const AddPost = () => {
                       step: "0.01",
                     }}
                     error={!!areaError}
+                    required
                   />
                   <TextField
                     id="area-field"
@@ -629,6 +647,7 @@ const AddPost = () => {
                 <IconButton
                   component="span"
                   sx={{ width: "20vw", height: "auto" }}
+                  required
                 >
                   <PhotoCamera
                     sx={{
@@ -645,7 +664,7 @@ const AddPost = () => {
                     key={index}
                     src={image.preview}
                     alt={`uploaded-${index}`}
-                    style={{ width: "100px", margin: "5px", top: "300px" }}
+                    style={{ width: "100px", height:'100px', margin: "5px", top: "300px" }}
                   />
                 ))}
               </div>

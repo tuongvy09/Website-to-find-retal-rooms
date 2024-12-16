@@ -1,33 +1,24 @@
 import axios from "axios";
 import {
-  getNotificationsStart,
   getNotificationsSuccess,
-  getNotificationsFailed,
-  markAsReadStart,
-  markAsReadSuccess,
   markAsReadFailed,
+  markAsReadStart,
+  markAsReadSuccess
 } from "./notificationSlice";
 
-export const getNotifications = async (accessToken, dispatch) => {
-  axios.defaults.baseURL = "http://localhost:8000";
-  dispatch(getNotificationsStart());
+const API_URL = "http://localhost:8000/v1/user";
+
+export const fetchNotifications = async (token) => {
   try {
-    const response = await axios.get("/v1/user/notifications", {
+    const response = await axios.get(`${API_URL}/notifications`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`, // Gửi token trong header để xác thực
       },
     });
-    dispatch(getNotificationsSuccess(response.data.notifications));
-  } catch (err) {
-    if (err.response) {
-      console.error("Get notifications error:", err.response.data);
-      const errorMessage =
-        err.response.data.message || "Failed to fetch notifications";
-      console.error("Error message:", errorMessage);
-    } else {
-      console.error("Get notifications error:", err.message);
-    }
-    dispatch(getNotificationsFailed());
+    return response.data.notifications; // Trả về danh sách thông báo
+  } catch (error) {
+    console.error('Error fetching notifications:', error.response?.data || error.message);
+    throw error; // Ném lỗi để xử lý ở frontend
   }
 };
 
@@ -39,7 +30,9 @@ export const markNotificationAsRead = async (
   axios.defaults.baseURL = "http://localhost:8000";
   dispatch(markAsReadStart());
   try {
-    const response = await axios.patch(
+    console.log('Notification ID:', notificationId);
+    console.log('Access Token:', accessToken); 
+    const response = await axios.put(
       `/v1/user/notifications/${notificationId}`,
       {},
       {
@@ -49,6 +42,7 @@ export const markNotificationAsRead = async (
       },
     );
     dispatch(markAsReadSuccess(response.data.notification));
+    dispatch(getNotificationsSuccess(response.data.notifications));
   } catch (err) {
     if (err.response) {
       console.error("Mark notification as read error:", err.response.data);
