@@ -25,15 +25,35 @@ exports.getNewsById = async (req, res) => {
 
 // Tạo bài viết mới
 exports.createNews = async (req, res) => {
-  const { title, description, content, author } = req.body; 
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; // Sử dụng URL ảnh từ Multer
+  const { title, description, content, author } = req.body;
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+  // Kiểm tra từng trường và trả lỗi cụ thể
+  if (!title || title.trim() === "") {
+    return res.status(400).json({ message: "Tiêu đề không được để trống!" });
+  }
+  if (!description || description.trim() === "" || description.length < 10) {
+    return res
+      .status(400)
+      .json({ message: "Mô tả phải có ít nhất 10 ký tự!" });
+  }
+  if (!content || content.trim() === "" || content.length < 200) {
+    return res
+      .status(400)
+      .json({ message: "Nội dung phải có ít nhất 200 ký tự!" });
+  }
+  if (!author || author.trim() === "") {
+    return res.status(400).json({ message: "Tác giả không được để trống!" });
+  }
 
   try {
-    const newNews = new News({ title, description, content, author, imageUrl }); 
+    // Tạo bài viết mới sau khi các kiểm tra đã thành công
+    const newNews = new News({ title, description, content, author, imageUrl });
     await newNews.save();
     res.status(201).json(newNews);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Xử lý lỗi từ cơ sở dữ liệu hoặc các lỗi không xác định khác
+    res.status(500).json({ message: "Lỗi hệ thống. Vui lòng thử lại sau!" });
   }
 };
 

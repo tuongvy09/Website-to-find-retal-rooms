@@ -144,12 +144,12 @@
   justify-content: center;
 }
 
-.submit-button {
+.submit-button-edit-news {
   display: inline-block;
   width: 100%;
   max-width: 150px;
   padding: 12px;
-  background-color: #007bff;
+  background-color: #27b74b;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -161,8 +161,8 @@
   font-family: Arial, sans-serif;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.submit-button-edit-news:hover {
+  background-color: #1e9c2d;
 }
 
 /* Quill Editor Container */
@@ -217,4 +217,19 @@
   background-color: #f4f4f9;
   /* Light background for the toolbar */
   padding: 5px;
+}
+
+.cancel-button-edit-news {
+  background-color: #f44336; /* Màu đỏ cho nút hủy */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 4px;
+}
+
+.cancel-button-edit-news:hover {
+  background-color: #d32f2f; /* Màu đỏ đậm khi hover */
 }
