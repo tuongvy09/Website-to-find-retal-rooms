@@ -7,9 +7,9 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Typography
+  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createAxios } from "../../../createInstance";
@@ -21,7 +21,8 @@ import "./Header.css";
 const Header = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [notificationsMenuAnchorEl, setNotificationsMenuAnchorEl] =useState(null);
+  const [notificationsMenuAnchorEl, setNotificationsMenuAnchorEl] =
+    useState(null);
   const [notifications, setNotifications] = useState([]);
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const dispatch = useDispatch();
@@ -32,26 +33,25 @@ const Header = () => {
 
   const notificationsList = currentUser?.notifications || [];
   const notificationCount = notificationsList.filter(
-    (notification) => notification.status === "unread"
+    (notification) => notification.status === "unread",
   ).length;
-  
+
   const totalNotifications = notificationsList.length;
 
   useEffect(() => {
     if (currentUser && Array.isArray(currentUser.notifications)) {
       const sortedNotifications = [...currentUser.notifications].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
       );
       setNotifications(sortedNotifications);
     } else {
-      setNotifications([]);  
+      setNotifications([]);
     }
   }, [currentUser]);
-  
+
   const handleUpdateUnreadCount = (count) => {
     setUnreadCount(count);
   };
-
 
   const handleLogout = () => {
     logout(dispatch, id, navigate, accessToken, axiosJWT);

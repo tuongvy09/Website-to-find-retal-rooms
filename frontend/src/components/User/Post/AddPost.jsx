@@ -253,7 +253,17 @@ const AddPost = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!address || !selectedProvince || !selectedWard || !propertyType|| !title|| !content|| !phone|| !rentalPrice|| !formattedArea) {
+    if (
+      !address ||
+      !selectedProvince ||
+      !selectedWard ||
+      !propertyType ||
+      !title ||
+      !content ||
+      !phone ||
+      !rentalPrice ||
+      !formattedArea
+    ) {
       setErrorNull("Vui lòng điền đầy đủ thông tin!");
       return;
     }
@@ -664,7 +674,12 @@ const AddPost = () => {
                     key={index}
                     src={image.preview}
                     alt={`uploaded-${index}`}
-                    style={{ width: "100px", height:'100px', margin: "5px", top: "300px" }}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      margin: "5px",
+                      top: "300px",
+                    }}
                   />
                 ))}
               </div>

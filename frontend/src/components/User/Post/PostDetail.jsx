@@ -121,7 +121,11 @@ const PostDetail = ({ onToggleFavorite }) => {
 
   return (
     <div className="post-detail-container">
-      {user && (user.admin === "true" || user.admin === true) ? <AdminHeader /> : <Header />}
+      {user && (user.admin === "true" || user.admin === true) ? (
+        <AdminHeader />
+      ) : (
+        <Header />
+      )}
       {post.images && post.images.length > 0 && (
         <div className="image-gallery">
           <img

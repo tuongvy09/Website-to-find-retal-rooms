@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
-import crypto from "crypto-js"; 
+import crypto from "crypto-js";
 // const mongoose = require('mongoose');
 
 const authSlice = createSlice({
@@ -74,7 +74,7 @@ const authSlice = createSlice({
     googleLoginSuccess: (state, action) => {
       state.login.isFetching = false;
 
-      const { credential, accessToken} = action.payload; // Lấy credential và accessToken từ action payload
+      const { credential, accessToken } = action.payload; // Lấy credential và accessToken từ action payload
 
       // Kiểm tra nếu credential không phải là chuỗi hợp lệ
       if (!credential || typeof credential !== "string") {
@@ -95,12 +95,15 @@ const authSlice = createSlice({
           return;
         }
 
-        const hashedGoogleId = crypto.SHA1(decodedToken.sub).toString(crypto.enc.Hex).slice(0, 24);
+        const hashedGoogleId = crypto
+          .SHA1(decodedToken.sub)
+          .toString(crypto.enc.Hex)
+          .slice(0, 24);
         console.log("idatttt", hashedGoogleId);
 
         // Lưu thông tin người dùng vào Redux
         state.login.currentUser = {
-          _id: hashedGoogleId , 
+          _id: hashedGoogleId,
           username:
             decodedToken.name || decodedToken.given_name || "Google User", // Tên người dùng
           email: decodedToken.email, // Email người dùng

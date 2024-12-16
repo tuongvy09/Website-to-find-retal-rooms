@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import RoomPost from "../Post/RoomPost";
 import "./FavoritePosts.css";
 
@@ -12,6 +12,8 @@ const FavoritePosts = () => {
   const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.auth.login.currentUser);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const newsPerPage = 2;
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -82,25 +84,68 @@ const FavoritePosts = () => {
     }
   };
 
+  // Sắp xếp bài viết yêu thích theo ngày tạo
+  const sortedFavoritePosts = [...favorites].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
+
+  // Tính toán phân trang
+  const indexOfLastNews = currentPage * newsPerPage;
+  const indexOfFirstNews = indexOfLastNews - newsPerPage;
+  const currentPosts = sortedFavoritePosts.slice(
+    indexOfFirstNews,
+    indexOfLastNews,
+  );
+  const totalPages = Math.ceil(sortedFavoritePosts.length / newsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  // Hàm để hiển thị các nút trang với giới hạn
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPageNumbers = 5; // Số lượng nút trang tối đa hiển thị
+    let startPage = Math.max(currentPage - Math.floor(maxPageNumbers / 2), 1);
+    let endPage = startPage + maxPageNumbers - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxPageNumbers + 1, 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
   return (
     <div className="favorite-posts">
-      {favorites.length === 0 ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : favorites.length === 0 ? (
         <motion.p
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}  
-          transition={{ duration: 0.6, ease: 'easeOut' }} 
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           style={{
-            textAlign: 'center',
-            fontSize: '18px',
-            color: '#555',
-            marginTop: '20px',
+            textAlign: "center",
+            fontSize: "18px",
+            color: "#555",
+            marginTop: "20px",
           }}
         >
           Không có bài viết yêu thích nào.
         </motion.p>
       ) : (
         <div className="favorites-list">
-          {favorites.map((post) => (
+          {currentPosts.map((post) => (
             <RoomPost
               key={post._id}
               post={post}
@@ -111,6 +156,32 @@ const FavoritePosts = () => {
           ))}
         </div>
       )}
+
+      <div className="pagination">
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="pagination-button"
+        >
+          &laquo; Trước
+        </button>
+        {getPageNumbers().map((number) => (
+          <button
+            key={number}
+            onClick={() => paginate(number)}
+            className={`pagination-button ${currentPage === number ? "active" : ""}`}
+          >
+            {number}
+          </button>
+        ))}
+        <button
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+          className="pagination-button"
+        >
+          Tiếp &raquo;
+        </button>
+      </div>
     </div>
   );
 };
