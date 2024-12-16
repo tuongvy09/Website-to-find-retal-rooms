@@ -1,6 +1,6 @@
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import EmailIcon from "@mui/icons-material/Email";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
@@ -20,17 +20,18 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { getPostDetail, useFavoriteToggle } from "../../../redux/postAPI";
+import AdminHeader from "../../Admin/AdminHeader/AdminHeader";
 import Header from "../Header/Header";
 import AddReviewForm from "../Review/ReviewForm/ReviewForm";
 import ReviewsList from "../Review/ReviewList/ReviewsList";
 import "./PostDetail.css";
-import axios from "axios";
 
 const PostDetail = ({ onToggleFavorite }) => {
   const { id } = useParams();
@@ -120,7 +121,7 @@ const PostDetail = ({ onToggleFavorite }) => {
 
   return (
     <div className="post-detail-container">
-      <Header />
+      {user && (user.admin === "true" || user.admin === true) ? <AdminHeader /> : <Header />}
       {post.images && post.images.length > 0 && (
         <div className="image-gallery">
           <img

@@ -4,13 +4,12 @@ import {
   Badge,
   Box,
   Button,
-  Divider,
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
+  Typography
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createAxios } from "../../../createInstance";
@@ -22,33 +21,22 @@ import "./Header.css";
 const Header = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [notificationsMenuAnchorEl, setNotificationsMenuAnchorEl] =
-    useState(null);
+  const [notificationsMenuAnchorEl, setNotificationsMenuAnchorEl] =useState(null);
   const [notifications, setNotifications] = useState([]);
   const currentUser = useSelector((state) => state.auth.login.currentUser);
   const dispatch = useDispatch();
   const accessToken = currentUser?.accessToken;
   const id = currentUser?._id;
   const axiosJWT = createAxios(currentUser, dispatch, logoutSuccess);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const notificationsList = currentUser ? currentUser.notifications : [];
-  const notificationCount = notificationsList.filter(
-    (notification) => notification.status === "unread",
-  ).length;
-  const totalNotifications = notificationsList.length;
-
-  useEffect(() => {
-    if (currentUser && Array.isArray(currentUser.notifications)) {
-      // Tạo bản sao và sắp xếp
-      const sortedNotifications = [...currentUser.notifications].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-      );
-      setNotifications(sortedNotifications);
-    }
-  }, [currentUser]);
+  const handleUpdateUnreadCount = (count) => {
+    setUnreadCount(count);
+  };
 
   const handleLogout = () => {
     logout(dispatch, id, navigate, accessToken, axiosJWT);
+    setUnreadCount(0);
   };
 
   const handleClick = (event) => {
@@ -56,11 +44,11 @@ const Header = () => {
   };
 
   const handleNotificationClick = (event) => {
-    setNotificationsMenuAnchorEl(event.currentTarget); // Open notification menu
+    setNotificationsMenuAnchorEl(event.currentTarget);
   };
 
   const handleNotificationClose = () => {
-    setNotificationsMenuAnchorEl(null); // Close notification menu
+    setNotificationsMenuAnchorEl(null);
   };
 
   const handleAddPost = () => {
@@ -107,7 +95,7 @@ const Header = () => {
             Đăng tin mới
           </Button>
           <Button className="user-header-btn" onClick={handleNotificationClick}>
-            <Badge badgeContent={notificationCount} color="error">
+            <Badge badgeContent={unreadCount} color="error">
               <NotificationsIcon />
             </Badge>
           </Button>
@@ -167,6 +155,8 @@ const Header = () => {
         onClose={handleNotificationClose}
         onNotificationClose={handleNotificationClose}
         markAsRead={markAsRead}
+        accessToken={accessToken}
+        onUpdateUnreadCount={handleUpdateUnreadCount}
       />
     </AppBar>
   );

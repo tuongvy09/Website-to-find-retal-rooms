@@ -32,9 +32,11 @@ const notificationSlice = createSlice({
       if (notificationIndex !== -1) {
         state.notifications[notificationIndex].isRead = true;
       }
+      state.loading = false;
     },
     markAsReadFailed: (state, action) => {
       state.error = action.payload;
+      state.loading = false;
     },
   },
 });

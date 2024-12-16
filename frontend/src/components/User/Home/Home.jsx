@@ -161,7 +161,7 @@ const Home = () => {
               </p>
               <div className="contact-buttons">
                 <button className="contact-btn phone-btn">
-                  <i className="fas fa-phone-alt"></i> ĐT: (+84) 0313-728-397
+                  <i className="fas fa-phone-alt"></i> <a href="tel:+840313728397" className="home-link-phone">(+84) 0313-728-397</a>
                 </button>
                 <button className="contact-btn zalo-btn">
                   <Email style={{ marginRight: "10px" }} /> Gmail:
