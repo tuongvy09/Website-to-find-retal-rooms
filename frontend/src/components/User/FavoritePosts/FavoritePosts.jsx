@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import RoomPost from "../Post/RoomPost";
 import Swal from "sweetalert2";
+import { motion } from 'framer-motion';
 import "./FavoritePosts.css";
 
 const FavoritePosts = () => {
@@ -84,7 +85,19 @@ const FavoritePosts = () => {
   return (
     <div className="favorite-posts">
       {favorites.length === 0 ? (
-        <p>Không có bài viết yêu thích nào.</p>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}  
+          transition={{ duration: 0.6, ease: 'easeOut' }} 
+          style={{
+            textAlign: 'center',
+            fontSize: '18px',
+            color: '#555',
+            marginTop: '20px',
+          }}
+        >
+          Không có bài viết yêu thích nào.
+        </motion.p>
       ) : (
         <div className="favorites-list">
           {favorites.map((post) => (

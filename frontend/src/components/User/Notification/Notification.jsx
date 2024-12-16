@@ -22,7 +22,9 @@ const Notification = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.login.currentUser);
-  const notifications = currentUser ? currentUser.notifications : [];
+  const notifications = currentUser && Array.isArray(currentUser.notifications)
+  ? currentUser.notifications
+  : [];
   const loading = useSelector((state) => state.notifications.loading);
   const error = useSelector((state) => state.notifications.error);
 
@@ -39,10 +41,10 @@ const Notification = ({
     onNotificationClose();
   };
 
-  const sortedNotifications = [...notifications].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-  );
-
+    const sortedNotifications = notifications && notifications.length > 0
+    ? [...notifications].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    : []; 
+  
   return (
     <Menu
       anchorEl={anchorEl}
@@ -79,7 +81,7 @@ const Notification = ({
             {error}
           </Typography>
         </MenuItem>
-      ) : sortedNotifications && sortedNotifications.length > 0 ? (
+      ) : sortedNotifications.length > 0 ? (
         sortedNotifications.map((notification) => (
           <React.Fragment key={notification._id}>
             <MenuItem

@@ -31,22 +31,24 @@ const Header = () => {
   const id = currentUser?._id;
   const axiosJWT = createAxios(currentUser, dispatch, logoutSuccess);
 
-  const notificationsList = currentUser ? currentUser.notifications : [];
+  const notificationsList = currentUser?.notifications || [];
   const notificationCount = notificationsList.filter(
-    (notification) => notification.status === "unread",
+    (notification) => notification.status === "unread"
   ).length;
+  
   const totalNotifications = notificationsList.length;
 
   useEffect(() => {
     if (currentUser && Array.isArray(currentUser.notifications)) {
-      // Tạo bản sao và sắp xếp
       const sortedNotifications = [...currentUser.notifications].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
       setNotifications(sortedNotifications);
+    } else {
+      setNotifications([]);  
     }
   }, [currentUser]);
-
+  
   const handleLogout = () => {
     logout(dispatch, id, navigate, accessToken, axiosJWT);
   };
