@@ -30,9 +30,28 @@ const Header = () => {
   const axiosJWT = createAxios(currentUser, dispatch, logoutSuccess);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const notificationsList = currentUser?.notifications || [];
+  const notificationCount = notificationsList.filter(
+    (notification) => notification.status === "unread"
+  ).length;
+  
+  const totalNotifications = notificationsList.length;
+
+  useEffect(() => {
+    if (currentUser && Array.isArray(currentUser.notifications)) {
+      const sortedNotifications = [...currentUser.notifications].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setNotifications(sortedNotifications);
+    } else {
+      setNotifications([]);  
+    }
+  }, [currentUser]);
+  
   const handleUpdateUnreadCount = (count) => {
     setUnreadCount(count);
   };
+
 
   const handleLogout = () => {
     logout(dispatch, id, navigate, accessToken, axiosJWT);

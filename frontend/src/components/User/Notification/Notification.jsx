@@ -23,8 +23,11 @@ const Notification = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.login.currentUser);
+  const notifications = currentUser && Array.isArray(currentUser.notifications)
+  ? currentUser.notifications
+  : [];
   const token = currentUser?.accessToken;
-  const [notifications, setNotifications] = React.useState([]);
+  const [setNotifications] = React.useState([]);
   const [visibleCount, setVisibleCount] = React.useState(5); // Quản lý số lượng thông báo hiển thị
   const loading = useSelector((state) => state.notifications.loading);
   const error = useSelector((state) => state.notifications.error);
@@ -74,10 +77,10 @@ const Notification = ({
     onNotificationClose();
   };
 
-  const sortedNotifications = [...notifications].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-  );
-
+    const sortedNotifications = notifications && notifications.length > 0
+    ? [...notifications].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    : []; 
+  
   return (
     <Menu
       anchorEl={anchorEl}

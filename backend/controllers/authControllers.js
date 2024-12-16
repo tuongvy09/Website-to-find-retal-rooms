@@ -4,6 +4,8 @@ const User = require("../models/User");
 const { use } = require("../routes/user");
 const { OAuth2Client } = require ('google-auth-library');
 const nodemailer = require("nodemailer");
+const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 let refreshTokens = [];
 const client_id = '542714924408-kun6tfccnlcit4k9ono82oue7vqhth70.apps.googleusercontent.com';
@@ -155,16 +157,23 @@ const authController = {
                 audience: client_id,
             });
             const payload = ticket.getPayload();
+
+            const hashedGoogleId = crypto.createHash('sha1').update(payload.sub).digest('hex').slice(0, 24);
+            const objectId = new mongoose.Types.ObjectId(hashedGoogleId);
+            console.log("_idkkk", objectId);
+
             // Dùng email hoặc Google ID từ payload để tìm hoặc tạo tài khoản người dùng
             const user = await User.findOne({ email: payload.email });
             if (!user) {
-                // Nếu người dùng chưa có trong database, tạo tài khoản mới
-                const newUser = new User({
+                const user = new User({
+                    _id: objectId,
                     username: payload.name,
                     email: payload.email,
-                    googleId: payload.sub,  // Lưu Google ID của người dùng
+                    profile: {
+                        picture: payload.picture  
+                    }
                 });
-                await newUser.save();
+                await user.save();
             }
 
             // Tạo Access Token để trả về cho client
