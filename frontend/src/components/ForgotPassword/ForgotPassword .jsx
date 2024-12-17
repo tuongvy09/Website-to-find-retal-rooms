@@ -7,6 +7,9 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -16,10 +19,9 @@ const ForgotPassword = () => {
       return;
     }
     try {
-      const response = await axios.post(
-        `http://localhost:8000/v1/auth/forgot-password`,
-        { email },
-      );
+      const response = await axiosJWT.post(`/v1/auth/forgot-password`, {
+        email,
+      });
       setMessage(response.data); // Hiển thị thông báo thành công từ backend
     } catch (err) {
       setError(err.response?.data || "Có lỗi xảy ra!");

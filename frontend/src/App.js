@@ -2,7 +2,7 @@ import "froala-editor/css/froala_editor.pkgd.min.css";
 import "froala-editor/css/froala_style.min.css";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import './App.css';
+import "./App.css";
 import HomeAdmin from "./components/Admin/AdminDashboard/HomeAdmin";
 import ManagePostAdmin from "./components/Admin/AdminDashboard/ManagePostAdmin";
 import AdminHeader from "./components/Admin/AdminHeader/AdminHeader";

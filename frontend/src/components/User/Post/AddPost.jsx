@@ -255,7 +255,17 @@ const AddPost = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!address || !selectedProvince || !selectedWard || !propertyType || !title || !content || !phone || !rentalPrice || !formattedArea) {
+    if (
+      !address ||
+      !selectedProvince ||
+      !selectedWard ||
+      !propertyType ||
+      !title ||
+      !content ||
+      !phone ||
+      !rentalPrice ||
+      !formattedArea
+    ) {
       setErrorNull("Vui lòng điền đầy đủ thông tin!");
       return;
     }
@@ -643,7 +653,8 @@ const AddPost = () => {
               </Box>
               <Typography className="title3">Hình ảnh</Typography>
               <p className="custom-fontp">
-                Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn(Tối đa 8 ảnh)
+                Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn(Tối
+                đa 8 ảnh)
               </p>
               <input
                 accept="image/*"
@@ -675,7 +686,12 @@ const AddPost = () => {
                     key={index}
                     src={image.preview}
                     alt={`uploaded-${index}`}
-                    style={{ width: "100px", height: '100px', margin: "5px", top: "300px" }}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      margin: "5px",
+                      top: "300px",
+                    }}
                   />
                 ))}
               </div>

@@ -18,12 +18,15 @@ const EditNewsForm = () => {
   const navigate = useNavigate();
   const quillRef = useRef(null);
   const dispatch = useDispatch();
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   // Lấy thông tin tin tức hiện tại
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/v1/news/${id}`);
+        const response = await axiosJWT.get(`/v1/news/${id}`);
         const newsData = response.data;
         setTitle(newsData.title);
         setDescription(newsData.description);
@@ -75,7 +78,7 @@ const EditNewsForm = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/v1/news/${id}`, {
+      await axiosJWT.put(`/v1/news/${id}`, {
         title,
         description,
         content,

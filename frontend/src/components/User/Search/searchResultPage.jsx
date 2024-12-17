@@ -15,6 +15,9 @@ const SearchResultsPage = () => {
   const [favorites, setFavorites] = useState([]);
   const [sortOption, setSortOption] = useState("default");
   const user = useSelector((state) => state.auth.login.currentUser);
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   const { toggleFavorite } = useFavoriteToggle(user);
 
@@ -26,12 +29,9 @@ const SearchResultsPage = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/v1/posts/favorites",
-          {
-            headers: { Authorization: `Bearer ${user?.accessToken}` },
-          },
-        );
+        const response = await axiosJWT.get("/v1/posts/favorites", {
+          headers: { Authorization: `Bearer ${user?.accessToken}` },
+        });
         setFavorites(response.data.favorites);
       } catch (error) {
         console.error("Error fetching favorites:", error);

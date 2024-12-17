@@ -15,6 +15,9 @@ const NewsDetail = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   const handleEdit = () => {
     navigate(`/manage-news/edit/${id}`);
@@ -27,7 +30,7 @@ const NewsDetail = () => {
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/v1/news/${id}`);
+        const response = await axiosJWT.get(`/v1/news/${id}`);
         setNews(response.data);
         setLoading(false);
       } catch (err) {
@@ -63,7 +66,7 @@ const NewsDetail = () => {
 
       if (result.isConfirmed) {
         // Tiến hành xóa tin tức nếu người dùng xác nhận
-        await axios.delete(`http://localhost:8000/v1/news/${newsId}`);
+        await axiosJWT.delete(`/v1/news/${newsId}`);
         navigate("/admin-dashboard");
         dispatch(setSelectedMenu("newsList"));
         toast.success("Xóa tin tức thành công!");

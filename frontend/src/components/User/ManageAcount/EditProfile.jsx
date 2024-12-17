@@ -84,7 +84,7 @@ const EditProfile = ({ user }) => {
         setProvinces(response.data);
       } catch (error) {
         console.error("Error fetching provinces:", error);
-      } finally{
+      } finally {
         setLoading(false);
       }
     };
