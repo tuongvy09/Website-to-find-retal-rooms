@@ -408,7 +408,7 @@ export const useFavoriteToggle = (user) => {
 
   const toggleFavorite = async (postId, isCurrentlyFavorite) => {
     try {
-      const url = `http://localhost:8000/v1/posts/${postId}/favorite`;
+      const url = `${API_URL}${postId}/favorite`;
       const headers = { Authorization: `Bearer ${user?.accessToken}` };
 
       if (isCurrentlyFavorite) {

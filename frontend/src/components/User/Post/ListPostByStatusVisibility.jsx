@@ -41,6 +41,7 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
 
   const handleHidePost = async (postId) => {
     try {
+      setLoading(true);
       const response = await togglePostVisibility(postId, token);
       if (response.success) {
         const updatedPosts = posts.filter((post) => post.id !== postId);
@@ -48,11 +49,14 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
       }
     } catch (error) {
       console.error("Lỗi khi ẩn bài viết:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleVisiblePost = async (postId) => {
     try {
+      setLoading(true);
       const response = await togglePostVisibility(postId, token);
       if (response.success) {
         const updatedPosts = posts.filter((post) => post.id !== postId);
@@ -60,20 +64,26 @@ const ListPostByStatusVisibility = ({ status, visibility, token }) => {
       }
     } catch (error) {
       console.error("Lỗi khi ẩn bài viết:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDeletePost = async (postId) => {
     try {
+      setLoading(true);
       const result = await deletePost(postId, token);
       console.log("Post deleted:", result);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     const fetchUserPosts = async () => {
+      setLoading(true);
       try {
         const response = await getUserPostsByStateAndVisibility(
           status,

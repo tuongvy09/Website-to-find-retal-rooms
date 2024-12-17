@@ -2,6 +2,7 @@ import "froala-editor/css/froala_editor.pkgd.min.css";
 import "froala-editor/css/froala_style.min.css";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import './App.css';
 import HomeAdmin from "./components/Admin/AdminDashboard/HomeAdmin";
 import ManagePostAdmin from "./components/Admin/AdminDashboard/ManagePostAdmin";
 import AdminHeader from "./components/Admin/AdminHeader/AdminHeader";
@@ -26,9 +27,9 @@ import NewsDetailUser from "./components/User/News/NewsDetail/NewsDetailUser";
 import NewsListUser from "./components/User/News/NewsList/NewsListUser";
 import AddPost from "./components/User/Post/AddPost";
 import PostDetail from "./components/User/Post/PostDetail";
+import PostsPage from "./components/User/Post/PostPage";
 import SearchPosts from "./components/User/Search/searchPosts";
 import SearchResultsPage from "./components/User/Search/searchResultPage";
-import PostsPage from "./components/User/Post/PostPage";
 
 function App() {
   return (

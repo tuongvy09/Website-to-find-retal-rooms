@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { createPost } from "../../../redux/postAPI";
 import "./AddPost.css";
 
@@ -77,6 +78,7 @@ const AddPost = () => {
   const [errorPhone, setErrorPhone] = useState("");
   const [typePrice, setTypePrice] = useState("1");
   const [errorNull, setErrorNull] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const validatePhone = (value) => {
     const phoneRegex = /^0[0-9]{8,10}$/;
@@ -253,17 +255,7 @@ const AddPost = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (
-      !address ||
-      !selectedProvince ||
-      !selectedWard ||
-      !propertyType ||
-      !title ||
-      !content ||
-      !phone ||
-      !rentalPrice ||
-      !formattedArea
-    ) {
+    if (!address || !selectedProvince || !selectedWard || !propertyType || !title || !content || !phone || !rentalPrice || !formattedArea) {
       setErrorNull("Vui lòng điền đầy đủ thông tin!");
       return;
     }
@@ -303,7 +295,7 @@ const AddPost = () => {
       for (let [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
       }
-
+      setLoading(true);
       const response = await createPost(formData, accessToken);
       toast.success("Đăng bài thành công, vui lòng chờ admin duyệt");
       navigate("/");
@@ -311,12 +303,21 @@ const AddPost = () => {
       if (err.response) {
         toast.error(err.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+
   return (
     <div className="div-user-container-add-post">
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={5000} />
       <Box
         sx={{ display: "flex", height: "100vh" }}
         className="addpost-container"
@@ -642,7 +643,7 @@ const AddPost = () => {
               </Box>
               <Typography className="title3">Hình ảnh</Typography>
               <p className="custom-fontp">
-                Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn
+                Cập nhật hình ảnh chi tiết sẽ giúp tin đăng được chú ý hơn(Tối đa 8 ảnh)
               </p>
               <input
                 accept="image/*"
@@ -674,12 +675,7 @@ const AddPost = () => {
                     key={index}
                     src={image.preview}
                     alt={`uploaded-${index}`}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      margin: "5px",
-                      top: "300px",
-                    }}
+                    style={{ width: "100px", height: '100px', margin: "5px", top: "300px" }}
                   />
                 ))}
               </div>

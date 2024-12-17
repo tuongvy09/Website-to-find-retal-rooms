@@ -1,14 +1,21 @@
 import React from "react";
+import userpic from "../../../assets/images/user.png";
 import "./Sidebar.css";
-
 const Sidebar = ({ user, setSelectedMenu }) => {
+  if (!user) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    ); 
+  }
   return (
     <div className="sidebar-manage-user">
       <div className="user-info">
-        <img src={user.profile.picture} alt="User Avatar" className="avatar" />
+        <img src={user.profile?.picture || userpic} alt="User Avatar" className="avatar" />
         <div className="user-details">
-          <h3 className="user-name">{user.username}</h3>
-          <p className="user-phone">{user.phone}</p>
+          <h3 className="user-name">{user.username || 'Tên người dùng'}</h3>
+          <p className="user-phone">{user.profile?.phone || 'Số điện thoại người dùng'}</p>
         </div>
       </div>
       <nav className="nav-menu">

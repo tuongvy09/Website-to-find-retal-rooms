@@ -38,6 +38,7 @@ const EditProfile = ({ user }) => {
   const [phone, setPhone] = useState(user?.profile?.phone || "");
   const [bio, setBio] = useState(user?.profile?.bio || "");
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const SelectWithLabel = ({ label, options, value, onChange }) => {
     return (
@@ -76,12 +77,15 @@ const EditProfile = ({ user }) => {
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           "https://provinces.open-api.vn/api/?depth=3",
         );
         setProvinces(response.data);
       } catch (error) {
         console.error("Error fetching provinces:", error);
+      } finally{
+        setLoading(false);
       }
     };
 
@@ -137,6 +141,7 @@ const EditProfile = ({ user }) => {
 
     console.log("Form Data:", formData);
     try {
+      setLoading(true);
       await updateUserProfile(user._id, formData, user.accessToken, dispatch);
       toast.success("Cập nhật hồ sơ thành công!", {
         position: "top-right",
@@ -146,7 +151,6 @@ const EditProfile = ({ user }) => {
         pauseOnHover: true,
         draggable: true,
       });
-      console.log("Cập nhật hồ sơ thành công!");
     } catch (error) {
       // Xử lý lỗi và thông báo thất bại
       const errorMessage =
@@ -160,16 +164,24 @@ const EditProfile = ({ user }) => {
         pauseOnHover: true,
         draggable: true,
       });
-      console.error("Lỗi khi cập nhật hồ sơ:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   return (
     <div className="container-edit-profile">
       <div className="user-info" style={{ position: "relative" }}>
         {picture ? (
           <img
-            src={picture.preview || picture}
+            src={picture.preview || picture || null}
             alt="User Avatar"
             className="avatar"
             style={{ width: 100, height: 100, borderRadius: "50%" }}

@@ -13,6 +13,7 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 import { getPostDetail, updatePost } from "../../../redux/postAPI";
 import "./UpdatePost.css";
 
@@ -27,6 +28,8 @@ const UpdatePost = ({ postId }) => {
   const accessToken = currentUser?.accessToken;
   const [typePrice, setTypePrice] = useState("1");
   const [areaError, setAreaError] = useState("");
+  const [errorNull, setErrorNull] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const quillRef = useRef(null);
 
@@ -66,11 +69,14 @@ const UpdatePost = ({ postId }) => {
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
+        setLoading(true);
         console.log("Fetching post detail with ID:", postId);
         const postData = await getPostDetail(postId);
         setPost(postData.data);
       } catch (error) {
         setError("Lỗi khi lấy chi tiết bài đăng");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -96,12 +102,18 @@ const UpdatePost = ({ postId }) => {
       typePrice,
       area,
     };
-
+    if (!title || !content || !rentalPrice || !area) {
+      setErrorNull("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
     try {
+      setLoading(true);
       const updatedPost = await updatePost(postId, postData, accessToken);
-      console.log("Cập nhật bài đăng thành công!");
+      toast.success('Cập nhật bài đăng thành công');
     } catch (error) {
-      setError("Cập nhật bài đăng thất bại");
+      toast.error('Cập nhật bài đăng thất bại');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -133,28 +145,34 @@ const UpdatePost = ({ postId }) => {
     }
   };
 
-  if (error) {
-    return <div>{error}</div>;
+  if (!post) {
+    return <div>Đang tải...</div>;
   }
 
-  if (!post) {
-    return <div>Đang tải...</div>; // Chờ dữ liệu bài đăng
-  }
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   return (
     <div className="container-updatepost">
+      <ToastContainer position="top-right" autoClose={5000} />
       <Typography className="update-post-title">Chỉnh sửa bài đăng</Typography>
+      {errorNull && <p className="error-message">{errorNull}</p>}
       <div>
         <TextField
           label="Tiêu đề"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           fullWidth
+          required
         />
       </div>
 
       <Typography className="title3">Nội dung miêu tả</Typography>
-      <div ref={quillRef} style={{ height: "300px" }} />
+      <div ref={quillRef} style={{ height: "300px" }} required />
       <div className="update-post-container-area-price">
         <Box
           sx={{
@@ -175,6 +193,7 @@ const UpdatePost = ({ postId }) => {
               pattern: "\\d+(\\.\\d{1,2})?",
               step: "0.01",
             }}
+            required
             error={!!error}
           />
           <FormControl
@@ -220,6 +239,7 @@ const UpdatePost = ({ postId }) => {
               step: "0.01",
             }}
             error={!!areaError}
+            required
           />
           <TextField
             id="area-field"

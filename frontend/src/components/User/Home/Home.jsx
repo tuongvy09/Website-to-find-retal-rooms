@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import supportPic from "../../../assets/images/supportPic.png";
 import { searchAndCategorizePosts } from "../../../redux/postAPI";
 import ListPostHome from "../Post/ListPostHome";
@@ -112,6 +113,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      <ToastContainer position="top-right" autoClose={5000} />
       <div style={{ width: "100%", height: "auto" }}>
         <ListPostHome
           post={category1Posts}
