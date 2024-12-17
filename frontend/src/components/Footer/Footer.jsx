@@ -54,7 +54,7 @@ const Footer = () => {
           <Info style={{ color: "#4caf50", marginRight: "10px" }} />
           <Typography variant="body2">Về chúng tôi</Typography>
         </Box>
-        <Box className="footer-link-item">
+        <Box className="footer-link-item" onClick={() => window.open("/TinTuc")}>
           <NewReleases style={{ color: "#4caf50", marginRight: "10px" }} />
           <Typography variant="body2">Tin tức mới</Typography>
         </Box>
@@ -69,7 +69,7 @@ const Footer = () => {
         <Typography variant="body2">
           🏡 Đăng ký ngay để nâng cao trải nghiệm tìm phòng trọ nào 😎
         </Typography>
-        <Button endIcon={<ArrowForward />} className="newsletter-button">
+        <Button onClick={() => window.open("/register")} endIcon={<ArrowForward />} className="newsletter-button">
           Đăng ký
         </Button>
         <Box className="newsletter-icon">

@@ -117,6 +117,7 @@
 /* sidebar */
 .news-detail-page {
   display: flex;
+  min-height: 330px;
 }
 
 .sidebar {

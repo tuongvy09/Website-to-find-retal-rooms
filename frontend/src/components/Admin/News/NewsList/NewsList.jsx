@@ -111,7 +111,7 @@ const NewsList = () => {
 
   return (
     <div className="news-list-container">
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={5000} />
       {selectedNews ? (
         <NewsDetail
           newSelect={selectedNews}

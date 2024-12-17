@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createNews } from "../../../../redux/newsAPI";
+import axios from "axios";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import "./NewsForm.css";
-import axios from "axios";
-import { createAxios } from "../../../../createInstance";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSelectedMenu } from "../../../../redux/menuSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { createAxios } from "../../../../createInstance";
+import { setSelectedMenu } from "../../../../redux/menuSlice";
+import { createNews } from "../../../../redux/newsAPI";
+import "./NewsForm.css";
 
 const NewsForm = () => {
   const [title, setTitle] = useState("");

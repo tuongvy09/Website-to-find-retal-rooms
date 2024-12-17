@@ -35,7 +35,7 @@ const Header = () => {
   const notificationCount = notificationsList.filter(
     (notification) => notification.status === "unread",
   ).length;
-
+  
   const totalNotifications = notificationsList.length;
 
   useEffect(() => {

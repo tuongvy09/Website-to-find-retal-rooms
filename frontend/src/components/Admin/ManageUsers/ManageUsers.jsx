@@ -18,6 +18,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import { createAxios } from "../../../createInstance";
 import { getAllUsers } from "../../../redux/apiRequest";
 import { loginSuccess } from "../../../redux/authSlice";
@@ -35,6 +36,7 @@ const ManageUsers = () => {
   const [selectedUserProfile, setSelectedUserProfile] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 8;
+  const [loading, setLoading] = useState(false);
 
   // Create axiosJWT instance
   let axiosJWT = createAxios(user, dispatch, loginSuccess);
@@ -79,6 +81,7 @@ const ManageUsers = () => {
     if (!selectedUser) return;
 
     try {
+      setLoading(true);
       const response = await axiosJWT.put(
         `/v1/user/block/${selectedUser._id}`,
         {},
@@ -88,13 +91,14 @@ const ManageUsers = () => {
       );
 
       if (response.status === 200) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         getAllUsers(user?.accessToken, dispatch, axiosJWT); // Refresh the user list
       }
     } catch (error) {
       console.error("Error blocking/unblocking user:", error);
-      alert("Không thể cập nhật trạng thái tài khoản.");
+      toast.error("Không thể cập nhật trạng thái tài khoản.");
     } finally {
+      setLoading(false);
       handleCloseDialog();
     }
   };
@@ -140,8 +144,16 @@ const ManageUsers = () => {
     return pageNumbers;
   };
 
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+
   return (
     <Box className="manage-users">
+      <ToastContainer position="top-right" autoClose={5000} />
       <Box className="content">
         <Typography variant="h4" gutterBottom>
           Quản Lý Người Dùng

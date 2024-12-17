@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import {
   deleteReview as deleteReviewAPI,
   editReview,
@@ -13,7 +14,6 @@ import {
   updateReview,
 } from "../../../../redux/reviewSlice";
 import "./ReviewsList.css";
-import Swal from "sweetalert2";
 
 const ReviewsList = ({ postId, userId }) => {
   const dispatch = useDispatch();
