@@ -32,14 +32,14 @@ const HomeAdmin = () => {
         return <NewsList />;
       case "addNews":
         return <NewsForm />;
-      default:
-        return <AdminDashboard />;
       case "managePost":
         return <ManagePostAdmin />;
       case "manageNews":
         return <NewsManagement />;
       case "userPost":
         return <UserPosts />;
+      default:
+        return <AdminDashboard />;
     }
   };
 

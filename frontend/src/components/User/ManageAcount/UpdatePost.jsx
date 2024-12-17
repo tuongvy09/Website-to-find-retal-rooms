@@ -12,8 +12,9 @@ import {
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import { setSelectedMenu } from "../../../redux/menuSlice";
 import { getPostDetail, updatePost } from "../../../redux/postAPI";
 import "./UpdatePost.css";
 
@@ -30,6 +31,7 @@ const UpdatePost = ({ postId }) => {
   const [areaError, setAreaError] = useState("");
   const [errorNull, setErrorNull] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const quillRef = useRef(null);
 
@@ -110,6 +112,7 @@ const UpdatePost = ({ postId }) => {
       setLoading(true);
       const updatedPost = await updatePost(postId, postData, accessToken);
       toast.success("Cập nhật bài đăng thành công");
+      dispatch(setSelectedMenu("postList"));
     } catch (error) {
       toast.error("Cập nhật bài đăng thất bại");
     } finally {

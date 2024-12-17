@@ -3,11 +3,12 @@ import axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import iconChangePass from "../../../assets/images/iconChangePass.png";
+import iconLogout from "../../../assets/images/iconLogout.png";
 import { createAxios } from "../../../createInstance";
 import { logout } from "../../../redux/apiRequest";
 import { logoutSuccess } from "../../../redux/authSlice";
-import iconLogout from "../../../assets/images/iconLogout.png";
-import iconChangePass from "../../../assets/images/iconChangePass.png";
+import { setSelectedMenu } from "../../../redux/menuSlice";
 import "./AdminHeader.css";
 
 const AdminHeader = () => {
@@ -30,7 +31,7 @@ const AdminHeader = () => {
       <Toolbar>
         <Typography
           className="admin-header-title"
-          onClick={() => navigate("/admin-dashboard")}
+          onClick={() => dispatch(setSelectedMenu("dashboard"))}
           style={{ cursor: "pointer" }}
         >
           Phòng Trọ Xinh

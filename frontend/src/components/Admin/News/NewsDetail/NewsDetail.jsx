@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { setSelectedMenu } from "../../../../redux/menuSlice";
-import "react-toastify/dist/ReactToastify.css";
 import "./NewsDetail.css";
 
 const NewsDetail = () => {

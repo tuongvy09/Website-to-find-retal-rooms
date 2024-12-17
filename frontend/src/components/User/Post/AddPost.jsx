@@ -71,7 +71,7 @@ const AddPost = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const fullAddress = `${address} ${selectedWard ? selectedWard.name : ""} ${selectedDistrict ? selectedDistrict.name : ""} ${selectedProvince ? selectedProvince.name : ""}`;
   const [propertyType, setpropertyType] = useState("");
-  const [error, setError] = useState("");
+  const [errorRental, setErrorRental] = useState("");
   const navigate = useNavigate();
   const [errorTitle, setErrorTitle] = useState("");
   const [errorContent, setErrorContent] = useState("");
@@ -79,6 +79,7 @@ const AddPost = () => {
   const [typePrice, setTypePrice] = useState("1");
   const [errorNull, setErrorNull] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const validatePhone = (value) => {
     const phoneRegex = /^0[0-9]{8,10}$/;
@@ -142,9 +143,9 @@ const AddPost = () => {
 
     if (value === "" || regex.test(value)) {
       setRentalPrice(value);
-      setError("");
+      setErrorRental("");
     } else {
-      setError("Giá cho thuê phải là số thực không âm");
+      setErrorRental("Giá cho thuê phải là số thực không âm");
     }
   };
 
@@ -528,7 +529,7 @@ const AddPost = () => {
                       pattern: "\\d+(\\.\\d{1,2})?",
                       step: "0.01",
                     }}
-                    error={!!error}
+                    error={!!errorRental}
                     required
                   />
                   <FormControl
@@ -547,9 +548,9 @@ const AddPost = () => {
                       <MenuItem value="2">Triệu/m²/tháng</MenuItem>
                     </Select>
                   </FormControl>
-                  {error && (
+                  {errorRental && (
                     <FormHelperText error sx={{ marginLeft: 1 }}>
-                      {error}
+                      {errorRental}
                     </FormHelperText>
                   )}
                 </Box>

@@ -17,6 +17,7 @@
   justify-content: center;
   background-color: #f9f9f9;
   z-index: 1;
+  position: relative;
 }
 
 .form-wrapper {

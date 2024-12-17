@@ -52,7 +52,7 @@ const UserPosts = () => {
   }, [token, userId]);
 
   return (
-    <div>
+    <div style={{minHeight: "310px"}}>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <ul>
         {posts.map((post) => (

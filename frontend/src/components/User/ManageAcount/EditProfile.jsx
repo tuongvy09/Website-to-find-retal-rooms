@@ -17,8 +17,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateUserProfile } from "../../../redux/apiRequest";
 import "./EditProfile.css";
@@ -232,6 +231,7 @@ const EditProfile = ({ user }) => {
           fullWidth
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
+          type="number"
         />
       </Box>
 
