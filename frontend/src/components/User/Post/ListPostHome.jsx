@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +9,6 @@ import arrowsIcon from "../../../assets/images/arrowIcon.png";
 import { useFavoriteToggle } from "../../../redux/postAPI";
 import "./ListPostHome.css";
 import RoomPost from "./RoomPost";
-import axios from "axios";
 
 const ListPostHome = ({ post = [], title, favorite }) => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const ListPostHome = ({ post = [], title, favorite }) => {
   const [change, setChange] = React.useState(false);
   const user = useSelector((state) => state.auth.login.currentUser);
   const { toggleFavorite } = useFavoriteToggle(user);
+
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
@@ -39,7 +40,7 @@ const ListPostHome = ({ post = [], title, favorite }) => {
       fetchFavorites();
     }
   }, [user]);
-  console.log("Favorites:", favorites);
+  
   const handleTitleClick = (id) => {
     console.log("Navigating to post with ID:", id);
     if (id) {

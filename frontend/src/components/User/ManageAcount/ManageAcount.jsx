@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMenu } from "../../../redux/menuSlice";
+import ChangePassword from "../ChangePassword/ChangePassword";
+import FavoritePosts from "../FavoritePosts/FavoritePosts";
 import Header from "../Header/Header";
 import EditProfile from "./EditProfile";
 import ListUserPost from "./listUserPost";
-import ChangePassword from "../ChangePassword/ChangePassword";
 import "./ManageAcount.css";
 import Sidebar from "./Sidebar";
-import FavoritePosts from "../FavoritePosts/FavoritePosts";
 import UpdatePost from "./UpdatePost";
 
 const ManageAcount = () => {
@@ -28,13 +28,13 @@ const ManageAcount = () => {
       case "updatePost":
         return <UpdatePost postId={setSelectedPost} />;
       case "manageAccount":
-        return <EditProfile user={currentUser} />;
+        return <EditProfile user={currentUser || null} />;
       case "changePass":
         return <ChangePassword />;
       case "favoritePosts":
         return <FavoritePosts />;
       default:
-        return <div>Quản lý tài khoản</div>;
+        return <EditProfile user={currentUser || null} />;
     }
   };
 
@@ -46,7 +46,7 @@ const ManageAcount = () => {
     <div className="manageAcount-container">
       <Header />
       <div className="container-body">
-        <Sidebar user={currentUser} setSelectedMenu={handleChangeMenu} />
+        <Sidebar user={currentUser || null} setSelectedMenu={handleChangeMenu} />
         <div className="content">{renderContent()}</div>
       </div>
     </div>

@@ -36,6 +36,7 @@ const ManagePostAdmin = () => {
   const token = currentUser?.accessToken;
   const [filterText, setFilterText] = useState("Lọc bài viết");
   const [days, setDays] = useState();
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -68,11 +69,14 @@ const ManagePostAdmin = () => {
 
   const handleUpdateDays = async () => {
     try {
+      setLoading(true);
       const response = await updateDefaultDaysToShow(days, token);
       toast.success("Cập nhật số ngày hiển thị mặc định thành công!");
       setOpenUpdateDate(false);
     } catch (error) {
       toast.error("Cập nhật số ngày hiển thị mặc định thất bai!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,6 +92,7 @@ const ManagePostAdmin = () => {
   const fetchFilteredPosts = async () => {
     const { status, visibility } = statusVisibilityMap[filter] || {};
     try {
+      setLoading(true);
       const data = await getAllPosts(token, currentPage, 5, status, visibility);
       if (Array.isArray(data.posts)) {
         const formattedPosts = data.posts.map((post) => ({
@@ -118,6 +123,8 @@ const ManagePostAdmin = () => {
       }
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu từ API:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -133,39 +140,62 @@ const ManagePostAdmin = () => {
 
   const handleApprove = async (postId) => {
     try {
+      setLoading(true);
       await approvePost(token, postId);
+      toast.success("Duyệt bài viết thành công!");
       fetchFilteredPosts();
     } catch (error) {
       console.error("Lỗi khi duyệt bài viết:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleReject = async (postId) => {
     try {
+      setLoading(true);
       await rejectPost(token, postId);
+      toast.success("Từ chối bài viết thành công!");
       fetchFilteredPosts();
     } catch (error) {
       console.error("Lỗi khi từ chối bài viết:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleHidden = async (postId) => {
     try {
+      setLoading(true);
       await hiddePost(token, postId);
+      toast.success("Ẩn bài viết thành công!");
       fetchFilteredPosts();
     } catch (error) {
       console.error("Lỗi khi từ chối bài viết:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleVisible = async (postId) => {
     try {
+      setLoading(true);
       await visiblePost(token, postId);
+      toast.success("Hiện bài viết thành công!");
       fetchFilteredPosts();
     } catch (error) {
       console.error("Lỗi khi hiện lại bài viết:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   return (
     <div className="all-posts-list">

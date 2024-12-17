@@ -34,6 +34,7 @@ const UserPosts = () => {
               phoneNumber: post.contactInfo?.phoneNumber || "",
             },
             rentalPrice: post.rentalPrice,
+            typePrice: post.typePrice,
             area: post.area,
             status: post.status,
             images: post.images ? post.images.slice(0, 2) : [],
