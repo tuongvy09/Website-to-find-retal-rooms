@@ -16,18 +16,18 @@ const ListPostHome = ({ post = [], title, favorite }) => {
   const [change, setChange] = React.useState(false);
   const user = useSelector((state) => state.auth.login.currentUser);
   const { toggleFavorite } = useFavoriteToggle(user);
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/v1/posts/favorites",
-          {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
+        const response = await axiosJWT.get("/v1/posts/favorites", {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
           },
-        );
+        });
         await setFavorites(response.data.favorites);
         console.log("Favorites:", response.data.favorites);
       } catch (error) {
@@ -40,7 +40,7 @@ const ListPostHome = ({ post = [], title, favorite }) => {
       fetchFavorites();
     }
   }, [user]);
-  
+
   const handleTitleClick = (id) => {
     console.log("Navigating to post with ID:", id);
     if (id) {

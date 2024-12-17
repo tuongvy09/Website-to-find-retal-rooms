@@ -109,9 +109,9 @@ const UpdatePost = ({ postId }) => {
     try {
       setLoading(true);
       const updatedPost = await updatePost(postId, postData, accessToken);
-      toast.success('Cập nhật bài đăng thành công');
+      toast.success("Cập nhật bài đăng thành công");
     } catch (error) {
-      toast.error('Cập nhật bài đăng thất bại');
+      toast.error("Cập nhật bài đăng thất bại");
     } finally {
       setLoading(false);
     }

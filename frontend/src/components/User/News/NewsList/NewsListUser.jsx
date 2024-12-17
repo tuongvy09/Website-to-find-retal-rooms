@@ -9,12 +9,15 @@ const NewsListUser = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const newsPerPage = 6;
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   // Fetch news from API
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/v1/news");
+        const response = await axiosJWT.get("/v1/news");
         setNewsList(response.data);
         setLoading(false);
       } catch (err) {

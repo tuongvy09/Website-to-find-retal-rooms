@@ -11,6 +11,9 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const { token } = useParams(); // Lấy token từ URL
   const navigate = useNavigate();
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -24,13 +27,10 @@ const ResetPassword = () => {
       return;
     }
     try {
-      const response = await axios.post(
-        `http://localhost:8000/v1/auth/reset-password`,
-        {
-          token,
-          newPassword,
-        },
-      );
+      const response = await axiosJWT.post(`/v1/auth/reset-password`, {
+        token,
+        newPassword,
+      });
       setMessage(response.data); // Hiển thị thông báo thành công
       setTimeout(() => navigate("/login"), 2000); // Điều hướng về trang login sau 2 giây
     } catch (err) {

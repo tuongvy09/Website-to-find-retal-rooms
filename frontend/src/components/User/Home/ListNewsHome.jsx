@@ -10,11 +10,14 @@ const ListNewsHome = () => {
   console.log(newsList);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
+
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/v1/news");
+        const response = await axiosJWT.get("/v1/news");
         const sortedNews = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );

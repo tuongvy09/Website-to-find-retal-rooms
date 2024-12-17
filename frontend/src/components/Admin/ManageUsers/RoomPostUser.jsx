@@ -22,12 +22,14 @@ const RoomPostUser = ({ post, onTitleClick }) => {
             className="room-post-image"
           />
         )}
-        <button className="room-post-price">{post.rentalPrice}
+        <button className="room-post-price">
+          {post.rentalPrice}
           {post.typePrice === "1"
             ? " Triệu/Tháng"
             : post.typePrice === "2"
               ? " Triệu/m²/tháng"
-              : ""}</button>
+              : ""}
+        </button>
       </Box>
       <CardContent className="room-post-content">
         <Box>

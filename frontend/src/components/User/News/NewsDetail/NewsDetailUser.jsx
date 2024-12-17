@@ -8,11 +8,14 @@ const NewsDetailUser = () => {
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/v1/news/${id}`);
+        const response = await axiosJWT.get(`/v1/news/${id}`);
         setNews(response.data);
         setLoading(false);
       } catch (err) {

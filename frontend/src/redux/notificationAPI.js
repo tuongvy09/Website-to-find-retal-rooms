@@ -6,11 +6,13 @@ import {
   markAsReadSuccess,
 } from "./notificationSlice";
 
-const API_URL = "http://localhost:8000/v1/user";
+let axiosJWT = axios.create({
+  baseURL: "http://localhost:8000",
+});
 
 export const fetchNotifications = async (token) => {
   try {
-    const response = await axios.get(`${API_URL}/notifications`, {
+    const response = await axiosJWT.get(`/v1/user/notifications`, {
       headers: {
         Authorization: `Bearer ${token}`, // Gửi token trong header để xác thực
       },

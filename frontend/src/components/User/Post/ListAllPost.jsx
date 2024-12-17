@@ -12,18 +12,18 @@ const ListAllPost = ({ posts, handleTitleClick }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const user = useSelector((state) => state.auth.login.currentUser);
   const postsPerPage = 9;
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   const { toggleFavorite } = useFavoriteToggle(user);
 
   React.useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/v1/posts/favorites",
-          {
-            headers: { Authorization: `Bearer ${user?.accessToken}` },
-          },
-        );
+        const response = await axiosJWT.get("/v1/posts/favorites", {
+          headers: { Authorization: `Bearer ${user?.accessToken}` },
+        });
         setFavorites(response.data.favorites);
       } catch (error) {
         console.error("Lỗi khi tải danh sách yêu thích:", error);

@@ -7,15 +7,21 @@ const Sidebar = ({ user, setSelectedMenu }) => {
       <div className="loading-container">
         <div className="spinner"></div>
       </div>
-    ); 
+    );
   }
   return (
     <div className="sidebar-manage-user">
       <div className="user-info">
-        <img src={user.profile?.picture || userpic} alt="User Avatar" className="avatar" />
+        <img
+          src={user.profile?.picture || userpic}
+          alt="User Avatar"
+          className="avatar"
+        />
         <div className="user-details">
-          <h3 className="user-name">{user.username || 'Tên người dùng'}</h3>
-          <p className="user-phone">{user.profile?.phone || 'Số điện thoại người dùng'}</p>
+          <h3 className="user-name">{user.username || "Tên người dùng"}</h3>
+          <p className="user-phone">
+            {user.profile?.phone || "Số điện thoại người dùng"}
+          </p>
         </div>
       </div>
       <nav className="nav-menu">

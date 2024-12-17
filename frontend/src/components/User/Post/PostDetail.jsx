@@ -43,6 +43,9 @@ const PostDetail = ({ onToggleFavorite }) => {
   const user = useSelector((state) => state.auth.login.currentUser);
   const { toggleFavorite } = useFavoriteToggle(user);
   const { reviews, loading, error } = useSelector((state) => state.reviews);
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -62,14 +65,11 @@ const PostDetail = ({ onToggleFavorite }) => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/v1/posts/favorites",
-          {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
+        const response = await axiosJWT.get("/v1/posts/favorites", {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
           },
-        );
+        });
         setFavorites(response.data.favorites);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách yêu thích:", error);

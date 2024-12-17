@@ -46,7 +46,10 @@ const ManageAcount = () => {
     <div className="manageAcount-container">
       <Header />
       <div className="container-body">
-        <Sidebar user={currentUser || null} setSelectedMenu={handleChangeMenu} />
+        <Sidebar
+          user={currentUser || null}
+          setSelectedMenu={handleChangeMenu}
+        />
         <div className="content">{renderContent()}</div>
       </div>
     </div>

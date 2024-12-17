@@ -14,18 +14,18 @@ const FavoritePosts = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const newsPerPage = 2;
+  let axiosJWT = axios.create({
+    baseURL: "http://localhost:8000",
+  });
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/v1/posts/favorites",
-          {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
+        const response = await axiosJWT.get("/v1/posts/favorites", {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
           },
-        );
+        });
         setFavorites(response.data.favorites);
       } catch (error) {
         console.error("Lỗi khi tải danh sách yêu thích:", error);
@@ -56,14 +56,11 @@ const FavoritePosts = () => {
 
       if (result.isConfirmed) {
         // Xóa bài viết khỏi danh sách yêu thích nếu người dùng xác nhận
-        await axios.delete(
-          `http://localhost:8000/v1/posts/${postId}/favorite`,
-          {
-            headers: {
-              Authorization: `Bearer ${user?.accessToken}`,
-            },
+        await axiosJWT.delete(`/v1/posts/${postId}/favorite`, {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
           },
-        );
+        });
         // Cập nhật danh sách yêu thích sau khi xóa
         setFavorites(favorites.filter((post) => post._id !== postId)); // Xóa bài viết khỏi danh sách
         Swal.fire(
